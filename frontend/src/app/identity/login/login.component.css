@@ -1,0 +1,28 @@
+.title {
+    text-align: center;
+    font-size: 20px;
+  ;}
+  
+  .login-form{
+    width: 300px
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    background-color: #f9f9f9; 
+  }
+  
+  .login {
+    width: 300px !important; 
+    height: 300px !important;
+    padding: 20px;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #FFFFFF; 
+    text-align: center; 
+  }
+
+
+  

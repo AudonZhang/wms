@@ -1,0 +1,8 @@
+<!-- Users can only enter the login page before logging in -->
+<app-layout *ngIf="userID">
+  <router-outlet></router-outlet>
+</app-layout>
+
+<div *ngIf="!userID">
+  <router-outlet></router-outlet>
+</div>

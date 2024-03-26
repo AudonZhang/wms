@@ -1,0 +1,51 @@
+<nz-layout>
+    <nz-sider nzWidth="200px" nzTheme="light">
+        <div class="logo">
+            <img src="assets/wm.png" />
+            仓库管理系统
+        </div>
+        <ul nz-menu nzTheme="light" nzMode="inline">
+            <li nz-menu-item>
+                <span nz-icon nzType="pie-chart"></span>
+                <span>仓库信息</span>
+            </li>
+            <li nz-menu-item>
+                <span nz-icon nzType="desktop"></span>
+                <span>仓库管理</span>
+            </li>
+            <li nz-submenu nzTitle="用户管理" nzIcon="team">
+                <ul>
+                    <li nz-menu-item>用户信息</li>
+                    <li nz-menu-item>信息修改</li>
+                </ul>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-header>
+            <ul nz-menu nzTheme="light" nzMode="horizontal">
+                <div nz-row>
+                    <div nz-col nzSpan="22" style="display: flex; align-items: center;">
+                        <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+                    </div>
+                    <div nz-col nzSpan="2" class="people">
+                        <a nz-dropdown [nzDropdownMenu]="menu" routerLink='index/user'>
+                            <span nz-icon nzType="reddit"></span>
+                            {{userName}}
+                        </a>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                            <ul nz-menu nzSelectable>
+                                <li nz-menu-item routerLink='index/user/operationrecord'>操作记录</li>
+                                <li nz-menu-item routerLink='index/{{userID}}/changepassword'>密码修改</li>
+                                <li nz-menu-item nzDanger (click)="exit()">退出登录</li>
+                            </ul>
+                        </nz-dropdown-menu>
+                    </div>
+                </div>
+            </ul>
+        </nz-header>
+        <nz-content>
+            <router-outlet></router-outlet>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

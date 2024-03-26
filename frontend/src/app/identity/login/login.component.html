@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="login" style="height: 200px; width: 200px; margin:auto">
+        <div class="logo">
+            <img src="assets/wm1.png" />
+        </div>
+        <div class="title">仓库管理系统</div>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="请输入ID!">
+                    <nz-input-group nzPrefixIcon="user">
+                        <input type="text" nz-input formControlName="userID" placeholder="ID" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="请输入密码!">
+                    <nz-input-group nzPrefixIcon="lock">
+                        <input type="password" nz-input formControlName="userPassword" placeholder="密码" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <button nz-button [nzType]="'primary'" [nzGhost]="'true'" nzBlock>登录</button>
+        </form>
+    </div>
+</div>
