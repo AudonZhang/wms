@@ -13,11 +13,7 @@
                 <span nz-icon nzType="desktop"></span>
                 <span>仓库管理</span>
             </li>
-            <li nz-submenu nzTitle="用户管理" nzIcon="team">
-                <ul>
-                    <li nz-menu-item>用户信息</li>
-                    <li nz-menu-item>信息修改</li>
-                </ul>
+            <li nz-submenu nzTitle="用户管理" nzIcon="team" *ngIf="userRole === '系统管理员'">
             </li>
         </ul>
     </nz-sider>

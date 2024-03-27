@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Goods } from 'src/app/interfaces/goods';
 import { Inbound } from 'src/app/interfaces/inbound';
 import { Outbound } from 'src/app/interfaces/outbound';
+import { GoodsService } from 'src/app/services/goods.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -23,6 +25,19 @@ export class OperationrecordComponent implements OnInit {
   outboundDisplay: Outbound[] = []; // The list displayed by the search function
   visible = false;
   searchValue = '';
+  popoverContent: string = '请点击';
+  goods: Goods = {
+    goodsID: '',
+    goodsName: '',
+    goodsSpecification: '',
+    goodsManufacturer: '',
+    goodsProductionLicense: '',
+    goodsUnit: '',
+    goodsStorageCondition: '',
+    goodsCreatedByID: '',
+    goodsCreatedTime: new Date(),
+  };
+
   // TransformStringPipe = new TransformStringPipe();  // 寝室号转换管道
   // apartment: string = '';  // 已预约公寓信息
   constructor(
@@ -30,7 +45,8 @@ export class OperationrecordComponent implements OnInit {
     private message: NzMessageService,
     private route: ActivatedRoute,
     private modal: NzModalService,
-    private notification: NzNotificationService
+    private notification: NzNotificationService,
+    private goodsService: GoodsService
   ) {}
   // // Get user information
   // getUser(): void{
@@ -91,6 +107,23 @@ export class OperationrecordComponent implements OnInit {
     } else {
       return [];
     }
+  }
+
+  handleClick(GoodsID: string) {
+    this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
+      // Assuming 'data' is the response from your service
+      // You can do further processing here
+      this.goods = data;
+      this.popoverContent = `
+      商品名称: ${this.goods.goodsName}，
+      商品规格: ${this.goods.goodsSpecification}，
+      生产厂家: ${this.goods.goodsManufacturer}，
+      生产许可证: ${this.goods.goodsProductionLicense}
+    `;
+    });
+  }
+  clearPopoverContent(): void {
+    this.popoverContent = '请点击';
   }
 
   ngOnInit(): void {

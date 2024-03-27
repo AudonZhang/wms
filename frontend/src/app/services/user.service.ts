@@ -12,7 +12,6 @@ import { Outbound } from '../interfaces/outbound';
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
   private recordUrl = 'http://127.0.0.1:5000/api/record';
-  private goodsUrl = 'http://127.0.0.1:5000/api/goods';
 
   private httpOptions = {
     headers: new HttpHeaders({

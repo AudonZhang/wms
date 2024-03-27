@@ -26,7 +26,14 @@
                 <tr *ngFor="let record of filterRecords()">
                     <td>{{ record.inboundID }}</td>
                     <td>{{ record.inboundOrderID }}</td>
-                    <td>{{ record.inboundGoodsID }}</td>
+                    <td>
+                        <span (click)="handleClick(record.inboundGoodsID)" (mouseleave)="clearPopoverContent()"
+                            style="text-decoration: underline; color: blue;">
+                            <span nz-popover [nzPopoverContent]="popoverContent">
+                                {{ record.inboundGoodsID }}
+                            </span>
+                        </span>
+                    </td>
                     <td>{{ record.inboundAmount }}</td>
                     <td>{{ record.inboundCreatedTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</td>
                 </tr>
@@ -63,7 +70,14 @@
                 <tr *ngFor="let record of filterRecords()">
                     <td>{{ record.outboundID }}</td>
                     <td>{{ record.outboundOrderID }}</td>
-                    <td>{{ record.outboundGoodsID }}</td>
+                    <td>
+                        <span (click)="handleClick(record.outboundGoodsID)" (mouseleave)="clearPopoverContent()"
+                            style="text-decoration: underline; color: blue;">
+                            <span nz-popover [nzPopoverContent]="popoverContent">
+                                {{ record.outboundGoodsID }}
+                            </span>
+                        </span>
+                    </td>
                     <td>{{ record.outboundAmount }}</td>
                     <td>{{ record.outboundCreatedTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</td>
                 </tr>
