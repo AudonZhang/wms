@@ -29,13 +29,13 @@
                         <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
                     </div>
                     <div nz-col nzSpan="2" class="people">
-                        <a nz-dropdown [nzDropdownMenu]="menu" routerLink='index/user'>
+                        <a nz-dropdown [nzDropdownMenu]="menu">
                             <span nz-icon nzType="reddit"></span>
                             {{userName}}
                         </a>
                         <nz-dropdown-menu #menu="nzDropdownMenu">
                             <ul nz-menu nzSelectable>
-                                <li nz-menu-item routerLink='index/user/operationrecord'>操作记录</li>
+                                <li nz-menu-item routerLink='index/{{userID}}/operationrecord'>操作记录</li>
                                 <li nz-menu-item routerLink='index/{{userID}}/changepassword'>密码修改</li>
                                 <li nz-menu-item nzDanger (click)="exit()">退出登录</li>
                             </ul>

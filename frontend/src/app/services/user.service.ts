@@ -3,6 +3,8 @@ import { Observable, catchError, of, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Login } from '../interfaces/login';
 import { User } from '../interfaces/user';
+import { Inbound } from '../interfaces/inbound';
+import { Outbound } from '../interfaces/outbound';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +56,24 @@ export class UserService {
     return this.http.post<User>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
       catchError(this.handleError<any>('updateUser'))
+    );
+  }
+
+  getInboundRecordByUserId(userID: string): Observable<Inbound[]> {
+    const url = `${this.recordUrl}/get_inbound_record_by_user_id/${userID}`;
+    return this.http.get<Inbound[]>(url).pipe(
+      // 通过url对应的api获取对应学生的预约信息
+      tap((_) => console.log(`获取${userID}的预约信息！`)),
+      catchError(this.handleError<Inbound[]>(`getUser id=${userID}`))
+    );
+  }
+
+  getOutboundRecordByUserId(userID: string): Observable<Outbound[]> {
+    const url = `${this.recordUrl}/get_outbound_record_by_user_id/${userID}`;
+    return this.http.get<Outbound[]>(url).pipe(
+      // 通过url对应的api获取对应学生的预约信息
+      tap((_) => console.log(`获取${userID}的预约信息！`)),
+      catchError(this.handleError<Outbound[]>(`getUser id=${userID}`))
     );
   }
 }

@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="custom-select">
+        <select [(ngModel)]="selectedOption">
+            <option value="出库">出库</option>
+            <option value="入库">入库</option>
+        </select>
+    </div>
+
+    <div *ngIf="selectedOption === '入库'">
+        <nz-table nzTableLayout="fixed" style="margin: 30px">
+            <thead>
+                <tr>
+                    <th style="background-color: #ffffff;">入库记录ID</th>
+                    <th nzCustomFilter style="background-color: #ffffff;">入库单ID
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                            [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th style="background-color: #ffffff;">货物ID</th>
+                    <th style="background-color: #ffffff;">入库数量</th>
+                    <th style="background-color: #ffffff;">入库时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let record of filterRecords()">
+                    <td>{{ record.inboundID }}</td>
+                    <td>{{ record.inboundOrderID }}</td>
+                    <td>{{ record.inboundGoodsID }}</td>
+                    <td>{{ record.inboundAmount }}</td>
+                    <td>{{ record.inboundCreatedTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown">
+                <div class="search-box">
+                    <input type="text" nz-input placeholder="请输入入库单ID" [(ngModel)]="searchValue" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="inboundSearch()"
+                        class="search-button">搜索</button>
+                    <button nz-button nzSize="small" (click)="inboundReset()">重置</button>
+                </div>
+            </div>
+        </nz-dropdown-menu>
+    </div>
+    <div *ngIf="selectedOption === '出库'">
+        <nz-table nzTableLayout="fixed" style="margin: 30px">
+            <thead>
+                <tr>
+                    <th style="background-color: #ffffff;">出库记录ID</th>
+                    <th nzCustomFilter style="background-color: #ffffff;">出库单ID
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                            [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th style="background-color: #ffffff;">货物ID</th>
+                    <th style="background-color: #ffffff;">出库数量</th>
+                    <th style="background-color: #ffffff;">出库时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let record of filterRecords()">
+                    <td>{{ record.outboundID }}</td>
+                    <td>{{ record.outboundOrderID }}</td>
+                    <td>{{ record.outboundGoodsID }}</td>
+                    <td>{{ record.outboundAmount }}</td>
+                    <td>{{ record.outboundCreatedTime | date:'yyyy年MM月dd日 HH:mm:ss'}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown">
+                <div class="search-box">
+                    <input type="text" nz-input placeholder="请输入出库单ID" [(ngModel)]="searchValue" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="outboundSearch()"
+                        class="search-button">搜索</button>
+                    <button nz-button nzSize="small" (click)="outboundReset()">重置</button>
+                </div>
+            </div>
+        </nz-dropdown-menu>
+    </div>

@@ -5,6 +5,7 @@ import { IndexComponent } from './index/index.component';
 import { AuthGuard } from './identity/auth.guard';
 import { ChangepasswordComponent } from './identity/changepassword/changepassword.component';
 import { UserService } from './services/user.service';
+import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,6 +23,13 @@ const routes: Routes = [
         component: ChangepasswordComponent,
         data: {
           breadcrumb: '密码修改',
+        },
+      },
+      {
+        path: ':userID/operationrecord',
+        component: OperationrecordComponent,
+        data: {
+          breadcrumb: '操作记录',
         },
       },
     ],

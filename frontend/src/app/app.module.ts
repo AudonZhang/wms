@@ -22,6 +22,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ChangepasswordComponent } from './identity/changepassword/changepassword.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 registerLocaleData(zh);
 
@@ -32,6 +34,7 @@ registerLocaleData(zh);
     LoginComponent,
     IndexComponent,
     ChangepasswordComponent,
+    OperationrecordComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ registerLocaleData(zh);
     ReactiveFormsModule,
     NzIconModule,
     NzModalModule,
+    NzTableModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],

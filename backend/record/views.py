@@ -50,17 +50,32 @@ logging.basicConfig(filename="records_api.log", level=logging.DEBUG)
 #         return jsonify({"error": str(e)})
 
 
-# # 查找指定学生信息的路由‘http://127.0.0.1:5000/api/reservation/get_reservation_by_stu_id/<string:stu_id>’
-# @record_blue.route('/get_record_by_user_id/<string:user_id>')
-# def get_record_by_user_id(user_id):
-#     try:
-#         result = Inventory.get_record_by_user_id(user_id)
-#         logging.info('获得' + user_id + '信息')
-#         return jsonify(result)
-#     except Exception as e:
-#         logging.error(
-#             'Error occurred while retrieving record by user_id from the database. Error message: {}'.format(
-#                 str(e)
-#             )
-#         )
-#         return jsonify({"error": str(e)})
+# 查找指定学生信息的路由‘http://127.0.0.1:5000/api/reservation/get_reservation_by_stu_id/<string:stu_id>’
+@record_blue.route('/get_inbound_record_by_user_id/<string:userID>')
+def get_inbound_record_by_user_id(userID):
+    try:
+        result = Inbound.get_inbound_record_by_user_id(userID)
+        logging.info('获得' + userID + '信息')
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            'Error occurred while retrieving inbound record by Userid from the database. Error message: {}'.format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})
+
+
+@record_blue.route('/get_outbound_record_by_user_id/<string:userID>')
+def get_outbound_record_by_user_id(userID):
+    try:
+        result = Outbound.get_outbound_record_by_user_id(userID)
+        logging.info('获得' + userID + '的出库操作信息')
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            'Error occurred while retrieving outbound record by Userid from the database. Error message: {}'.format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})
