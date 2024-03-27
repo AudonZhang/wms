@@ -101,3 +101,10 @@ class User(db.Model):
             return 1
         else:
             return 0
+
+    @staticmethod
+    def delete_user(userID):  # 删除学生信息并删除对应学生的预约记录
+        user = User.query.filter(User.userID == userID).first()
+        user.userStatus = '离职'
+        db.session.commit()
+        return 1

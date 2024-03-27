@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="modifyform">
+        <div class="title">用户信息修改</div>
+        <form nz-form (ngSubmit)="saveConfirm()">
+
+            <nz-form-item>
+                <nz-form-label>姓名</nz-form-label>
+                <nz-form-control nzHasFeedback nzErrorTip="姓名不能为空!">
+                    <input nz-input [(ngModel)]="user.userName" name="userName" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>性别</nz-form-label>
+                <nz-form-control nzHasFeedback>
+                    <input nz-input [(ngModel)]=" user.userGender" name="userGender" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>电话</nz-form-label>
+                <nz-form-control nzHasFeedback>
+                    <input nz-input [(ngModel)]="user.userPhone" name="userPhone" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>邮箱</nz-form-label>
+                <nz-form-control nzHasFeedback>
+                    <input nz-input [(ngModel)]="user.userEmail" name="userEmail" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>职责</nz-form-label>
+                <nz-form-control nzHasFeedback>
+                    <input nz-input [(ngModel)]="user.userRole" name="userRole" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button nz-button (click)="goBack()">返回</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+
+</div>

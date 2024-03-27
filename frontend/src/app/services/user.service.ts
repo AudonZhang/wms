@@ -22,6 +22,7 @@ export class UserService {
   public loginID = ''; // record logging user's id
   public loginName = ''; // record logging user's name
   public loginRole = ''; // record logging user's role
+  public modifyID = '';
 
   constructor(private http: HttpClient) {}
 
@@ -55,6 +56,24 @@ export class UserService {
     return this.http.post<User>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
       catchError(this.handleError<any>('updateUser'))
+    );
+  }
+  getUsers(): Observable<User[]> {
+    const url = `${this.userUrl}/get_all_users`;
+    console.log('在浏览器控制台中显示:已获取学生信息列表！');
+    return this.http.get<User[]>(url).pipe(
+      // 通过url对应的api获取所有学生信息
+      tap((_) => console.log('获取所有学生的信息！')),
+      catchError(this.handleError<User[]>('getUsers', []))
+    );
+  }
+
+  deleteUser(userID: string): Observable<User> {
+    const url = `${this.userUrl}/delete_user/${userID}`;
+    return this.http.post<User>(url, this.httpOptions).pipe(
+      // POST需要删除的学生id到对应api实现删除学生用户功能
+      tap((_) => console.log(`删除学号为${userID}的学生信息`)),
+      catchError(this.handleError<User>('deleteUser'))
     );
   }
 

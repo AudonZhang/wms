@@ -1,0 +1,55 @@
+<!-- if route the children page, don't show home page content -->
+<div *ngIf="!isChildRouteActive()">
+    <div class="container">
+        <nz-table nzTableLayout="fixed" style="margin: 30px">
+            <thead>
+                <tr>
+                    <th style="background-color: #ffffff;">ID</th>
+                    <th nzCustomFilter style="background-color: #ffffff;">
+                        姓名
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                            [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th style="background-color: #ffffff;">性别</th>
+                    <th style="background-color: #ffffff;">电话</th>
+                    <th style="background-color: #ffffff;">邮箱</th>
+                    <th style="background-color: #ffffff;">职务</th>
+                    <th style="background-color: #ffffff;">状态</th>
+                    <th style="background-color: #ffffff;">编辑</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of usersDisplay">
+                    <td>{{ user.userID }}</td>
+                    <td>{{ user.userName }}</td>
+                    <td>{{ user.userGender }}</td>
+                    <td>{{ user.userPhone }}</td>
+                    <td>{{ user.userEmail }}</td>
+                    <td>{{ user.userRole }}</td>
+                    <td>{{ user.userStatus }}</td>
+                    <td>
+                        <a routerLink='/index/root/modify' (click)="setModifyUserID(user.userID)"
+                            [ngClass]="{'disabled-link': user.userStatus === '离职'}">修改</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="deleteConfirm(user.userID, user.userName)"
+                            [ngClass]="{'disabled-link': user.userStatus === '离职'}">解雇</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown">
+                <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索姓名" [(ngModel)]="searchValue" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()"
+                        class="search-button">搜索</button>
+                    <button nz-button nzSize="small" (click)="reset()">重置</button>
+                </div>
+            </div>
+        </nz-dropdown-menu>
+
+    </div>
+</div>
+<router-outlet></router-outlet>

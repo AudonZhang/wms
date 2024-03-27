@@ -6,6 +6,8 @@ import { AuthGuard } from './identity/auth.guard';
 import { ChangepasswordComponent } from './identity/changepassword/changepassword.component';
 import { UserService } from './services/user.service';
 import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
+import { RootComponent } from './identity/root/root.component';
+import { ModifyComponent } from './identity/modify/modify.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,6 +33,22 @@ const routes: Routes = [
         data: {
           breadcrumb: '操作记录',
         },
+      },
+      {
+        path: 'root',
+        component: RootComponent,
+        data: {
+          breadcrumb: '用户管理',
+        },
+        children: [
+          {
+            path: 'modify',
+            component: ModifyComponent,
+            data: {
+              breadcrumb: '修改用户信息',
+            },
+          },
+        ],
       },
     ],
   },

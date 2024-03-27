@@ -2,6 +2,7 @@ from flask import jsonify, request, json
 from models.users import User
 from user import user_blue
 import logging
+from datetime import datetime
 
 
 # error log
@@ -75,7 +76,7 @@ def update_user():
                 data['userRole'],
                 data['userStatus'],
                 data['userCreatedByID'],
-                data['userCreatedTime'],
+                datetime.now(),
             )
             return jsonify({'status': result})
         else:
@@ -83,5 +84,20 @@ def update_user():
     except Exception as e:
         logging.error(
             'Error occurred while updating user. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
+
+
+@user_blue.route('/delete_user/<string:userID>', methods=['GET', 'POST'])
+def delete_user(userID):
+    try:
+        if request.method == 'POST':
+            result = User.delete_user(userID)
+            return jsonify({'status': result})
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while deleting User. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})

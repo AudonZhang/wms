@@ -25,6 +25,9 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { RootComponent } from './identity/root/root.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { ModifyComponent } from './identity/modify/modify.component';
 
 registerLocaleData(zh);
 
@@ -36,6 +39,8 @@ registerLocaleData(zh);
     IndexComponent,
     ChangepasswordComponent,
     OperationrecordComponent,
+    RootComponent,
+    ModifyComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,7 @@ registerLocaleData(zh);
     NzModalModule,
     NzTableModule,
     NzPopoverModule,
+    NzDividerModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
