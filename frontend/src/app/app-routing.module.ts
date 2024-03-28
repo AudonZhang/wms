@@ -8,6 +8,7 @@ import { UserService } from './services/user.service';
 import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
 import { RootComponent } from './identity/root/root.component';
 import { ModifyComponent } from './identity/modify/modify.component';
+import { NewuserComponent } from './identity/newuser/newuser.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -46,6 +47,13 @@ const routes: Routes = [
             component: ModifyComponent,
             data: {
               breadcrumb: '修改用户信息',
+            },
+          },
+          {
+            path: 'new',
+            component: NewuserComponent,
+            data: {
+              breadcrumb: '创建用户',
             },
           },
         ],

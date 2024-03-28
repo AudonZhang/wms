@@ -7,3 +7,11 @@ nz-table{
     color: gray;
     pointer-events: none;
   }
+
+  .custom-button {
+    position: relative;
+    width: 80px; /* 控制选择框的宽度 */
+    height: 40px;
+    margin-left:900px;
+    margin-top: 30px;
+  }

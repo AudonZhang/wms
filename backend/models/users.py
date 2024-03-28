@@ -108,3 +108,44 @@ class User(db.Model):
         user.userStatus = '离职'
         db.session.commit()
         return 1
+
+    @staticmethod
+    def take_user(userID):  # 删除学生信息并删除对应学生的预约记录
+        user = User.query.filter(User.userID == userID).first()
+        user.userStatus = '在岗'
+        db.session.commit()
+        return 1
+
+    @staticmethod
+    def add_user(
+        userID,
+        userName,
+        userGender,
+        userPasswordMD5,
+        userPhone,
+        userEmail,
+        userRole,
+        userStatus,
+        userCreatedByID,
+        userCreatedTime,
+    ):
+        qstu = User.query.filter(User.userID == userID)
+        if len(qstu.all()) > 0:
+            return '0'
+        else:
+
+            user = User(
+                userID=userID,
+                userName=userName,
+                userPasswordMD5=userPasswordMD5,
+                userGender=userGender,
+                userPhone=userPhone,
+                userEmail=userEmail,
+                userStatus=userStatus,
+                userRole=userRole,
+                userCreatedByID=userCreatedByID,
+                userCreatedTime=userCreatedTime,
+            )
+        db.session.add(user)
+        db.session.commit()
+        return '1'

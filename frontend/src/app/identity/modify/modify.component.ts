@@ -41,7 +41,7 @@ export class ModifyComponent implements OnInit {
       return;
     }
     this.modal.confirm({
-      nzTitle: '<i>确认修改学生信息?</i>',
+      nzTitle: '<i>确认修改用户信息?</i>',
       nzContent: `<b>姓名:${this.user.userName}</b>
       <b>性别:${this.user.userGender}</b>
       <b>电话:${this.user.userPhone}</b>

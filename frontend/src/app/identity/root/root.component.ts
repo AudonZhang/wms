@@ -55,7 +55,6 @@ export class RootComponent implements OnInit {
         }
       });
       this.usersDisplay = this.users;
-      this.message.create('success', '已获取用户信息列表!');
     });
   }
 
@@ -92,6 +91,16 @@ export class RootComponent implements OnInit {
       },
     });
   }
+  takeConfirm(userID: string, userName: string): void {
+    // 确认删除对话框
+    this.modal.confirm({
+      nzTitle: '<i>确认恢复该用户?</i>',
+      nzContent: `<b>ID:${userID}; 姓名:${userName}</b>`,
+      nzOnOk: () => {
+        this.takeUser(userID);
+      },
+    });
+  }
 
   deleteUser(userID: string): void {
     //  删除学生信息
@@ -99,17 +108,24 @@ export class RootComponent implements OnInit {
     if (userID == this.userService.loginID) {
       // 判断是否正在删除管理员账户
       this.userService.loginID = '';
-      this.notification.create(
-        'warning',
-        '当前管理员账户被删除!',
-        '请重新登录!'
-      );
+      this.notification.create('warning', '当前管理员被解雇!', '请重新登录!');
       this.router.navigateByUrl('');
     }
     this.notification.create(
       'success',
-      '删除成功!',
-      `成功删除ID为${userID}的用户信息!`
+      '解雇成功!',
+      `成功解雇ID为${userID}的用户!`
+    );
+    this.getUsers();
+  }
+
+  takeUser(userID: string): void {
+    //  删除学生信息
+    this.userService.takeUser(userID).subscribe(); //  调用学生服务的方法删除
+    this.notification.create(
+      'success',
+      '恢复成功!',
+      `成功恢复ID为${userID}的用户!`
     );
     this.getUsers();
   }
@@ -118,7 +134,7 @@ export class RootComponent implements OnInit {
     // 与用户确认当前删除的用户是管理员
     this.modal.confirm({
       nzTitle: '<i>该账号为管理员账号!</i>',
-      nzContent: `确认删除该管理员账号吗?</b>`,
+      nzContent: `确认解雇该管理员?</b>`,
       nzOnOk: () => this.deleteUser(userID),
     });
   }
@@ -128,6 +144,9 @@ export class RootComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // setInterval(() => {
+    // 每秒同步登录信息
     this.getUsers();
+    // }, 1000);
   }
 }

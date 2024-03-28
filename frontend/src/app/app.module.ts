@@ -28,6 +28,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { RootComponent } from './identity/root/root.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { ModifyComponent } from './identity/modify/modify.component';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NewuserComponent } from './identity/newuser/newuser.component';
 
 registerLocaleData(zh);
 
@@ -41,6 +43,7 @@ registerLocaleData(zh);
     OperationrecordComponent,
     RootComponent,
     ModifyComponent,
+    NewuserComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +63,7 @@ registerLocaleData(zh);
     NzTableModule,
     NzPopoverModule,
     NzDividerModule,
+    NzSelectModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],

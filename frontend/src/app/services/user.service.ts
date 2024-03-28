@@ -58,6 +58,13 @@ export class UserService {
       catchError(this.handleError<any>('updateUser'))
     );
   }
+  addUser(user: User): Observable<any> {
+    const url = `${this.userUrl}/add_user`;
+    return this.http.post<User>(url, user, this.httpOptions).pipe(
+      tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
+      catchError(this.handleError<any>('updateUser'))
+    );
+  }
   getUsers(): Observable<User[]> {
     const url = `${this.userUrl}/get_all_users`;
     console.log('在浏览器控制台中显示:已获取学生信息列表！');
@@ -74,6 +81,15 @@ export class UserService {
       // POST需要删除的学生id到对应api实现删除学生用户功能
       tap((_) => console.log(`删除学号为${userID}的学生信息`)),
       catchError(this.handleError<User>('deleteUser'))
+    );
+  }
+
+  takeUser(userID: string): Observable<User> {
+    const url = `${this.userUrl}/take_user/${userID}`;
+    return this.http.post<User>(url, this.httpOptions).pipe(
+      // POST需要删除的学生id到对应api实现删除学生用户功能
+      tap((_) => console.log(`删除学号为${userID}的学生信息`)),
+      catchError(this.handleError<User>('takeUser'))
     );
   }
 

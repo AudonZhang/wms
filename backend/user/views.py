@@ -101,3 +101,45 @@ def delete_user(userID):
             'Error occurred while deleting User. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
+
+
+@user_blue.route('/take_user/<string:userID>', methods=['GET', 'POST'])
+def take_user(userID):
+    try:
+        if request.method == 'POST':
+            result = User.take_user(userID)
+            return jsonify({'status': result})
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while taking User. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
+
+
+@user_blue.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.get_data())
+            result = User.add_user(
+                data['userID'],
+                data['userName'],
+                data['userGender'],
+                data['userPasswordMD5'],
+                data['userPhone'],
+                data['userEmail'],
+                data['userRole'],
+                data['userStatus'],
+                data['userCreatedByID'],
+                datetime.now(),
+            )
+            return jsonify(result)
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while updating user. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
