@@ -1,7 +1,7 @@
 from app import db
 
 
-# mapping between python class and mysql database table
+# 实现与用户记录相关的类与函数
 class User(db.Model):
     __tablename__ = "user"
     userID = db.Column(db.Integer, primary_key=True)
@@ -12,12 +12,12 @@ class User(db.Model):
     userEmail = db.Column(db.String(64))
     userRole = db.Column(db.String(64))
     userStatus = db.Column(db.String(64))
-    userCreatedByID = db.Column(db.String(64))
+    userCreatedByID = db.Column(db.Integer)
     userCreatedTime = db.Column(db.DateTime)
 
     @staticmethod
     def get_all_users():
-        users = User.query.all()  # query all users' information in mysql table
+        users = User.query.all()
         user_list = []
         if users is not None:
             for user in users:
@@ -35,14 +35,14 @@ class User(db.Model):
                         'userCreatedTime': user.userCreatedTime,
                     }
                 )
-        return user_list
+            return user_list
+        else:
+            return '0'
 
     @staticmethod
     def get_user_by_id(userID):
-        users = User.query.filter(
-            User.userID == userID
-        )  # obtain the specified user information in mysql
-        if len(users.all()) > 0:
+        users = User.query.filter(User.userID == userID)
+        if users is not None:
             user = users.first()
             user_dict = {
                 'userID': user.userID,
@@ -65,13 +65,11 @@ class User(db.Model):
         user = User.query.filter(
             User.userID == userID, User.userPasswordMD5 == userPasswordMD5
         ).first()
-        # user information is right and user still on the job
-        if user is not None and user.userStatus == '在岗':
-            return '1'  # log success
+        if user is not None and user.userStatus == '在职':
+            return '1'
         else:
-            return '0'  # log failure
+            return '0'
 
-    # update users' information in mysql
     @staticmethod
     def update_user(
         userID,
@@ -98,23 +96,29 @@ class User(db.Model):
             user.userCreatedByID = userCreatedByID
             user.userCreatedTime = userCreatedTime
             db.session.commit()
-            return 1
+            return '1'
         else:
-            return 0
+            return '0'
 
     @staticmethod
-    def delete_user(userID):  # 删除学生信息并删除对应学生的预约记录
+    def unemploy_user(userID):
         user = User.query.filter(User.userID == userID).first()
-        user.userStatus = '离职'
-        db.session.commit()
-        return 1
+        if user is not None:
+            user.userStatus = '离职'
+            db.session.commit()
+            return '1'
+        else:
+            return '0'
 
     @staticmethod
-    def take_user(userID):  # 删除学生信息并删除对应学生的预约记录
+    def employ_user(userID):
         user = User.query.filter(User.userID == userID).first()
-        user.userStatus = '在岗'
-        db.session.commit()
-        return 1
+        if user is not None:
+            user.userStatus = '在岗'
+            db.session.commit()
+            return '1'
+        else:
+            return '0'
 
     @staticmethod
     def add_user(
@@ -129,11 +133,8 @@ class User(db.Model):
         userCreatedByID,
         userCreatedTime,
     ):
-        qstu = User.query.filter(User.userID == userID)
-        if len(qstu.all()) > 0:
-            return '0'
-        else:
-
+        query_user = User.query.filter(User.userID == userID)
+        if query_user is not None:
             user = User(
                 userID=userID,
                 userName=userName,
@@ -146,6 +147,8 @@ class User(db.Model):
                 userCreatedByID=userCreatedByID,
                 userCreatedTime=userCreatedTime,
             )
-        db.session.add(user)
-        db.session.commit()
-        return '1'
+            db.session.add(user)
+            db.session.commit()
+            return '1'
+        else:
+            return '0'

@@ -1,31 +1,30 @@
 from flask import jsonify, request, json
-from models.users import User
+from func.users import User
 from user import user_blue
 import logging
 from datetime import datetime
 
 
-# error log
-logging.basicConfig(filename="users_api.log", level=logging.DEBUG)
+# 错误日志
+logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# api which provide all users information
+# 下面是与用户模块api对应的不同路由
 @user_blue.route('/get_all_users')
 def get_all_users():
     try:
         result = User.get_all_users()
         logging.info("获得所有用户信息")
-        return jsonify(result)  # return json format data
+        return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while retrieving users from the database. Error message: {}".format(
+            "Error occurred while getting users from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# api which used to login user
 @user_blue.route("/login", methods=["GET", "POST"])
 def login():
     try:
@@ -33,9 +32,7 @@ def login():
             data = json.loads(request.get_data())
             userID = data["userID"]
             userPasswordMD5 = data["userPasswordMD5"]
-            judge = User.login(
-                userID, userPasswordMD5
-            )  # use model's method to verify user information
+            judge = User.login(userID, userPasswordMD5)
             return judge
         else:
             return jsonify({"status": "GET"})
@@ -44,23 +41,21 @@ def login():
         return jsonify({"error": str(e)})
 
 
-# api which provide the specified user information
 @user_blue.route("/get_user_by_id/<string:userID>")
 def get_user_by_id(userID):
     try:
         result = User.get_user_by_id(userID)
-        logging.info("获得" + userID + "信息")
+        logging.info("获得" + userID + "的信息")
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while retrieving id users from the database. Error message: {}".format(
+            "Error occurred while getting users by id Sfrom the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# Obtain the ID and data submitted by the front-end, and modify the student information corresponding to the ID
 @user_blue.route('/update_user', methods=['GET', 'POST'])
 def update_user():
     try:
@@ -88,32 +83,32 @@ def update_user():
         return jsonify({"error": str(e)})
 
 
-@user_blue.route('/delete_user/<string:userID>', methods=['GET', 'POST'])
-def delete_user(userID):
+@user_blue.route('/unemploy_user/<string:userID>', methods=['GET', 'POST'])
+def unemploy_user(userID):
     try:
         if request.method == 'POST':
-            result = User.delete_user(userID)
+            result = User.unemploy_user(userID)
             return jsonify({'status': result})
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while deleting User. Error message: {}'.format(str(e))
+            'Error occurred while unemploying User. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
 
 
-@user_blue.route('/take_user/<string:userID>', methods=['GET', 'POST'])
-def take_user(userID):
+@user_blue.route('/employ_user/<string:userID>', methods=['GET', 'POST'])
+def employ_user(userID):
     try:
         if request.method == 'POST':
-            result = User.take_user(userID)
+            result = User.employ_user(userID)
             return jsonify({'status': result})
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while taking User. Error message: {}'.format(str(e))
+            'Error occurred while employing User. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
 
@@ -140,6 +135,6 @@ def add_user():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while updating user. Error message: {}'.format(str(e))
+            'Error occurred while adding user. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})

@@ -1,6 +1,7 @@
 from app import db
 
 
+# 实现与货物相关的类与函数
 class Goods(db.Model):
     __tablename__ = "goods"
     goodsID = db.Column(db.Integer, primary_key=True)
@@ -10,15 +11,13 @@ class Goods(db.Model):
     goodsProductionLicense = db.Column(db.String(64))
     goodsUnit = db.Column(db.String(64))
     goodsStorageCondition = db.Column(db.String(64))
-    goodsCreatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    goodsCreatedByID = db.Column(db.Integer)
     goodsCreatedTime = db.Column(db.DateTime)
 
     @staticmethod
     def get_goods_by_id(goodsID):
-        goodss = Goods.query.filter(
-            Goods.goodsID == goodsID
-        )  # obtain the specified user information in mysql
-        if len(goodss.all()) > 0:
+        goodss = Goods.query.filter(Goods.goodsID == goodsID)
+        if goodss is not None:
             goods = goodss.first()
             goods_dict = {
                 'goodsID': goods.goodsID,

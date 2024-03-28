@@ -27,7 +27,7 @@ class User(db.Model):
     userEmail = db.Column(db.String(64))
     userRole = db.Column(db.String(64))
     userStatus = db.Column(db.String(64))
-    userCreatedByID = db.Column(db.String(64))
+    userCreatedByID = db.Column(db.Integer)
     userCreatedTime = db.Column(db.DateTime)
 
 
