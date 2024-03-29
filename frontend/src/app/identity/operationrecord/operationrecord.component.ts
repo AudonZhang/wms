@@ -7,6 +7,7 @@ import { Goods } from 'src/app/interfaces/goods';
 import { Inbound } from 'src/app/interfaces/inbound';
 import { Outbound } from 'src/app/interfaces/outbound';
 import { GoodsService } from 'src/app/services/goods.service';
+import { RecordService } from 'src/app/services/record.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -15,17 +16,15 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./operationrecord.component.css'],
 })
 export class OperationrecordComponent implements OnInit {
-  // student: Student = {studentID: '', studentName: '', studentPassword: '', studentWallet: 0};
-  // cancelPermit = 0;  // 撤销预约权限
-  // records: Record[] = [];
+  // 筛选列表选项
   selectedOption: string = '入库';
   inbound: Inbound[] = [];
-  inboundDisplay: Inbound[] = []; // The list displayed by the search function
+  inboundDisplay: Inbound[] = [];
   outbound: Outbound[] = [];
-  outboundDisplay: Outbound[] = []; // The list displayed by the search function
+  outboundDisplay: Outbound[] = [];
   visible = false;
   searchValue = '';
-  popoverContent: string = '请点击';
+  popoverContent: string = '请点击'; //货物详情提示框
   goods: Goods = {
     goodsID: '',
     goodsName: '',
@@ -35,27 +34,17 @@ export class OperationrecordComponent implements OnInit {
     goodsUnit: '',
     goodsStorageCondition: '',
     goodsCreatedByID: '',
-    goodsCreatedTime: new Date(),
+    goodsCreatedTime: '',
   };
-
-  // TransformStringPipe = new TransformStringPipe();  // 寝室号转换管道
-  // apartment: string = '';  // 已预约公寓信息
   constructor(
     private userService: UserService,
     private message: NzMessageService,
     private route: ActivatedRoute,
     private modal: NzModalService,
     private notification: NzNotificationService,
-    private goodsService: GoodsService
+    private goodsService: GoodsService,
+    private recordService: RecordService
   ) {}
-  // // Get user information
-  // getUser(): void{
-  //   this.userService.getUserById(this.userService.loginID).subscribe(
-  //     res => {this.student = res;}
-  //   );
-  // }
-
-  //Obtain the inbound and outbound records corresponding to the login ID
 
   inboundSearch(): void {
     this.visible = false;
@@ -99,10 +88,8 @@ export class OperationrecordComponent implements OnInit {
 
   filterRecords(): any[] {
     if (this.selectedOption == '入库') {
-      // 当 selectedOption 为 0 时，只展示 status 为 0 的记录
       return this.inboundDisplay;
     } else if (this.selectedOption == '出库') {
-      // 当 selectedOption 不为 '入库' 时，返回一个空数组或者其他合适的值
       return this.outboundDisplay;
     } else {
       return [];
@@ -111,8 +98,6 @@ export class OperationrecordComponent implements OnInit {
 
   handleClick(GoodsID: string) {
     this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
-      // Assuming 'data' is the response from your service
-      // You can do further processing here
       this.goods = data;
       this.popoverContent = `
       商品名称: ${this.goods.goodsName}，
@@ -127,7 +112,7 @@ export class OperationrecordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService
+    this.recordService
       .getInboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.inboundDisplay = res.sort((a: Inbound, b: Inbound) => {
@@ -139,7 +124,7 @@ export class OperationrecordComponent implements OnInit {
         });
         this.inbound = this.inboundDisplay;
       });
-    this.userService
+    this.recordService
       .getOutboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.outboundDisplay = res.sort((a: Outbound, b: Outbound) => {

@@ -3,20 +3,18 @@
     font-size: 20px;
   ;}
   
-  .login-form{
-    width: 300px
-  }
+
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
- 
+    height: 100vh; 
     background-color: #f9f9f9; 
   }
   
   .modifyform {
     width:400px !important; 
-
+    height: 400px !important;
     padding: 20px;
     border: 1px solid #ccc; 
     border-radius: 5px; 

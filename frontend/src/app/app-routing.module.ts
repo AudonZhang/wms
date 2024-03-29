@@ -6,9 +6,10 @@ import { AuthGuard } from './identity/auth.guard';
 import { ChangepasswordComponent } from './identity/changepassword/changepassword.component';
 import { UserService } from './services/user.service';
 import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
-import { RootComponent } from './identity/root/root.component';
-import { ModifyComponent } from './identity/modify/modify.component';
-import { NewuserComponent } from './identity/newuser/newuser.component';
+import { RootComponent } from './root/root.component';
+import { ModifyComponent } from './root/modify/modify.component';
+import { NewuserComponent } from './root/newuser/newuser.component';
+import { AllUsersComponent } from './root/all-users/all-users.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -43,18 +44,27 @@ const routes: Routes = [
         },
         children: [
           {
-            path: 'modify',
-            component: ModifyComponent,
-            data: {
-              breadcrumb: '修改用户信息',
-            },
-          },
-          {
             path: 'new',
             component: NewuserComponent,
             data: {
-              breadcrumb: '创建用户',
+              breadcrumb: '新建用户',
             },
+          },
+          {
+            path: 'allUsers',
+            component: AllUsersComponent,
+            data: {
+              breadcrumb: '用户信息',
+            },
+            children: [
+              {
+                path: 'modify',
+                component: ModifyComponent,
+                data: {
+                  breadcrumb: '用户信息修改',
+                },
+              },
+            ],
           },
         ],
       },

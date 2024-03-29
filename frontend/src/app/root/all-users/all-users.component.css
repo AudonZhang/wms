@@ -10,8 +10,9 @@ nz-table{
 
   .custom-button {
     position: relative;
-    width: 80px; /* 控制选择框的宽度 */
+    width: 80px;
     height: 40px;
     margin-left:900px;
     margin-top: 30px;
   }
+

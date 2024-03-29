@@ -1,10 +1,9 @@
-<!-- if route the children page, don't show home page content -->
+<!-- 如果在子页面，则不显示该div层内内容 -->
 <div *ngIf="!isChildRouteActive()">
     <div class="container">
-        <div class="custom-button">
-            <button nz-button nzType="primary" routerLink='/index/root/new'>新增用户</button>
-        </div>
-        <nz-table nzTableLayout="fixed" style="margin: 30px">
+
+        <nz-table #filterTable [nzData]="usersDisplay" nzTableLayout="fixed" style="margin: 30px " [nzPageSize]="5"
+            [nzScroll]="{ y: '400px' }">
             <thead>
                 <tr>
                     <th style="background-color: #ffffff;">ID</th>
@@ -18,13 +17,21 @@
                     <th style="background-color: #ffffff;">性别</th>
                     <th style="background-color: #ffffff;">电话</th>
                     <th style="background-color: #ffffff;">邮箱</th>
-                    <th style="background-color: #ffffff;">职务</th>
-                    <th style="background-color: #ffffff;">状态</th>
+                    <th style="background-color: #ffffff;" [nzFilterMultiple]="true" [nzFilters]="[
+        { text: '系统管理员', value: '系统管理员' },
+        { text: '仓库管理员', value: '仓库管理员'},
+        { text: '维护专员', value: '维护专员' },
+      ]" [nzFilterFn]="filterRole">
+                        职务</th>
+                    <th style="background-color: #ffffff;" [nzFilters]="[
+                    { text: '在职', value: '在职' },
+                    { text: '离职', value: '离职'},
+                  ]" [nzFilterFn]="filterStatus">状态</th>
                     <th style="background-color: #ffffff;">编辑</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of usersDisplay">
+                <tr *ngFor="let user of filterTable.data">
                     <td>{{ user.userID }}</td>
                     <td>{{ user.userName }}</td>
                     <td>{{ user.userGender }}</td>
@@ -33,14 +40,14 @@
                     <td>{{ user.userRole }}</td>
                     <td>{{ user.userStatus }}</td>
                     <td>
-                        <a routerLink='/index/root/modify' (click)="setModifyUserID(user.userID)"
+                        <a routerLink='/index/root/allUsers/modify' (click)="setModifyUserID(user.userID)"
                             [ngClass]="{'disabled-link': user.userStatus === '离职'}">修改</a>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="deleteConfirm(user.userID, user.userName)"
+                        <a (click)="unemployConfirm(user.userID, user.userName)"
                             [ngClass]="{'disabled-link': user.userStatus === '离职'}">解雇</a>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="takeConfirm(user.userID, user.userName)"
-                            [ngClass]="{'disabled-link': user.userStatus === '在岗'}">上岗</a>
+                        <a (click)="employConfirm(user.userID, user.userName)"
+                            [ngClass]="{'disabled-link': user.userStatus === '在职'}">恢复</a>
                     </td>
                 </tr>
             </tbody>

@@ -25,11 +25,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { OperationrecordComponent } from './identity/operationrecord/operationrecord.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
-import { RootComponent } from './identity/root/root.component';
+import { RootComponent } from './root/root.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { ModifyComponent } from './identity/modify/modify.component';
+import { ModifyComponent } from './root/modify/modify.component';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NewuserComponent } from './identity/newuser/newuser.component';
+import { NewuserComponent } from './root/newuser/newuser.component';
+import { AllUsersComponent } from './root/all-users/all-users.component';
 
 registerLocaleData(zh);
 
@@ -44,6 +45,7 @@ registerLocaleData(zh);
     RootComponent,
     ModifyComponent,
     NewuserComponent,
+    AllUsersComponent,
   ],
   imports: [
     BrowserModule,

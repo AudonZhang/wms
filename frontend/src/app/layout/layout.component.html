@@ -1,6 +1,6 @@
 <nz-layout>
-    <nz-sider nzWidth="200px" nzTheme="light">
-        <div class="logo">
+    <nz-sider nzWidth="200px" nzTheme="light" style="background: #eef1f3;border: 1px solid #ededed;">
+        <div class="logo" routerLink='/index'>
             <img src="assets/wm.png" />
             仓库管理系统
         </div>
@@ -13,17 +13,23 @@
                 <span nz-icon nzType="desktop"></span>
                 <span>仓库管理</span>
             </li>
-            <li nz-menu-item routerLink='/index/root' *ngIf="userRole === '系统管理员'">
-                <span nz-icon nzType="team"></span>
-                <span>用户管理</span>
+            <li nz-submenu nzTitle="用户管理" nzIcon="user" *ngIf="this.userRole === '系统管理员'">
+                <ul style="background: #eef1f3;">
+                    <li nz-menu-item routerLink='index/root/allUsers'>
+                        <span nz-icon nzType="team"></span>
+                        <span>用户信息</span>
+                    </li>
+                    <li nz-menu-item routerLink='/index/root/new'>
+                        <span nz-icon nzType="user-add"></span>
+                        <span>新建用户</span>
+                    </li>
+                </ul>
             </li>
-            <!-- <li nz-submenu nzTitle="用户管理" nzIcon="team" *ngIf="userRole === '系统管理员'">
-            </li> -->
         </ul>
     </nz-sider>
     <nz-layout>
-        <nz-header>
-            <ul nz-menu nzTheme="light" nzMode="horizontal">
+        <nz-header style="padding: 0;">
+            <ul nz-menu nzTheme="light" nzMode="horizontal" style="background: #f5f5f5;">
                 <div nz-row>
                     <div nz-col nzSpan="22" style="display: flex; align-items: center;">
                         <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
@@ -44,7 +50,7 @@
                 </div>
             </ul>
         </nz-header>
-        <nz-content>
+        <nz-content style="background: rgb(255, 255, 255);">
             <router-outlet></router-outlet>
         </nz-content>
     </nz-layout>

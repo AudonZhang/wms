@@ -3,15 +3,12 @@ import { Observable, catchError, of, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Login } from '../interfaces/login';
 import { User } from '../interfaces/user';
-import { Inbound } from '../interfaces/inbound';
-import { Outbound } from '../interfaces/outbound';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
-  private recordUrl = 'http://127.0.0.1:5000/api/record';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -19,10 +16,11 @@ export class UserService {
     }),
   };
 
-  public loginID = ''; // record logging user's id
-  public loginName = ''; // record logging user's name
-  public loginRole = ''; // record logging user's role
+  public loginID = '';
+  public loginName = '';
+  public loginRole = '';
   public modifyID = '';
+  public afterModify = false;
 
   constructor(private http: HttpClient) {}
 
@@ -33,81 +31,59 @@ export class UserService {
     };
   }
 
-  // post to api to log in
   login(loginMessage: Login): Observable<string> {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
-      tap((_) => console.log(`登录！`)),
-      catchError(this.handleError<string>('login', '0'))
+      tap((_) => console.log(`登录成功！`)),
+      catchError(this.handleError<string>('登陆时出错', '0'))
     );
   }
 
-  // post to api to get logging user's information
   getUserById(userID: string): Observable<User> {
     const url = `${this.userUrl}/get_user_by_id/${userID}`;
     return this.http.get<User>(url).pipe(
       tap((_) => console.log(`获取${userID}的信息！`)),
-      catchError(this.handleError<User>(`getUserid=${userID}`))
+      catchError(this.handleError<User>(`根据ID:${userID}获取用户信息时出错`))
     );
   }
-  // post to api to change user information
+  // 更新用户信息
   updateUser(user: User): Observable<any> {
     const url = `${this.userUrl}/update_user`;
     return this.http.post<User>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
-      catchError(this.handleError<any>('updateUser'))
+      catchError(this.handleError<any>('更新用户信息时出错'))
     );
   }
-  addUser(user: User): Observable<any> {
+  addUser(user: User): Observable<string> {
     const url = `${this.userUrl}/add_user`;
-    return this.http.post<User>(url, user, this.httpOptions).pipe(
-      tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
-      catchError(this.handleError<any>('updateUser'))
+    return this.http.post<string>(url, user, this.httpOptions).pipe(
+      tap((_) => console.log(`增加了ID为${user.userID}的用户`)),
+      catchError(this.handleError<string>('更新用户信息时出错', '0'))
     );
   }
-  getUsers(): Observable<User[]> {
+  getAllUsers(): Observable<User[]> {
     const url = `${this.userUrl}/get_all_users`;
-    console.log('在浏览器控制台中显示:已获取学生信息列表！');
     return this.http.get<User[]>(url).pipe(
-      // 通过url对应的api获取所有学生信息
       tap((_) => console.log('获取所有学生的信息！')),
-      catchError(this.handleError<User[]>('getUsers', []))
+      catchError(this.handleError<User[]>('获取所有用户信息时出错', []))
     );
   }
 
-  deleteUser(userID: string): Observable<User> {
-    const url = `${this.userUrl}/delete_user/${userID}`;
+  // 将员工状态设定为"离职"
+  unemployUser(userID: string): Observable<User> {
+    const url = `${this.userUrl}/unemploy_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
-      // POST需要删除的学生id到对应api实现删除学生用户功能
-      tap((_) => console.log(`删除学号为${userID}的学生信息`)),
-      catchError(this.handleError<User>('deleteUser'))
+      tap((_) => console.log(`解雇ID为${userID}的员工`)),
+      catchError(this.handleError<User>(`解雇ID为${userID}的员工时出错`))
     );
   }
 
-  takeUser(userID: string): Observable<User> {
-    const url = `${this.userUrl}/take_user/${userID}`;
+  // 将员工状态设定为"在职"
+  employUser(userID: string): Observable<User> {
+    const url = `${this.userUrl}/employ_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
-      // POST需要删除的学生id到对应api实现删除学生用户功能
-      tap((_) => console.log(`删除学号为${userID}的学生信息`)),
-      catchError(this.handleError<User>('takeUser'))
-    );
-  }
-
-  getInboundRecordByUserId(userID: string): Observable<Inbound[]> {
-    const url = `${this.recordUrl}/get_inbound_record_by_user_id/${userID}`;
-    return this.http.get<Inbound[]>(url).pipe(
-      // 通过url对应的api获取对应学生的预约信息
-      tap((_) => console.log(`获取${userID}的预约信息！`)),
-      catchError(this.handleError<Inbound[]>(`getUser id=${userID}`))
-    );
-  }
-
-  getOutboundRecordByUserId(userID: string): Observable<Outbound[]> {
-    const url = `${this.recordUrl}/get_outbound_record_by_user_id/${userID}`;
-    return this.http.get<Outbound[]>(url).pipe(
-      // 通过url对应的api获取对应学生的预约信息
-      tap((_) => console.log(`获取${userID}的预约信息！`)),
-      catchError(this.handleError<Outbound[]>(`getUser id=${userID}`))
+      tap((_) => console.log(`继续聘用ID为${userID}的员工`)),
+      catchError(this.handleError<User>(`继续聘用ID为${userID}的员工时出错`))
     );
   }
 }

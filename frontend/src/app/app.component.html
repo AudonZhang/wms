@@ -1,4 +1,4 @@
-<!-- Users can only enter the login page before logging in -->
+<!-- 若登录ID存在，则使用网站的Layout布局，否则不使用layout布局 -->
 <app-layout *ngIf="userID">
   <router-outlet></router-outlet>
 </app-layout>

@@ -1,3 +1,4 @@
+// 用于映射mysql中的goods表
 export interface Goods {
   goodsID: string;
   goodsName: string;
@@ -7,5 +8,5 @@ export interface Goods {
   goodsUnit: string;
   goodsStorageCondition: string;
   goodsCreatedByID: string;
-  goodsCreatedTime: Date;
+  goodsCreatedTime: string;
 }

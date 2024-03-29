@@ -1,3 +1,5 @@
-<!-- if route the children page, don't show home page content -->
-<div *ngIf="!isChildRouteActive()">AAA</div>
+<!-- 若当前是子路由页面，则不显示index页内容 -->
+<div *ngIf="!isChildRouteActive()">这里是主页</div>
+
+
 <router-outlet></router-outlet>

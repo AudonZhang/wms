@@ -36,12 +36,10 @@ export class ChangepasswordComponent implements OnInit {
   ) {}
 
   saveConfirm(): void {
-    // Confirm the modification information
     if (
       Md5.hashStr(this.validateForm.value.OldPassword) !=
       this.user.userPasswordMD5
     ) {
-      // Data validation
       this.message.create('warning', '原密码错误!');
       return;
     }
@@ -49,7 +47,6 @@ export class ChangepasswordComponent implements OnInit {
       this.validateForm.value.changePassword !=
       this.validateForm.value.changePasswordConfirm
     ) {
-      // Data validation
       this.message.create('warning', '两次输入的密码不相等!');
       return;
     }
@@ -63,7 +60,6 @@ export class ChangepasswordComponent implements OnInit {
   }
 
   save(): void {
-    // Submit the modification information
     this.userService.updateUser(this.user).subscribe(() => this.goBack());
     this.message.info('修改成功!');
   }

@@ -1,11 +1,8 @@
-.title {
+  .title {
     text-align: center;
     font-size: 20px;
-  ;}
-  
-  .login-form{
-    width: 300px
   }
+  
   .container {
     display: flex;
     justify-content: center;

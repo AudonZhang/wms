@@ -7,7 +7,7 @@
     </div>
 
     <div *ngIf="selectedOption === '入库'">
-        <nz-table nzTableLayout="fixed" style="margin: 30px">
+        <nz-table nzTableLayout="fixed" style="margin: 30px" [nzPageSize]="5">
             <thead>
                 <tr>
                     <th style="background-color: #ffffff;">入库记录ID</th>

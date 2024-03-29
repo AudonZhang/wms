@@ -14,8 +14,8 @@ import { Md5 } from 'ts-md5';
 })
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
-  loginMessage?: Login; // used to show login message
-  loginResult?: string; // used to receive information from the backend
+  loginMessage?: Login;
+  loginResult?: string;
 
   constructor(
     public login: FormBuilder,
@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  // login form
   submitForm(): void {
     this.loginMessage = {
       userID: this.validateForm.value.userID,
@@ -48,14 +47,26 @@ export class LoginComponent implements OnInit {
             );
           });
         const url = '/index';
-        this.router.navigateByUrl(url); // if login is successful, redirected to the /home
-      } else this.message.create('error', '用户信息错误或用户不存在！'); // 登录失败});
+        this.router.navigateByUrl(url);
+      } else this.message.create('error', '用户信息错误或用户不存在！');
     });
+  }
+
+  idValidator() {
+    return (
+      control: import('@angular/forms').AbstractControl
+    ): { [key: string]: any } | null => {
+      const value = control.value;
+      if (!/^\d{7}$/.test(value)) {
+        return { invalidSevenDigit: { value: value } };
+      }
+      return null;
+    };
   }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userID: [null, [Validators.required]],
+      userID: [null, [Validators.required, this.idValidator()]],
       userPassword: [null, [Validators.required]],
     });
   }

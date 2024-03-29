@@ -13,7 +13,7 @@ import { UserService } from '../services/user.service';
 @Injectable({
   providedIn: 'root',
 })
-// If the user ID is empty, you must visit the login page
+// 如果loginID为空，则跳转到登录页
 export class AuthGuard implements CanActivate {
   constructor(private userService: UserService, private router: Router) {}
 

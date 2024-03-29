@@ -10,7 +10,7 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-label>性别</nz-form-label>
-                <nz-form-control>
+                <nz-form-control style="text-align: left;">
                     <nz-select [(ngModel)]=" user.userGender" name="userGender">
                         <nz-option nzValue="男" nzLabel="男"></nz-option>
                         <nz-option nzValue="女" nzLabel="女"></nz-option>
@@ -18,15 +18,14 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-
                 <nz-form-label>电话</nz-form-label>
                 <nz-form-control>
                     <input nz-input [(ngModel)]="user.userPhone" name="userPhone"
                         pattern="^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$" />
                     <div
-                        *ngIf="userForm.controls['userPhone'].invalid && (userForm.controls['userPhone'].dirty || userForm.controls['userPhone'].touched)">
+                        *ngIf="userForm && userForm.controls['userPhone'] && userForm.controls['userPhone'].invalid && (userForm.controls['userPhone'].dirty || userForm.controls['userPhone'].touched)">
                         <div *ngIf="userForm.controls['userPhone'].errors?.['pattern']" style="color: red;">
-                            电话号码必须以1开头，共11位。</div>
+                            请输入有效的电话号。</div>
                     </div>
                 </nz-form-control>
             </nz-form-item>
@@ -35,16 +34,15 @@
                 <nz-form-control>
                     <input nz-input [(ngModel)]="user.userEmail" name="userEmail" email />
                     <div
-                        *ngIf="userForm.controls['userEmail'].invalid && (userForm.controls['userEmail'].dirty || userForm.controls['userEmail'].touched)">
+                        *ngIf="userForm && userForm.controls['userEmail'] && userForm.controls['userEmail'].invalid && (userForm.controls['userEmail'].dirty || userForm.controls['userEmail'].touched)">
                         <div *ngIf="userForm.controls['userEmail'].errors?.['email']" style="color: red;">请输入有效的邮箱地址。
                         </div>
                     </div>
                 </nz-form-control>
             </nz-form-item>
-
             <nz-form-item>
                 <nz-form-label>职务</nz-form-label>
-                <nz-form-control>
+                <nz-form-control style="text-align: left;">
                     <nz-select [(ngModel)]="user.userRole" name="userRole">
                         <nz-option nzValue="系统管理员" nzLabel="系统管理员"></nz-option>
                         <nz-option nzValue="仓库管理员" nzLabel="仓库管理员"></nz-option>
@@ -54,9 +52,8 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-control>
-                    <button nz-button nzType="primary"
-                        [disabled]="userForm.invalid">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button nz-button (click)="goBack()">返回</button>
+                    <button nz-button (click)="goBack()">返回</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button nz-button nzType="primary" [disabled]="userForm.invalid">提交</button>
                 </nz-form-control>
             </nz-form-item>
         </form>

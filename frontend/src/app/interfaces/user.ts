@@ -1,4 +1,4 @@
-// used by user service to deliver information
+// 用于映射mysql中的user表
 export interface User {
   userID: string;
   userName: string;

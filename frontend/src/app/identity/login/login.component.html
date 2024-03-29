@@ -6,7 +6,7 @@
         <div class="title">仓库管理系统</div>
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
             <nz-form-item>
-                <nz-form-control nzErrorTip="请输入ID!">
+                <nz-form-control nzErrorTip="ID为7位数字">
                     <nz-input-group nzPrefixIcon="user">
                         <input type="text" nz-input formControlName="userID" placeholder="ID" />
                     </nz-input-group>

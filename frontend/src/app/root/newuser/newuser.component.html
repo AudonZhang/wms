@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="register">
+        <div class="title">新建用户</div>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="id" nzRequired>
+                    <span>ID</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="ID必须为7位数字!">
+                    <input nz-input id="id" formControlName="id" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="name" nzRequired>
+                    <span>姓名</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入你的姓名!">
+                    <input nz-input id="name" formControlName="name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="gender">
+                    <span>性别</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请选择你的性别!" style="text-align: left;">
+                    <nz-select id="gender" formControlName="gender">
+                        <nz-option nzValue="男" nzLabel="男"></nz-option>
+                        <nz-option nzValue="女" nzLabel="女"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="role" nzRequired>职务</nz-form-label>
+                <nz-form-control style="text-align: left;" [nzSm]="18" [nzXs]="24" nzFor="role" nzRequired>
+                    <nz-select id="role" formControlName="role">
+                        <nz-option nzValue="系统管理员" nzLabel="系统管理员"></nz-option>
+                        <nz-option nzValue="仓库管理员" nzLabel="仓库管理员"></nz-option>
+                        <nz-option nzValue="维护专员" nzLabel="维护专员"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入密码！">
+                    <input nz-input type="password" id="password" formControlName="password"
+                        (ngModelChange)="updateConfirmValidator()" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="checkPassword" nzRequired>密码确认</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" [nzErrorTip]="errorTpl">
+                    <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+                    <ng-template #errorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">请确认您的密码!</ng-container>
+                        <ng-container *ngIf="control.hasError('confirm')">
+                            两次输入的的密码不一致！
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="phoneNumber">电话</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" [nzValidateStatus]="validateForm.controls['phoneNumber']"
+                    nzErrorTip="请输入正确的电话!">
+                    <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="email">邮箱</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="输入内容不是有效的邮箱地址!">
+                    <input nz-input formControlName="email" id="email" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+                <nz-form-control>
+                    <button nz-button nzType="primary">提交</button>
+                </nz-form-control>
+            </nz-form-item>
+
+        </form>
+    </div>
+</div>

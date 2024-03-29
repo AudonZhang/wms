@@ -9,7 +9,6 @@ import { filter } from 'rxjs';
 })
 export class IndexComponent {
   constructor(private router: Router, private route: ActivatedRoute) {
-    // 订阅路由事件以确保子路由变化时检查当前路由
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {

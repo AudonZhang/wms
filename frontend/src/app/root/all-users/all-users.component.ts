@@ -3,16 +3,26 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzTableFilterFn } from 'ng-zorro-antd/table';
+
 import { filter } from 'rxjs';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './root.component.html',
-  styleUrls: ['./root.component.css'],
+  templateUrl: './all-users.component.html',
+  styleUrls: ['./all-users.component.css'],
 })
-export class RootComponent implements OnInit {
+export class AllUsersComponent implements OnInit {
+  // 筛选职务函数
+  filterRole: NzTableFilterFn<User> = (list: string[], item: User) =>
+    list.some((role) => item.userRole.indexOf(role) !== -1);
+
+  // 筛选状态函数
+  filterStatus: NzTableFilterFn<User> = (list: string[], item: User) =>
+    list.some((status) => item.userStatus.indexOf(status) !== -1);
+
   constructor(
     private userService: UserService,
     private modal: NzModalService,
@@ -21,6 +31,7 @@ export class RootComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
+    // 进入子页面修改用户信息时，不显示该页面内容
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -34,23 +45,18 @@ export class RootComponent implements OnInit {
   users: User[] = []; // 学生信息列表
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
-  usersDisplay?: User[]; // 搜索功能显示列表
-
-  user?: User;
+  usersDisplay: User[] = []; // 搜索后展示内容列表
+  user?: User; //
 
   getUsers(): void {
-    this.userService.getUsers().subscribe((res) => {
+    this.userService.getAllUsers().subscribe((res) => {
+      // 排序，"在职"在前，"离职"在后
       this.users = res.sort((a, b) => {
-        // 如果a.userStatus为"离职"，而b.userStatus不是"离职"，则a排在b后面
         if (a.userStatus === '离职' && b.userStatus !== '离职') {
           return 1;
-        }
-        // 如果a.userStatus不是"离职"，而b.userStatus为"离职"，则b排在a后面
-        else if (a.userStatus !== '离职' && b.userStatus === '离职') {
+        } else if (a.userStatus !== '离职' && b.userStatus === '离职') {
           return -1;
-        }
-        // 否则，保持原有顺序
-        else {
+        } else {
           return 0;
         }
       });
@@ -58,14 +64,14 @@ export class RootComponent implements OnInit {
     });
   }
 
+  // 重置搜索内容
   reset(): void {
-    // 重置搜索内容
     this.searchValue = '';
     this.search();
   }
 
+  // 根据姓名搜索
   search(): void {
-    // 根据姓名搜索
     this.visible = false;
     this.usersDisplay = this.users.filter(
       (item: User) => item.userName.indexOf(this.searchValue) !== -1
@@ -78,37 +84,34 @@ export class RootComponent implements OnInit {
     else this.message.create('success', '已重置用户列表！');
   }
 
-  deleteConfirm(userID: string, userName: string): void {
-    // 确认删除对话框
+  unemployConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认解雇该用户?</i>',
       nzContent: `<b>ID:${userID}; 姓名:${userName}</b>`,
       nzOnOk: () => {
         if (userID == this.userService.loginID)
-          // 判断删除的用户是否为当前登录的管理员账户
+          // 判断解雇的用户是否为当前的登录账户
           this.administratorConfirm(userID, userName);
-        else this.deleteUser(userID);
+        else this.unemployUser(userID);
       },
     });
   }
-  takeConfirm(userID: string, userName: string): void {
-    // 确认删除对话框
+  employConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认恢复该用户?</i>',
       nzContent: `<b>ID:${userID}; 姓名:${userName}</b>`,
       nzOnOk: () => {
-        this.takeUser(userID);
+        this.employUser(userID);
       },
     });
   }
 
-  deleteUser(userID: string): void {
-    //  删除学生信息
-    this.userService.deleteUser(userID).subscribe(); //  调用学生服务的方法删除
+  unemployUser(userID: string): void {
+    this.userService.unemployUser(userID).subscribe(); //
     if (userID == this.userService.loginID) {
-      // 判断是否正在删除管理员账户
+      // 判断是否正在解雇当前登陆账户
       this.userService.loginID = '';
-      this.notification.create('warning', '当前管理员被解雇!', '请重新登录!');
+      this.notification.create('warning', '当前用户被解雇!', '请重新登录!');
       this.router.navigateByUrl('');
     }
     this.notification.create(
@@ -119,9 +122,8 @@ export class RootComponent implements OnInit {
     this.getUsers();
   }
 
-  takeUser(userID: string): void {
-    //  删除学生信息
-    this.userService.takeUser(userID).subscribe(); //  调用学生服务的方法删除
+  employUser(userID: string): void {
+    this.userService.employUser(userID).subscribe();
     this.notification.create(
       'success',
       '恢复成功!',
@@ -129,13 +131,12 @@ export class RootComponent implements OnInit {
     );
     this.getUsers();
   }
-
+  // 与确认是否解雇当前管理员账户
   administratorConfirm(userID: string, userName: string): void {
-    // 与用户确认当前删除的用户是管理员
     this.modal.confirm({
       nzTitle: '<i>该账号为管理员账号!</i>',
       nzContent: `确认解雇该管理员?</b>`,
-      nzOnOk: () => this.deleteUser(userID),
+      nzOnOk: () => this.unemployUser(userID),
     });
   }
 
@@ -144,9 +145,14 @@ export class RootComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // setInterval(() => {
-    // 每秒同步登录信息
     this.getUsers();
-    // }, 1000);
+
+    // 每秒获取是否已修改用户信息，若已修改则刷新用户列表你让
+    setInterval(() => {
+      if (this.userService.afterModify) {
+        this.userService.afterModify = false;
+        this.getUsers();
+      }
+    }, 1000);
   }
 }

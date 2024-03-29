@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-modify',
@@ -14,10 +13,9 @@ import { Location } from '@angular/common';
 export class ModifyComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute,
-    private location: Location,
     private modal: NzModalService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private router: Router
   ) {}
 
   user: User = {
@@ -33,15 +31,10 @@ export class ModifyComponent implements OnInit {
     userCreatedTime: '',
   };
 
+  // 前端输入信息并点击保存后，弹出对话框确认信息
   saveConfirm(): void {
-    // 确认修改信息
-    if (this.user.userName == '' || this.user.userRole == '') {
-      // 确认不存在空值
-      this.message.create('warning', '字段不符合规定!');
-      return;
-    }
     this.modal.confirm({
-      nzTitle: '<i>确认修改用户信息?</i>',
+      nzTitle: '<i>请确认用户信息！</i>',
       nzContent: `<b>姓名:${this.user.userName}</b>
       <b>性别:${this.user.userGender}</b>
       <b>电话:${this.user.userPhone}</b>
@@ -52,16 +45,20 @@ export class ModifyComponent implements OnInit {
     this.user.userCreatedByID = this.userService.loginID;
   }
 
+  // 提交修改的信息到后端并返回
   save(): void {
-    // 提交修改信息
     this.userService.updateUser(this.user).subscribe(() => this.goBack());
+    this.goBack();
     this.message.info('修改成功!');
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigateByUrl('/index/root/allUsers');
+    this.userService.modifyID = ''; // 修改完成后清除
+    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
   }
 
+  // 开始时获取要修改的用户信息
   ngOnInit() {
     this.userService.getUserById(this.userService.modifyID).subscribe((res) => {
       this.user = res;

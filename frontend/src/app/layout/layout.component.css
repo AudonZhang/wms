@@ -1,53 +1,17 @@
 .logo {
     height: 32px;
     margin: 15px;
-    background: #f5f5f5;
     display: flex; 
     align-items: center;
     font-size: 20px;
   }
 
-  nz-header {
-    background: #fff;
-    padding: 0;
-  }
-
-  nz-content {
-    background: rgb(255, 255, 255);
-  }
-
-
-  .inner-content {
-    padding: 24px;
-    background: #fff;
-    min-height: 360px;
-  }
-
-  nz-footer {
-    text-align: center;
-  }
-
-  nz-sider {
-    background: #f5f5f5;
-    border: 1px solid #ededed;
-  }
-
-  :host ::ng-deep .ant-menu{
-    background: #f5f5f5;
-  }
-
-  :host ::ng-deep .ant-layout-sider-trigger{
-    background: #f5f5f5;
-
-  }
-
-  :host ::ng-deep .ant-menu-item.ant-menu-item-selected{
-    background: #DCDCDC;
-  }
-
   :host ::ng-deep .ant-layout-sider-children{
     height: 650px;
   } 
+  :host ::ng-deep .ant-menu{
+    background: #eef1f3;
+  }
 
   nz-breadcrumb{
     display: flex; 

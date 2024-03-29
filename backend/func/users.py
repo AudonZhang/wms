@@ -114,7 +114,7 @@ class User(db.Model):
     def employ_user(userID):
         user = User.query.filter(User.userID == userID).first()
         if user is not None:
-            user.userStatus = '在岗'
+            user.userStatus = '在职'
             db.session.commit()
             return '1'
         else:
@@ -134,7 +134,9 @@ class User(db.Model):
         userCreatedTime,
     ):
         query_user = User.query.filter(User.userID == userID)
-        if query_user is not None:
+        if len(query_user.all()) > 0:
+            return '0'
+        else:
             user = User(
                 userID=userID,
                 userName=userName,
@@ -150,5 +152,3 @@ class User(db.Model):
             db.session.add(user)
             db.session.commit()
             return '1'
-        else:
-            return '0'
