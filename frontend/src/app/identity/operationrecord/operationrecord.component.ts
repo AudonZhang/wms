@@ -32,6 +32,7 @@ export class OperationrecordComponent implements OnInit {
     goodsManufacturer: '',
     goodsProductionLicense: '',
     goodsUnit: '',
+    goodsAmount: 0,
     goodsStorageCondition: '',
     goodsCreatedByID: '',
     goodsCreatedTime: '',
@@ -103,7 +104,8 @@ export class OperationrecordComponent implements OnInit {
       商品名称: ${this.goods.goodsName}，
       商品规格: ${this.goods.goodsSpecification}，
       生产厂家: ${this.goods.goodsManufacturer}，
-      生产许可证: ${this.goods.goodsProductionLicense}
+      生产许可证: ${this.goods.goodsProductionLicense}，
+      库存数量: ${this.goods.goodsAmount}。
     `;
     });
   }

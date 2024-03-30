@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="modifyform">
+        <div class="title">货物信息修改</div>
+        <form nz-form (ngSubmit)="saveConfirm()" #goodsForm="ngForm" novalidate>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">名称</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="名称不能为空!">
+                    <input nz-input [(ngModel)]="goods.goodsName" name="goodsName" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">规格</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="规格不能为空!">
+                    <input nz-input [(ngModel)]="goods.goodsSpecification" name="goodsSpecification" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">生产商</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="生产商不能为空!">
+                    <input nz-input [(ngModel)]="goods.goodsManufacturer" name="goodsManufacturer" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">生产许可证</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="生产许可证不能为空!">
+                    <input nz-input [(ngModel)]="goods.goodsProductionLicense" name="goodsProductionLicense" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">单位</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="单位不能为空!">
+                    <input nz-input [(ngModel)]="goods.goodsUnit" name="goodsUnit" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24">储存条件</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" style="text-align: left;">
+                    <nz-select [(ngModel)]="goods.goodsStorageCondition" name="goodsStorageCondition">
+                        <nz-option nzValue="常温" nzLabel="常温"></nz-option>
+                        <nz-option nzValue="阴凉" nzLabel="阴凉"></nz-option>
+                        <nz-option nzValue="冷藏" nzLabel="冷藏"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button (click)="goBack()">返回</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button nz-button nzType="primary" [disabled]="goodsForm.invalid">提交</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </div>
+</div>

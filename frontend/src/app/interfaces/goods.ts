@@ -6,6 +6,7 @@ export interface Goods {
   goodsManufacturer: string;
   goodsProductionLicense: string;
   goodsUnit: string;
+  goodsAmount: number;
   goodsStorageCondition: string;
   goodsCreatedByID: string;
   goodsCreatedTime: string;

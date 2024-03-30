@@ -147,7 +147,7 @@ export class AllUsersComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
 
-    // 每秒获取是否已修改用户信息，若已修改则刷新用户列表你让
+    // 每秒获取是否已修改用户信息，若已修改则刷新用户列表
     setInterval(() => {
       if (this.userService.afterModify) {
         this.userService.afterModify = false;

@@ -10,6 +10,10 @@ import { RootComponent } from './root/root.component';
 import { ModifyComponent } from './root/modify/modify.component';
 import { NewuserComponent } from './root/newuser/newuser.component';
 import { AllUsersComponent } from './root/all-users/all-users.component';
+import { GoodsComponent } from './goods/goods.component';
+import { AddGoodsComponent } from './goods/add-goods/add-goods.component';
+import { AllGoodsComponent } from './goods/all-goods/all-goods.component';
+import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -62,6 +66,38 @@ const routes: Routes = [
                 component: ModifyComponent,
                 data: {
                   breadcrumb: '用户信息修改',
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: 'goods',
+        component: GoodsComponent,
+        data: {
+          breadcrumb: '货物管理',
+        },
+        children: [
+          {
+            path: 'new',
+            component: AddGoodsComponent,
+            data: {
+              breadcrumb: '新建货物',
+            },
+          },
+          {
+            path: 'all',
+            component: AllGoodsComponent,
+            data: {
+              breadcrumb: '货物信息',
+            },
+            children: [
+              {
+                path: 'modify',
+                component: ModifyGoodsComponent,
+                data: {
+                  breadcrumb: '货物信息修改',
                 },
               },
             ],

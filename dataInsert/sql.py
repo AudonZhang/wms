@@ -40,6 +40,7 @@ class Goods(db.Model):
     goodsManufacturer = db.Column(db.String(64))
     goodsProductionLicense = db.Column(db.String(64))
     goodsUnit = db.Column(db.String(64))
+    goodsAmount = db.Column(db.Integer)
     goodsStorageCondition = db.Column(db.String(64))
     goodsCreatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
     goodsCreatedTime = db.Column(db.DateTime)
@@ -165,6 +166,7 @@ if __name__ == "__main__":
             goodsManufacturer="山东育达健康科技有限公司",
             goodsProductionLicense="鲁食药监生产许20210064号",
             goodsUnit="个",
+            goodsAmount=0,
             goodsStorageCondition="常温",
             goodsCreatedByID="2024001",
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
@@ -176,6 +178,7 @@ if __name__ == "__main__":
             goodsManufacturer="深圳市科曼医疗设备有限公司",
             goodsProductionLicense="苏食药监械生产许20010041号",
             goodsUnit="台",
+            goodsAmount=0,
             goodsStorageCondition="常温",
             goodsCreatedByID="2024001",
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
@@ -187,6 +190,7 @@ if __name__ == "__main__":
             goodsManufacturer="桂林市锐锋医疗器械有限公司",
             goodsProductionLicense="桂食药监械生产许20180004号",
             goodsUnit="台",
+            goodsAmount=3,
             goodsStorageCondition="常温",
             goodsCreatedByID="2024001",
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
@@ -198,6 +202,7 @@ if __name__ == "__main__":
             goodsManufacturer="安徽中科都菱商用电器股份有限公司",
             goodsProductionLicense="皖食药监械生产许20160038号",
             goodsUnit="台",
+            goodsAmount=0,
             goodsStorageCondition="常温",
             goodsCreatedByID="2024001",
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
@@ -209,6 +214,7 @@ if __name__ == "__main__":
             goodsManufacturer="任丘市大乾光电设备有限公司",
             goodsProductionLicense="冀沧食药监械生产备20190012号",
             goodsUnit="个",
+            goodsAmount=0,
             goodsStorageCondition="常温",
             goodsCreatedByID="2024001",
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),

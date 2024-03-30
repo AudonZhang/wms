@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './root.component.html',
-  styleUrls: ['./root.component.css'],
+  selector: 'app-goods',
+  templateUrl: './goods.component.html',
+  styleUrls: ['./goods.component.css'],
 })
-export class RootComponent {
+export class GoodsComponent {
   constructor(private router: Router, private route: ActivatedRoute) {
     // 进入子页面修改用户信息时，不显示该页面内容
     this.router.events

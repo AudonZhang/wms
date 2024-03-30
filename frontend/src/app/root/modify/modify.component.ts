@@ -34,7 +34,7 @@ export class ModifyComponent implements OnInit {
   // 前端输入信息并点击保存后，弹出对话框确认信息
   saveConfirm(): void {
     this.modal.confirm({
-      nzTitle: '<i>请确认用户信息！</i>',
+      nzTitle: '<i>请确认用户修改后的信息！</i>',
       nzContent: `<b>姓名:${this.user.userName}</b>
       <b>性别:${this.user.userGender}</b>
       <b>电话:${this.user.userPhone}</b>
@@ -48,7 +48,6 @@ export class ModifyComponent implements OnInit {
   // 提交修改的信息到后端并返回
   save(): void {
     this.userService.updateUser(this.user).subscribe(() => this.goBack());
-    this.goBack();
     this.message.info('修改成功!');
   }
 

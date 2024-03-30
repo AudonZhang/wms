@@ -56,33 +56,6 @@ def get_user_by_id(userID):
         return jsonify({"error": str(e)})
 
 
-@user_blue.route('/update_user', methods=['GET', 'POST'])
-def update_user():
-    try:
-        if request.method == 'POST':
-            data = json.loads(request.get_data())
-            result = User.update_user(
-                data['userID'],
-                data['userName'],
-                data['userGender'],
-                data['userPasswordMD5'],
-                data['userPhone'],
-                data['userEmail'],
-                data['userRole'],
-                data['userStatus'],
-                data['userCreatedByID'],
-                datetime.now(),
-            )
-            return jsonify({'status': result})
-        else:
-            return jsonify({'status': 'GET'})
-    except Exception as e:
-        logging.error(
-            'Error occurred while updating user. Error message: {}'.format(str(e))
-        )
-        return jsonify({"error": str(e)})
-
-
 @user_blue.route('/unemploy_user/<string:userID>', methods=['GET', 'POST'])
 def unemploy_user(userID):
     try:
@@ -136,5 +109,32 @@ def add_user():
     except Exception as e:
         logging.error(
             'Error occurred while adding user. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
+
+
+@user_blue.route('/update_user', methods=['GET', 'POST'])
+def update_user():
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.get_data())
+            result = User.update_user(
+                data['userID'],
+                data['userName'],
+                data['userGender'],
+                data['userPasswordMD5'],
+                data['userPhone'],
+                data['userEmail'],
+                data['userRole'],
+                data['userStatus'],
+                data['userCreatedByID'],
+                datetime.now(),
+            )
+            return jsonify({'status': result})
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while updating user. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})

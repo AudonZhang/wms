@@ -31,6 +31,10 @@ import { ModifyComponent } from './root/modify/modify.component';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NewuserComponent } from './root/newuser/newuser.component';
 import { AllUsersComponent } from './root/all-users/all-users.component';
+import { AllGoodsComponent } from './goods/all-goods/all-goods.component';
+import { GoodsComponent } from './goods/goods.component';
+import { AddGoodsComponent } from './goods/add-goods/add-goods.component';
+import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.component';
 
 registerLocaleData(zh);
 
@@ -46,6 +50,10 @@ registerLocaleData(zh);
     ModifyComponent,
     NewuserComponent,
     AllUsersComponent,
+    AllGoodsComponent,
+    GoodsComponent,
+    AddGoodsComponent,
+    ModifyGoodsComponent,
   ],
   imports: [
     BrowserModule,
