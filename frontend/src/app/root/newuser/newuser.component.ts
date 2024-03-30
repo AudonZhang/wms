@@ -21,9 +21,6 @@ import {
   styleUrls: ['./newuser.component.css'],
 })
 export class NewuserComponent implements OnInit {
-  // 接受后端发回的信息，判断创建用户的id是否重复
-  searchRst: string = '';
-
   user: User = {
     userID: '',
     userName: '',
@@ -39,7 +36,6 @@ export class NewuserComponent implements OnInit {
   userPassword = '';
 
   validateForm: FormGroup<{
-    // id: FormControl<string>;
     gender: FormControl<string>;
     role: FormControl<string>;
     email: FormControl<string>;
@@ -52,7 +48,6 @@ export class NewuserComponent implements OnInit {
   submitForm(): void {
     // 将提交的值赋值给用户类型
     if (this.validateForm.valid) {
-      // this.user.userID = this.validateForm.controls['id'].value;
       this.user.userName = this.validateForm.controls['name'].value;
       this.user.userGender = this.validateForm.controls['gender'].value;
       this.user.userRole = this.validateForm.controls['role'].value;
@@ -78,7 +73,7 @@ export class NewuserComponent implements OnInit {
 
   informationConfirm(): void {
     this.modal.confirm({
-      nzTitle: '<i>请确认新用户信息，并牢记ID与密码</i>',
+      nzTitle: '<i>请确认新用户信息，并牢记ID与密码!!!</i>',
       nzContent: `
     <b>ID:${this.user.userID}</b>
     <b>姓名:${this.user.userName}</b>
@@ -93,11 +88,7 @@ export class NewuserComponent implements OnInit {
 
   save(): void {
     // 提交创建信息
-    this.userService.addUser(this.user).subscribe((res) => {
-      this.searchRst = res;
-      // if (this.searchRst == '0') {
-      //   this.message.create('error', 'id已存在');
-      // } else {
+    this.userService.addUser(this.user).subscribe(() => {
       this.message.create('success', '新增用户成功!');
       console.log('submit', this.validateForm.value);
       this.router.navigateByUrl('/index/root/allUsers');
@@ -130,7 +121,6 @@ export class NewuserComponent implements OnInit {
     private router: Router
   ) {
     this.validateForm = this.fb.group({
-      // id: ['', [Validators.required, Validators.pattern(/^.{7}$/)]],
       gender: [''],
       role: ['', [Validators.required]],
       email: ['', [Validators.email]],
