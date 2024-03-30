@@ -20,7 +20,7 @@ import {
   templateUrl: './newuser.component.html',
   styleUrls: ['./newuser.component.css'],
 })
-export class NewuserComponent {
+export class NewuserComponent implements OnInit {
   // 接受后端发回的信息，判断创建用户的id是否重复
   searchRst: string = '';
 
@@ -39,7 +39,7 @@ export class NewuserComponent {
   userPassword = '';
 
   validateForm: FormGroup<{
-    id: FormControl<string>;
+    // id: FormControl<string>;
     gender: FormControl<string>;
     role: FormControl<string>;
     email: FormControl<string>;
@@ -52,7 +52,7 @@ export class NewuserComponent {
   submitForm(): void {
     // 将提交的值赋值给用户类型
     if (this.validateForm.valid) {
-      this.user.userID = this.validateForm.controls['id'].value;
+      // this.user.userID = this.validateForm.controls['id'].value;
       this.user.userName = this.validateForm.controls['name'].value;
       this.user.userGender = this.validateForm.controls['gender'].value;
       this.user.userRole = this.validateForm.controls['role'].value;
@@ -65,18 +65,7 @@ export class NewuserComponent {
       this.user.userCreatedByID = this.userService.loginID;
 
       // 确认创建用户的信息
-      this.modal.confirm({
-        nzTitle: '<i>请确认输入的用户信息?</i>',
-        nzContent: `
-      <b>ID:${this.user.userID}</b>
-      <b>姓名:${this.user.userName}</b>
-      <b>性别:${this.user.userGender}</b>
-      <b>密码:${this.validateForm.controls['password'].value}</b>
-      <b>电话:${this.user.userPhone}</b>
-      <b>邮箱:${this.user.userEmail}</b>
-      <b>职务:${this.user.userRole}</b>`,
-        nzOnOk: () => this.save(),
-      });
+      this.informationConfirm();
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -87,17 +76,32 @@ export class NewuserComponent {
     }
   }
 
+  informationConfirm(): void {
+    this.modal.confirm({
+      nzTitle: '<i>请确认新用户信息，并牢记ID与密码</i>',
+      nzContent: `
+    <b>ID:${this.user.userID}</b>
+    <b>姓名:${this.user.userName}</b>
+    <b>性别:${this.user.userGender}</b>
+    <b>密码:${this.validateForm.controls['password'].value}</b>
+    <b>电话:${this.user.userPhone}</b>
+    <b>邮箱:${this.user.userEmail}</b>
+    <b>职务:${this.user.userRole}</b>`,
+      nzOnOk: () => this.save(),
+    });
+  }
+
   save(): void {
     // 提交创建信息
     this.userService.addUser(this.user).subscribe((res) => {
       this.searchRst = res;
-      if (this.searchRst == '0') {
-        this.message.create('error', 'id已存在');
-      } else {
-        this.message.create('success', '新增用户成功!');
-        console.log('submit', this.validateForm.value);
-        this.router.navigateByUrl('/index/root/allUsers');
-      }
+      // if (this.searchRst == '0') {
+      //   this.message.create('error', 'id已存在');
+      // } else {
+      this.message.create('success', '新增用户成功!');
+      console.log('submit', this.validateForm.value);
+      this.router.navigateByUrl('/index/root/allUsers');
+      // }
     });
   }
 
@@ -126,7 +130,7 @@ export class NewuserComponent {
     private router: Router
   ) {
     this.validateForm = this.fb.group({
-      id: ['', [Validators.required, Validators.pattern(/^.{7}$/)]],
+      // id: ['', [Validators.required, Validators.pattern(/^.{7}$/)]],
       gender: [''],
       role: ['', [Validators.required]],
       email: ['', [Validators.email]],
@@ -134,6 +138,12 @@ export class NewuserComponent {
       checkPassword: ['', [Validators.required, this.confirmationValidator]],
       name: ['', [Validators.required]],
       phoneNumber: [''],
+    });
+  }
+
+  ngOnInit(): void {
+    this.userService.getNewUserID().subscribe((res) => {
+      this.user.userID = res;
     });
   }
 }

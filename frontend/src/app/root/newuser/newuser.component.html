@@ -2,14 +2,7 @@
     <div class="register">
         <div class="title">新建用户</div>
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-            <nz-form-item>
-                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="id" nzRequired>
-                    <span>ID</span>
-                </nz-form-label>
-                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="ID必须为7位数字!">
-                    <input nz-input id="id" formControlName="id" />
-                </nz-form-control>
-            </nz-form-item>
+
 
             <nz-form-item>
                 <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="name" nzRequired>

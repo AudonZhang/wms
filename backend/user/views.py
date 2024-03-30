@@ -138,3 +138,18 @@ def update_user():
             'Error occurred while updating user. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
+
+
+@user_blue.route('/get_new_userID')
+def get_new_userID():
+    try:
+        result = User.get_new_userID()
+        logging.info("获得新的用户ID")
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            "Error occurred while getting new userID from the database. Error message: {}".format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})

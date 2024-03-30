@@ -152,3 +152,12 @@ class User(db.Model):
             db.session.add(user)
             db.session.commit()
             return '1'
+
+    @staticmethod
+    def get_new_userID():
+        users = User.query.all()
+        if users:
+            max_user_id = max(user.userID for user in users)
+            return str(max_user_id + 1)
+        else:
+            return '2024001'

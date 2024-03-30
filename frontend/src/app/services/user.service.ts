@@ -86,4 +86,12 @@ export class UserService {
       catchError(this.handleError<User>(`继续聘用ID为${userID}的员工时出错`))
     );
   }
+
+  getNewUserID(): Observable<string> {
+    const url = `${this.userUrl}/get_new_userID`;
+    return this.http.get<string>(url).pipe(
+      tap((_) => console.log('获取新用户ID！')),
+      catchError(this.handleError<string>('获取新用户ID时出错'))
+    );
+  }
 }
