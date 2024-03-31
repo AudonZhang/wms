@@ -154,10 +154,10 @@ class User(db.Model):
             return '1'
 
     @staticmethod
-    def get_new_userID():
+    def get_max_userID():
         users = User.query.all()
-        if users:
+        if users is not None:
             max_user_id = max(user.userID for user in users)
-            return str(max_user_id + 1)
+            return str(max_user_id)
         else:
             return '2024001'

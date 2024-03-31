@@ -91,3 +91,18 @@ def update_goods():
             'Error occurred while updating goods. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
+
+
+@goods_blue.route('/get_max_goodsID')
+def get_max_goodsID():
+    try:
+        result = Goods.get_max_goodsID()
+        logging.info("获得最大的货物ID")
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            "Error occurred while getting max goodsID from the database. Error message: {}".format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})

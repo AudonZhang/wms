@@ -56,9 +56,9 @@ export class ModifyGoodsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigateByUrl('/index/goods/all');
     this.goodsService.modifyID = ''; // 修改完成后清除
     this.goodsService.afterModify = true; // 修改完成后在货物信息页刷新信息
+    this.router.navigateByUrl('/index/goods/all');
   }
 
   // 开始时获取要修改的货物信息

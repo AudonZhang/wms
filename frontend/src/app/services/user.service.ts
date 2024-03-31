@@ -87,11 +87,11 @@ export class UserService {
     );
   }
 
-  getNewUserID(): Observable<string> {
-    const url = `${this.userUrl}/get_new_userID`;
+  getMaxUserID(): Observable<string> {
+    const url = `${this.userUrl}/get_max_userID`;
     return this.http.get<string>(url).pipe(
-      tap((_) => console.log('获取新用户ID！')),
-      catchError(this.handleError<string>('获取新用户ID时出错'))
+      tap((_) => console.log('获取用户ID的最大值！')),
+      catchError(this.handleError<string>('获取用户ID的最大值时出错'))
     );
   }
 }

@@ -52,11 +52,19 @@ export class GoodsService {
       catchError(this.handleError<any>('更新货物信息时出错'))
     );
   }
-  addUser(goods: Goods): Observable<string> {
+  addGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/add_goods`;
     return this.http.post<string>(url, goods, this.httpOptions).pipe(
       tap((_) => console.log(`增加了ID为${goods.goodsID}的货物`)),
       catchError(this.handleError<string>('更新货物信息时出错', '0'))
+    );
+  }
+
+  getMaxGoodsID(): Observable<string> {
+    const url = `${this.goodsUrl}/get_max_goodsID`;
+    return this.http.get<string>(url).pipe(
+      tap((_) => console.log('获取货物ID的最大值！')),
+      catchError(this.handleError<string>('获取货物ID的最大值时出错'))
     );
   }
 }

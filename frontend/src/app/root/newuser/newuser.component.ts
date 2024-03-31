@@ -92,7 +92,6 @@ export class NewuserComponent implements OnInit {
       this.message.create('success', '新增用户成功!');
       console.log('submit', this.validateForm.value);
       this.router.navigateByUrl('/index/root/allUsers');
-      // }
     });
   }
 
@@ -132,8 +131,11 @@ export class NewuserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getNewUserID().subscribe((res) => {
-      this.user.userID = res;
+    this.userService.getMaxUserID().subscribe((res) => {
+      let numberID: number = +res;
+      // 将数字加一
+      let IDPlus1: number = numberID + 1;
+      this.user.userID = IDPlus1.toString();
     });
   }
 }

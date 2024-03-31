@@ -104,7 +104,7 @@ class Goods(db.Model):
         goodsCreatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID)
-        if goods is not None:
+        if len(goods.all()) > 0:
             return '0'
         else:
             goods = Goods(
@@ -122,3 +122,12 @@ class Goods(db.Model):
             db.session.add(goods)
             db.session.commit()
             return '1'
+
+    @staticmethod
+    def get_max_goodsID():
+        goodss = Goods.query.all()
+        if goodss is not None:
+            max_goods_id = max(goods.goodsID for goods in goodss)
+            return str(max_goods_id)
+        else:
+            return '2020000001'

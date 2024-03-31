@@ -1,1 +1,59 @@
-<p>add-goods works!</p>
+<div class="container">
+    <div class="register">
+        <div class="title">新建货物</div>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="name" nzRequired>
+                    <span>名称</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的名称!">
+                    <input nz-input id="name" formControlName="name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="specification" nzRequired>
+                    <span>规格</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的规格!">
+                    <input nz-input id="specification" formControlName="specification" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="manufacturer" nzRequired>生产商</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的生产商!">
+                    <input nz-input id="manufacturer" formControlName="manufacturer" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="productionLicense" nzRequired>生产许可证</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的生产许可证！">
+                    <input nz-input id="productionLicense" formControlName="productionLicense" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="unit" nzRequired>单位</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的单位!">
+                    <input nz-input formControlName="unit" id="unit" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="storageCondition" nzRequired>储存条件</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="24" nzErrorTip="请输入货物的储存条件!">
+                    <input nz-input formControlName="storageCondition" id="storageCondition" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+                <nz-form-control>
+                    <button nz-button nzType="primary">提交</button>
+                </nz-form-control>
+            </nz-form-item>
+
+        </form>
+    </div>
+</div>
