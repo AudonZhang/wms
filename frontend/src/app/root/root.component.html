@@ -1,5 +1,11 @@
-<div *ngIf="!isChildRouteActive()">
-    <p>roots</p>
+<div *ngIf="!isChildRouteActive()" class="container">
+    <div class="top-left">
+        <p class="company-count">公司总人数：<span>{{userCount}}</span>人</p>
+    </div>
+    <div class="top-right" echarts [options]="options1"></div>
+    <div class="bottom-left" echarts [options]="options2"></div>
+    <div class="bottom-right" echarts [options]="options3"></div>
 </div>
+
 
 <router-outlet></router-outlet>

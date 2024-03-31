@@ -35,6 +35,7 @@ import { AllGoodsComponent } from './goods/all-goods/all-goods.component';
 import { GoodsComponent } from './goods/goods.component';
 import { AddGoodsComponent } from './goods/add-goods/add-goods.component';
 import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 registerLocaleData(zh);
 
@@ -74,6 +75,9 @@ registerLocaleData(zh);
     NzPopoverModule,
     NzDividerModule,
     NzSelectModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
