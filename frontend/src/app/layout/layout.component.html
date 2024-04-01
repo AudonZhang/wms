@@ -51,6 +51,7 @@
                             <ul nz-menu nzSelectable>
                                 <li nz-menu-item routerLink='index/{{userID}}/operationrecord'>操作记录</li>
                                 <li nz-menu-item routerLink='index/{{userID}}/changepassword'>密码修改</li>
+                                <li nz-menu-item (click)="backup()" *ngIf="this.userRole === '系统管理员'">数据备份</li>
                                 <li nz-menu-item nzDanger (click)="exit()">退出登录</li>
                             </ul>
                         </nz-dropdown-menu>

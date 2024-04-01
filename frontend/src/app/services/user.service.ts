@@ -9,6 +9,7 @@ import { User } from '../interfaces/user';
 })
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
+  private rootUrl = 'http://127.0.0.1:5000/api/root';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -92,6 +93,14 @@ export class UserService {
     return this.http.get<string>(url).pipe(
       tap((_) => console.log('获取用户ID的最大值！')),
       catchError(this.handleError<string>('获取用户ID的最大值时出错'))
+    );
+  }
+
+  backup(): Observable<string> {
+    const url = `${this.rootUrl}/backup`;
+    return this.http.get<string>(url).pipe(
+      tap((_) => console.log('已备份！')),
+      catchError(this.handleError<string>('备份时出错'))
     );
   }
 }

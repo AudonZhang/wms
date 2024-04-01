@@ -31,6 +31,26 @@ class Inbound(db.Model):
         else:
             return '0'
 
+    @staticmethod
+    def get_all_inbounds():
+        inbounds = Inbound.query.all()
+        inbound_list = []
+        if inbounds is not None:
+            for inbound in inbounds:
+                inbound_list.append(
+                    {
+                        'inboundID': inbound.inboundID,
+                        'inboundOrderID': inbound.inboundOrderID,
+                        'inboundGoodsID': inbound.inboundGoodsID,
+                        'inboundAmount': inbound.inboundAmount,
+                        'inboundCreatedByID': inbound.inboundCreatedByID,
+                        'inboundCreatedTime': inbound.inboundCreatedTime,
+                    }
+                )
+            return inbound_list
+        else:
+            return '0'
+
 
 # 实现与出库记录相关的类与函数
 class Outbound(db.Model):
@@ -62,6 +82,26 @@ class Outbound(db.Model):
         else:
             return '0'
 
+    @staticmethod
+    def get_all_outbounds():
+        outbounds = Outbound.query.all()
+        outbound_list = []
+        if outbounds is not None:
+            for outbound in outbounds:
+                outbound_list.append(
+                    {
+                        'outboundID': outbound.outboundID,
+                        'outboundOrderID': outbound.outboundOrderID,
+                        'outboundGoodsID': outbound.outboundGoodsID,
+                        'outboundAmount': outbound.outboundAmount,
+                        'outboundCreatedByID': outbound.outboundCreatedByID,
+                        'outboundCreatedTime': outbound.outboundCreatedTime,
+                    }
+                )
+            return outbound_list
+        else:
+            return '0'
+
 
 # 实现与出入库计划相关的类与函数
 class Plan(db.Model):
@@ -76,3 +116,27 @@ class Plan(db.Model):
     planCreatedTime = db.Column(db.DateTime)
     planFinishedByID = db.Column(db.Integer)
     planFinishedTime = db.Column(db.DateTime)
+
+    @staticmethod
+    def get_all_plans():
+        plans = Plan.query.all()
+        plan_list = []
+        if plans is not None:
+            for plan in plans:
+                plan_list.append(
+                    {
+                        'planID': plan.planID,
+                        'inOrOutbound': plan.inOrOutbound,
+                        'planGoodsID': plan.planGoodsID,
+                        'planExpectedTime': plan.planExpectedTime,
+                        'planExpectedAmount': plan.planExpectedAmount,
+                        'planStatus': plan.planStatus,
+                        'planCreatedByID': plan.planCreatedByID,
+                        'planCreatedTime': plan.planCreatedTime,
+                        'planFinishedByID': plan.planFinishedByID,
+                        'planFinishedTime': plan.planFinishedTime,
+                    }
+                )
+            return plan_list
+        else:
+            return '0'

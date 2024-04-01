@@ -19,10 +19,12 @@ def hello_world():
 from user import user_blue
 from record import record_blue
 from goods import goods_blue
+from root import root_blue
 
 app.register_blueprint(user_blue)
 app.register_blueprint(record_blue)
 app.register_blueprint(goods_blue)
+app.register_blueprint(root_blue)
 
 
 if __name__ == "__main__":

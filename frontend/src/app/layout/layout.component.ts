@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-layout',
@@ -8,7 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private message: NzMessageService
+  ) {}
   userID?: string;
   userName?: string;
   userRole?: string;
@@ -18,6 +23,14 @@ export class LayoutComponent implements OnInit {
     this.userService.loginName = '';
     this.userService.loginRole = '';
     window.location.reload();
+  }
+
+  backup(): void {
+    this.userService.backup().subscribe((res) => {
+      if (res) {
+        this.message.info('备份成功!');
+      }
+    });
   }
 
   ngOnInit(): void {
