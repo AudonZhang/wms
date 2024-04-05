@@ -36,6 +36,9 @@ import { GoodsComponent } from './goods/goods.component';
 import { AddGoodsComponent } from './goods/add-goods/add-goods.component';
 import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { RecordsComponent } from './records/records.component';
+import { OutboundComponent } from './records/outbound/outbound.component';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 registerLocaleData(zh);
 
@@ -55,6 +58,8 @@ registerLocaleData(zh);
     GoodsComponent,
     AddGoodsComponent,
     ModifyGoodsComponent,
+    RecordsComponent,
+    OutboundComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +83,7 @@ registerLocaleData(zh);
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    NzInputNumberModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],

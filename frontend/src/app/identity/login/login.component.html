@@ -14,10 +14,14 @@
             </nz-form-item>
             <nz-form-item>
                 <nz-form-control nzErrorTip="请输入密码!">
-                    <nz-input-group nzPrefixIcon="lock">
-                        <input type="password" nz-input formControlName="userPassword" id="userPassword"
-                            placeholder="密码" />
+                    <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+                        <input [type]="passwordVisible ? 'text' : 'password'" nz-input formControlName="userPassword"
+                            id="userPassword" placeholder="密码" />
                     </nz-input-group>
+                    <ng-template #suffixTemplate>
+                        <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                            (click)="passwordVisible = !passwordVisible"></span>
+                    </ng-template>
                 </nz-form-control>
             </nz-form-item>
             <button nz-button [nzType]="'primary'" [nzGhost]="'true'" nzBlock>登录</button>

@@ -21,6 +21,7 @@ import { Md5 } from 'ts-md5';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  passwordVisible = false;
   validateForm: FormGroup<{
     userID: FormControl<string>;
     userPassword: FormControl<string>;

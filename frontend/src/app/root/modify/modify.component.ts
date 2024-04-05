@@ -35,11 +35,11 @@ export class ModifyComponent implements OnInit {
   saveConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认用户修改后的信息！</i>',
-      nzContent: `<b>姓名:${this.user.userName}</b>
-      <b>性别:${this.user.userGender}</b>
-      <b>电话:${this.user.userPhone}</b>
-      <b>邮箱:${this.user.userEmail}</b>
-      <b>职务:${this.user.userRole}</b>`,
+      nzContent: `<p>姓名：${this.user.userName}</p>
+      <p>性别：${this.user.userGender}</p>
+      <p>电话：${this.user.userPhone}</p>
+      <p>邮箱：${this.user.userEmail}</p>
+      <p>职务：${this.user.userRole}</p>`,
       nzOnOk: () => this.save(),
     });
     this.user.userCreatedByID = this.userService.loginID;

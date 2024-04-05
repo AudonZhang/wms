@@ -38,12 +38,12 @@ export class ModifyGoodsComponent implements OnInit {
     this.modal.confirm({
       nzTitle: '<i>请确认货物修改后的信息！</i>',
       nzContent: `
-      <b>名称:${this.goods.goodsName}</b>
-      <b>规格:${this.goods.goodsSpecification}</b>
-      <b>生产商:${this.goods.goodsManufacturer}</b>
-      <b>生产许可证:${this.goods.goodsProductionLicense}</b>
-      <b>单位:${this.goods.goodsUnit}</b>
-      <b>储存条件:${this.goods.goodsStorageCondition}</b>`,
+      <p>名称：${this.goods.goodsName}</p>
+      <p>规格：${this.goods.goodsSpecification}</p>
+      <p>生产商：${this.goods.goodsManufacturer}</p>
+      <p>生产许可证：${this.goods.goodsProductionLicense}</p>
+      <p>单位：${this.goods.goodsUnit}</p>
+      <p>储存条件：${this.goods.goodsStorageCondition}</p>`,
       nzOnOk: () => this.save(),
     });
     this.goods.goodsCreatedByID = this.userService.loginID;

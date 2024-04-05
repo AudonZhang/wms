@@ -6,13 +6,13 @@ import { GoodsService } from '../../services/goods.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  selector: 'app-all-goods',
-  templateUrl: './all-goods.component.html',
-  styleUrls: ['./all-goods.component.css'],
+  selector: 'app-outbound',
+  templateUrl: './outbound.component.html',
+  styleUrls: ['./outbound.component.css'],
 })
-export class AllGoodsComponent implements OnInit {
+export class OutboundComponent {
   goods: Goods[] = [];
-  goodsDisplay: Goods[] = []; // 搜索后展示内容列表
+  goodsDisplay: { goods: Goods; selected: boolean; outAmount: number }[] = [];
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
 
@@ -35,8 +35,13 @@ export class AllGoodsComponent implements OnInit {
 
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
-      this.goods = res;
-      this.goodsDisplay = this.goods;
+      // 筛选出 amount 大于 0 的商品
+      this.goods = res.filter((goods) => goods.goodsAmount > 0);
+      this.goodsDisplay = this.goods.map((goods) => ({
+        goods,
+        selected: false,
+        outAmount: 0,
+      }));
     });
   }
 
@@ -49,9 +54,12 @@ export class AllGoodsComponent implements OnInit {
   // 根据货物名搜索
   search(): void {
     this.visible = false;
-    this.goodsDisplay = this.goods.filter(
-      (item: Goods) => item.goodsName.indexOf(this.searchValue) !== -1
-    );
+    this.goodsDisplay = this.goods
+      .map((goods) => ({ goods, selected: false, outAmount: 0 }))
+      .filter(
+        (item: { goods: Goods; selected: boolean }) =>
+          item.goods.goodsName.indexOf(this.searchValue) !== -1
+      );
     if (this.searchValue != '')
       this.message.create(
         'success',

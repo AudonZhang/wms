@@ -110,7 +110,7 @@ if __name__ == "__main__":
             userID="2024002",
             userName="申奇水",
             userGender="男",
-            userPhone="18235166522",
+            userPhone="18235166524",
             userPasswordMD5=md5_hash("2024002"),
             userEmail="287582739@qq.com",
             userStatus="在职",
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         db.session.commit()
 
         goods1 = Goods(
-            goodsID="2022000001",
+            goodsID="202400001",
             goodsName="器械柜",
             goodsSpecification="C40",
             goodsManufacturer="山东育达健康科技有限公司",
@@ -172,7 +172,7 @@ if __name__ == "__main__":
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods2 = Goods(
-            goodsID="2022000002",
+            goodsID="202400002",
             goodsName="麻醉机",
             goodsSpecification="AX-600",
             goodsManufacturer="深圳市科曼医疗设备有限公司",
@@ -184,7 +184,7 @@ if __name__ == "__main__":
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods3 = Goods(
-            goodsID="2022000003",
+            goodsID="202400003",
             goodsName="洗牙机",
             goodsSpecification="MaxPiezo7",
             goodsManufacturer="桂林市锐锋医疗器械有限公司",
@@ -196,7 +196,7 @@ if __name__ == "__main__":
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods4 = Goods(
-            goodsID="2022000004",
+            goodsID="202400004",
             goodsName="药品冷藏冰箱",
             goodsSpecification="MPC-5V1006A",
             goodsManufacturer="安徽中科都菱商用电器股份有限公司",
@@ -208,7 +208,7 @@ if __name__ == "__main__":
             goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods5 = Goods(
-            goodsID="2022000005",
+            goodsID="202400005",
             goodsName="观片灯",
             goodsSpecification="ZN双联860*510*25MM",
             goodsManufacturer="任丘市大乾光电设备有限公司",
@@ -223,9 +223,9 @@ if __name__ == "__main__":
         db.session.commit()
 
         plan1 = Plan(
-            planID="202420001",
+            planID="2024000001",
             inOrOutbound="Inbound",
-            planGoodsID="2022000001",
+            planGoodsID="202400001",
             planExpectedTime=datetime(2024, 2, 20, 12, 0, 0),
             planExpectedAmount="6",
             planStatus="已完成",
@@ -235,9 +235,9 @@ if __name__ == "__main__":
             planFinishedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         plan2 = Plan(
-            planID="202420002",
+            planID="2024000002",
             inOrOutbound="Inbound",
-            planGoodsID="2022000002",
+            planGoodsID="202400002",
             planExpectedTime=datetime(2024, 2, 20, 12, 0, 0),
             planExpectedAmount="5",
             planStatus="已完成",
@@ -247,9 +247,9 @@ if __name__ == "__main__":
             planFinishedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
         plan3 = Plan(
-            planID="202420003",
+            planID="2024000003",
             inOrOutbound="Outbound",
-            planGoodsID="2022000001",
+            planGoodsID="202400001",
             planExpectedTime=datetime(2024, 3, 10, 12, 0, 0),
             planExpectedAmount="6",
             planStatus="已完成",
@@ -259,9 +259,9 @@ if __name__ == "__main__":
             planFinishedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         plan4 = Plan(
-            planID="202420004",
+            planID="2024000004",
             inOrOutbound="Outbound",
-            planGoodsID="2022000002",
+            planGoodsID="202400002",
             planExpectedTime=datetime(2024, 3, 10, 12, 0, 0),
             planExpectedAmount="5",
             planStatus="已完成",
@@ -271,9 +271,9 @@ if __name__ == "__main__":
             planFinishedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         plan5 = Plan(
-            planID="20242005",
+            planID="2024000005",
             inOrOutbound="Inbound",
-            planGoodsID="2022000003",
+            planGoodsID="202400003",
             planExpectedTime=datetime(2024, 3, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="已完成",
@@ -283,9 +283,9 @@ if __name__ == "__main__":
             planFinishedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
         plan6 = Plan(
-            planID="202420006",
+            planID="2024000006",
             inOrOutbound="Outbound",
-            planGoodsID="2022000003",
+            planGoodsID="202400003",
             planExpectedTime=datetime(2024, 4, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="未完成",
@@ -293,9 +293,9 @@ if __name__ == "__main__":
             planCreatedTime=datetime(2024, 3, 11, 16, 0, 0),
         )
         plan7 = Plan(
-            planID="202420007",
+            planID="2024000007",
             inOrOutbound="Inbound",
-            planGoodsID="2022000005",
+            planGoodsID="202400005",
             planExpectedTime=datetime(2024, 4, 30, 12, 0, 0),
             planExpectedAmount="10",
             planStatus="未完成",
@@ -308,48 +308,48 @@ if __name__ == "__main__":
 
         inbound1 = Inbound(
             inboundID="202400001",
-            inboundOrderID="2024022001",
-            inboundGoodsID="2022000001",
+            inboundOrderID="20240001",
+            inboundGoodsID="202400001",
             inboundAmount="6",
             inboundCreatedByID="2024001",
             inboundCreatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound2 = Inbound(
             inboundID="202400002",
-            inboundOrderID="2024022001",
-            inboundGoodsID="2022000002",
+            inboundOrderID="20240001",
+            inboundGoodsID="202400002",
             inboundAmount="3",
             inboundCreatedByID="2024001",
             inboundCreatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound3 = Inbound(
             inboundID="202400003",
-            inboundOrderID="2024022101",
-            inboundGoodsID="2022000002",
+            inboundOrderID="20240002",
+            inboundGoodsID="202400002",
             inboundAmount="2",
             inboundCreatedByID="2024001",
             inboundCreatedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
         inbound4 = Inbound(
             inboundID="202400004",
-            inboundOrderID="2024032001",
-            inboundGoodsID="2022000003",
+            inboundOrderID="20240003",
+            inboundGoodsID="202400003",
             inboundAmount="3",
             inboundCreatedByID="2024001",
             inboundCreatedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
         outbound1 = Outbound(
             outboundID="202410001",
-            outboundOrderID="2024031001",
-            outboundGoodsID="2022000001",
+            outboundOrderID="20240001",
+            outboundGoodsID="202400001",
             outboundAmount="6",
             outboundCreatedByID="2024002",
             outboundCreatedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         outbound2 = Outbound(
             outboundID="202410002",
-            outboundOrderID="2024031001",
-            outboundGoodsID="2022000002",
+            outboundOrderID="20240001",
+            outboundGoodsID="202400002",
             outboundAmount="5",
             outboundCreatedByID="2024002",
             outboundCreatedTime=datetime(2024, 3, 10, 12, 0, 0),

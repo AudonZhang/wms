@@ -14,6 +14,9 @@ import { Md5 } from 'ts-md5';
 })
 export class ChangepasswordComponent implements OnInit {
   validateForm!: FormGroup;
+  passwordVisible1 = false;
+  passwordVisible2 = false;
+  passwordVisible3 = false;
   user: User = {
     userID: '',
     userName: '',
@@ -44,6 +47,13 @@ export class ChangepasswordComponent implements OnInit {
       return;
     }
     if (
+      this.validateForm.value.changePassword ==
+      this.validateForm.value.OldPassword
+    ) {
+      this.message.create('warning', '新密码与原密码相同!');
+      return;
+    }
+    if (
       this.validateForm.value.changePassword !=
       this.validateForm.value.changePasswordConfirm
     ) {
@@ -56,16 +66,26 @@ export class ChangepasswordComponent implements OnInit {
     this.modal.confirm({
       nzTitle: '<i>确认修改密码?</i>',
       nzOnOk: () => this.save(),
+      nzOnCancel: () => this.goBack(),
     });
   }
 
   save(): void {
-    this.userService.updateUser(this.user).subscribe(() => this.goBack());
+    this.userService.updateUser(this.user).subscribe();
     this.message.info('修改成功!');
+    this.resetForm();
   }
 
   goBack(): void {
-    this.location.back();
+    this.resetForm();
+  }
+
+  resetForm(): void {
+    this.validateForm.reset();
+    Object.keys(this.validateForm.controls).forEach((key) => {
+      this.validateForm.controls[key].markAsPristine();
+      this.validateForm.controls[key].updateValueAndValidity();
+    });
   }
 
   ngOnInit(): void {

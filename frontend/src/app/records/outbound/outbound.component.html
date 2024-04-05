@@ -1,0 +1,58 @@
+<!-- 如果在子页面，则不显示该div层内内容 -->
+<div *ngIf="!isChildRouteActive()">
+    <div class="container">
+
+        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }">
+            <thead>
+                <tr>
+                    <th style="background-color: #ffffff;">选择</th>
+                    <th style="background-color: #ffffff;">ID</th>
+                    <th nzCustomFilter style="background-color: #ffffff;">
+                        名称
+                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                            [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th style="background-color: #ffffff;">规格</th>
+                    <th style="background-color: #ffffff;">生产商</th>
+                    <th style="background-color: #ffffff;">生产许可证</th>
+                    <th style="background-color: #ffffff;">库存量</th>
+                    <th style="background-color: #ffffff;">单位</th>
+                    <th style="background-color: #ffffff;">储存条件</th>
+                    <th style="background-color: #ffffff;">数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let goods of goodsDisplay">
+                    <td><input type="checkbox" [(ngModel)]="goods.selected" /></td>
+                    <td>{{ goods.goods.goodsID }}</td>
+                    <td>{{ goods.goods.goodsName }}</td>
+                    <td>{{ goods.goods.goodsSpecification }}</td>
+                    <td>{{ goods.goods.goodsManufacturer }}</td>
+                    <td>{{ goods.goods.goodsProductionLicense }}</td>
+                    <td>{{ goods.goods.goodsAmount }}</td>
+                    <td>{{ goods.goods.goodsUnit }}</td>
+                    <td>{{ goods.goods.goodsStorageCondition }}</td>
+                    <td>
+                        <nz-input-number [nzMin]="1" [nzMax]="goods.goods.goodsAmount"
+                            [(ngModel)]="goods.outAmount"></nz-input-number>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <button nz-button [nzType]="'primary'"><span>Show Modal</span></button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown">
+                <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()"
+                        class="search-button">搜索</button>
+                    <button nz-button nzSize="small" (click)="reset()">重置</button>
+                </div>
+            </div>
+        </nz-dropdown-menu>
+
+    </div>
+</div>
+<router-outlet></router-outlet>

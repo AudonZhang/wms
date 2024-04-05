@@ -21,6 +21,8 @@ import {
   styleUrls: ['./newuser.component.css'],
 })
 export class NewuserComponent implements OnInit {
+  passwordVisible1 = false;
+  passwordVisible2 = false;
   user: User = {
     userID: '',
     userName: '',
@@ -75,13 +77,13 @@ export class NewuserComponent implements OnInit {
     this.modal.confirm({
       nzTitle: '<i>请确认新用户信息，并牢记ID与密码!!!</i>',
       nzContent: `
-    <b>ID:${this.user.userID}</b>
-    <b>姓名:${this.user.userName}</b>
-    <b>性别:${this.user.userGender}</b>
-    <b>密码:${this.validateForm.controls['password'].value}</b>
-    <b>电话:${this.user.userPhone}</b>
-    <b>邮箱:${this.user.userEmail}</b>
-    <b>职务:${this.user.userRole}</b>`,
+    <p>ID：${this.user.userID}</p>
+    <p>姓名：${this.user.userName}</p>
+    <p>性别：${this.user.userGender}</p>
+    <p>密码：${this.validateForm.controls['password'].value}</p>
+    <p>电话：${this.user.userPhone}</p>
+    <p>邮箱：${this.user.userEmail}</p>
+    <p>职务：${this.user.userRole}</p>`,
       nzOnOk: () => this.save(),
     });
   }

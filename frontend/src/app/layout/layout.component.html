@@ -9,6 +9,22 @@
                 <span nz-icon nzType="pie-chart"></span>
                 <span>仓库信息</span>
             </li>
+            <li nz-submenu nzTitle="出入库管理" nzIcon="swap">
+                <ul style="background: #eef1f3;">
+                    <li nz-menu-item routerLink='index/records/inbound'>
+                        <span nz-icon nzType="swap-left"></span>
+                        <span>入库</span>
+                    </li>
+                    <li nz-menu-item routerLink='index/records/outbound'>
+                        <span nz-icon nzType="swap-right"></span>
+                        <span>出库</span>
+                    </li>
+                    <li nz-menu-item routerLink='index/records/plan'>
+                        <span nz-icon nzType="schedule"></span>
+                        <span>出入库计划</span>
+                    </li>
+                </ul>
+            </li>
             <li nz-submenu nzTitle="货物管理" nzIcon="code-sandbox">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/goods/all'>
