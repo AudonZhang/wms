@@ -8,6 +8,6 @@ export interface User {
   userEmail: string;
   userRole: string;
   userStatus: string;
-  userCreatedByID: string;
-  userCreatedTime: string;
+  userUpdatedByID: string;
+  userUpdatedTime: string;
 }

@@ -46,8 +46,8 @@ export class AllUsersComponent implements OnInit {
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
   usersDisplay: User[] = []; // 搜索后展示内容列表
-  user?: User; //
 
+  // 获取所有用户信息并排序
   getUsers(): void {
     this.userService.getAllUsers().subscribe((res) => {
       // 排序，"在职"在前，"离职"在后
@@ -84,6 +84,7 @@ export class AllUsersComponent implements OnInit {
     else this.message.create('success', '已重置用户列表！');
   }
 
+  // 解雇用户时确认解雇的用户信息
   unemployConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认解雇该用户?</i>',
@@ -96,6 +97,8 @@ export class AllUsersComponent implements OnInit {
       },
     });
   }
+
+  // 恢复用户时确认信息
   employConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认恢复该用户?</i>',
@@ -106,6 +109,7 @@ export class AllUsersComponent implements OnInit {
     });
   }
 
+  // 解雇用户
   unemployUser(userID: string): void {
     this.userService.unemployUser(userID).subscribe(); //
     if (userID == this.userService.loginID) {
@@ -119,9 +123,10 @@ export class AllUsersComponent implements OnInit {
       '解雇成功!',
       `成功解雇ID为${userID}的用户!`
     );
-    this.getUsers();
+    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
   }
 
+  // 恢复用户
   employUser(userID: string): void {
     this.userService.employUser(userID).subscribe();
     this.notification.create(
@@ -129,7 +134,7 @@ export class AllUsersComponent implements OnInit {
       '恢复成功!',
       `成功恢复ID为${userID}的用户!`
     );
-    this.getUsers();
+    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
   }
   // 与确认是否解雇当前管理员账户
   administratorConfirm(userID: string, userName: string): void {
@@ -140,13 +145,13 @@ export class AllUsersComponent implements OnInit {
     });
   }
 
+  // 设置正在修改的用户的ID
   setModifyUserID(userID: string): void {
     this.userService.modifyID = userID;
   }
 
   ngOnInit(): void {
     this.getUsers();
-
     // 每秒获取是否已修改用户信息，若已修改则刷新用户列表
     setInterval(() => {
       if (this.userService.afterModify) {

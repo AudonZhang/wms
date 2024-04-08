@@ -1,8 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Goods } from 'src/app/interfaces/goods';
 import { Inbound } from 'src/app/interfaces/inbound';
 import { Outbound } from 'src/app/interfaces/outbound';
@@ -18,8 +15,8 @@ import { UserService } from 'src/app/services/user.service';
 export class OperationrecordComponent implements OnInit {
   // 筛选列表选项
   selectedOption: string = '入库';
-  inbound: Inbound[] = [];
-  inboundDisplay: Inbound[] = [];
+  inbound: Inbound[] = []; // 所有相关入库记录
+  inboundDisplay: Inbound[] = []; // 筛选后的入库记录
   outbound: Outbound[] = [];
   outboundDisplay: Outbound[] = [];
   visible = false;
@@ -34,19 +31,17 @@ export class OperationrecordComponent implements OnInit {
     goodsUnit: '',
     goodsAmount: 0,
     goodsStorageCondition: '',
-    goodsCreatedByID: '',
-    goodsCreatedTime: '',
+    goodsUpdatedByID: '',
+    goodsUpdatedTime: '',
   };
   constructor(
     private userService: UserService,
     private message: NzMessageService,
-    private route: ActivatedRoute,
-    private modal: NzModalService,
-    private notification: NzNotificationService,
     private goodsService: GoodsService,
     private recordService: RecordService
   ) {}
 
+  // 根据入库单ID搜索
   inboundSearch(): void {
     this.visible = false;
     this.inboundDisplay = this.inbound.filter(
@@ -61,8 +56,8 @@ export class OperationrecordComponent implements OnInit {
     else this.message.create('success', '已重置入库记录！');
   }
 
+  // 重置搜索内容
   inboundReset(): void {
-    // 重置搜索内容
     this.searchValue = '';
     this.inboundSearch();
   }
@@ -82,11 +77,11 @@ export class OperationrecordComponent implements OnInit {
   }
 
   outboundReset(): void {
-    // 重置搜索内容
     this.searchValue = '';
     this.outboundSearch();
   }
 
+  // 出入库记录选择器
   filterRecords(): any[] {
     if (this.selectedOption == '入库') {
       return this.inboundDisplay;
@@ -97,6 +92,7 @@ export class OperationrecordComponent implements OnInit {
     }
   }
 
+  // 点击商品名称后显示详细信息
   handleClick(GoodsID: string) {
     this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
       this.goods = data;
@@ -109,6 +105,8 @@ export class OperationrecordComponent implements OnInit {
     `;
     });
   }
+
+  // 商品信息点击提示
   clearPopoverContent(): void {
     this.popoverContent = '请点击';
   }
@@ -118,23 +116,18 @@ export class OperationrecordComponent implements OnInit {
       .getInboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.inboundDisplay = res.sort((a: Inbound, b: Inbound) => {
-          // 时间近的排在前面
-          return (
-            new Date(b.inboundCreatedTime).getTime() -
-            new Date(a.inboundCreatedTime).getTime()
-          );
+          // 入库记录根据ID降序排列
+          return parseInt(b.inboundID) - parseInt(a.inboundID);
         });
         this.inbound = this.inboundDisplay;
       });
+
     this.recordService
       .getOutboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.outboundDisplay = res.sort((a: Outbound, b: Outbound) => {
-          // 时间近的排在前面
-          return (
-            new Date(b.outboundCreatedTime).getTime() -
-            new Date(a.outboundCreatedTime).getTime()
-          );
+          // 出库记录根据ID降序排列
+          return parseInt(b.outboundID) - parseInt(a.outboundID);
         });
         this.outbound = this.outboundDisplay;
       });

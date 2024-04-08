@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -11,13 +10,14 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LayoutComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private router: Router,
     private message: NzMessageService
   ) {}
+  // 当前的登陆用户信息
   userID?: string;
   userName?: string;
   userRole?: string;
 
+  // 退出登录
   exit(): void {
     this.userService.loginID = '';
     this.userService.loginName = '';
@@ -25,14 +25,13 @@ export class LayoutComponent implements OnInit {
     window.location.reload();
   }
 
+  // 备份功能
   backup(): void {
-    this.userService.backup().subscribe((res) => {
-      if (res) {
-        this.message.info('备份成功!');
-      }
-    });
+    this.userService.backup();
+    this.message.create('success', '备份文件已在浏览器下载!');
   }
 
+  // 每秒获取登录用户的信息
   ngOnInit(): void {
     setInterval(() => {
       this.userID = this.userService.loginID;

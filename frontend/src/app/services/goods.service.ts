@@ -10,6 +10,7 @@ export class GoodsService {
   private goodsUrl = 'http://127.0.0.1:5000/api/goods';
   public modifyID = '';
   public afterModify = false;
+  public afterOutbound = false;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -26,6 +27,7 @@ export class GoodsService {
     };
   }
 
+  // 通过ID获取货物信息
   getGoodsById(goodsID: string): Observable<Goods> {
     const url = `${this.goodsUrl}/get_goods_by_id/${goodsID}`;
     return this.http.get<Goods>(url).pipe(
@@ -36,6 +38,7 @@ export class GoodsService {
     );
   }
 
+  // 获取所有货物信息
   getAllGoods(): Observable<Goods[]> {
     const url = `${this.goodsUrl}/get_all_goods`;
     return this.http.get<Goods[]>(url).pipe(
@@ -52,6 +55,8 @@ export class GoodsService {
       catchError(this.handleError<any>('更新货物信息时出错'))
     );
   }
+
+  // 新增货物1
   addGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/add_goods`;
     return this.http.post<string>(url, goods, this.httpOptions).pipe(
@@ -60,6 +65,7 @@ export class GoodsService {
     );
   }
 
+  // 货物数据库中最大的货物ID（用于生成新增的货物ID）
   getMaxGoodsID(): Observable<string> {
     const url = `${this.goodsUrl}/get_max_goodsID`;
     return this.http.get<string>(url).pipe(

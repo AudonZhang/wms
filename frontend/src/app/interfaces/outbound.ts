@@ -4,6 +4,6 @@ export interface Outbound {
   outboundOrderID: string;
   outboundGoodsID: string;
   outboundAmount: number;
-  outboundCreatedByID: string;
-  outboundCreatedTime: string;
+  outboundUpdatedByID: string;
+  outboundUpdatedTime: string;
 }

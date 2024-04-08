@@ -29,8 +29,8 @@ export class ModifyGoodsComponent implements OnInit {
     goodsUnit: '',
     goodsAmount: 0,
     goodsStorageCondition: '',
-    goodsCreatedByID: '',
-    goodsCreatedTime: '',
+    goodsUpdatedByID: '',
+    goodsUpdatedTime: '',
   };
 
   // 前端输入信息并点击保存后，弹出对话框确认信息
@@ -46,17 +46,17 @@ export class ModifyGoodsComponent implements OnInit {
       <p>储存条件：${this.goods.goodsStorageCondition}</p>`,
       nzOnOk: () => this.save(),
     });
-    this.goods.goodsCreatedByID = this.userService.loginID;
+    this.goods.goodsUpdatedByID = this.userService.loginID;
   }
 
   // 提交修改的信息到后端并返回
   save(): void {
     this.goodsService.updateGoods(this.goods).subscribe(() => this.goBack());
-    this.message.info('修改成功!');
+    this.message.create('success', '修改成功!');
   }
 
   goBack(): void {
-    this.goodsService.modifyID = ''; // 修改完成后清除
+    this.goodsService.modifyID = ''; // 修改完成后清除待修改货物的ID
     this.goodsService.afterModify = true; // 修改完成后在货物信息页刷新信息
     this.router.navigateByUrl('/index/goods/all');
   }

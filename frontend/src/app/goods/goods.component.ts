@@ -11,7 +11,7 @@ import { GoodsService } from '../services/goods.service';
 })
 export class GoodsComponent implements OnInit {
   goodss: Goods[] = [];
-  options1: any;
+  options1: any; // 用户配置echarts样式
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -28,6 +28,7 @@ export class GoodsComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
+  // 配置echarts样式
   setupChart(): void {
     this.options1 = {
       legend: {

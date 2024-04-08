@@ -11,6 +11,7 @@ import { User } from '../interfaces/user';
 })
 export class RootComponent implements OnInit {
   users: User[] = []; // 学生列表
+  // 一些与echarts相关的变量
   userCount?: number;
   maleCount?: number;
   femaleCount?: number;

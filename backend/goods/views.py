@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# 下面是与货物模块api对应的不同路由
+# 根据货物ID获取货物信息的路由
 @goods_blue.route("/get_goods_by_id/<string:goodsID>")
 def get_goods_by_id(goodsID):
     try:
@@ -24,6 +24,7 @@ def get_goods_by_id(goodsID):
         return jsonify({"error": str(e)})
 
 
+# 获取所有货物信息的路由
 @goods_blue.route('/get_all_goods')
 def get_all_goods():
     try:
@@ -32,13 +33,14 @@ def get_all_goods():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting goods from the database. Error message: {}".format(
+            "Error occurred while getting all goods from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
+# 新增货物的路由
 @goods_blue.route('/add_goods', methods=['GET', 'POST'])
 def add_goods():
     try:
@@ -53,7 +55,7 @@ def add_goods():
                 data['goodsUnit'],
                 data['goodsAmount'],
                 data['goodsStorageCondition'],
-                data['goodsCreatedByID'],
+                data['goodsUpdatedByID'],
                 datetime.now(),
             )
             return jsonify(result)
@@ -66,6 +68,7 @@ def add_goods():
         return jsonify({"error": str(e)})
 
 
+# 修改货物信息的路由
 @goods_blue.route('/update_goods', methods=['GET', 'POST'])
 def update_goods():
     try:
@@ -80,7 +83,7 @@ def update_goods():
                 data['goodsUnit'],
                 data['goodsAmount'],
                 data['goodsStorageCondition'],
-                data['goodsCreatedByID'],
+                data['goodsUpdatedByID'],
                 datetime.now(),
             )
             return jsonify({'status': result})
@@ -93,6 +96,7 @@ def update_goods():
         return jsonify({"error": str(e)})
 
 
+# 获取最大货物ID的路由（用于前端新建货物时自动生成货物ID）
 @goods_blue.route('/get_max_goodsID')
 def get_max_goodsID():
     try:

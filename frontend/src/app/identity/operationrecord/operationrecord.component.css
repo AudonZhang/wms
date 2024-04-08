@@ -1,41 +1,41 @@
 .custom-select {
-    position: relative;
-    width: 80px; /* 控制选择框的宽度 */
-    height: 40px;
-    margin-left: 30px;
-  }
+  position: relative;
+  width: 80px; /* 控制选择框的宽度 */
+  height: 40px;
+  margin-left: 30px;
+}
   
-  .custom-select select {
-    display: inline-block;
-    height: 30px;
-    width: 100%;
-    padding: 3px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    -webkit-appearance: none; /* 隐藏默认的选择框外观 */
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-  }
+.custom-select select {
+  display: inline-block;
+  height: 30px;
+  width: 100%;
+  padding: 3px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  -webkit-appearance: none; /* 隐藏默认的选择框外观 */
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
   
-  .custom-select select:focus {
-    outline: none;
-    border-color: #007bff;
-  }
+.custom-select select:focus {
+  outline: none;
+  border-color: #007bff;
+}
   
-  .custom-select::after {
-    content: '\25BC'; /* 使用Unicode字符表示向下箭头 */
-    position: absolute;
-    top: 40%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none; /* 防止遮挡选择框的点击事件 */
-  }
+.custom-select::after {
+  content: '\25BC'; /* 使用Unicode字符表示向下箭头 */
+  position: absolute;
+  top: 40%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; /* 防止遮挡选择框的点击事件 */
+}
   
-  nz-table{
-    border-style:solid;
-    border-width:1px;
-    border-color:#cccccc;
-    }
+nz-table{
+  border-style:solid;
+  border-width:1px;
+  border-color:#cccccc;
+}

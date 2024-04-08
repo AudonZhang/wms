@@ -28,8 +28,8 @@ export class AddGoodsComponent implements OnInit {
     goodsUnit: '',
     goodsAmount: 0,
     goodsStorageCondition: '',
-    goodsCreatedByID: '',
-    goodsCreatedTime: '',
+    goodsUpdatedByID: '',
+    goodsUpdatedTime: '',
   };
 
   validateForm: FormGroup<{
@@ -40,6 +40,15 @@ export class AddGoodsComponent implements OnInit {
     unit: FormControl<string>;
     storageCondition: FormControl<string>;
   }>;
+
+  // 获取新增货物的ID
+  getNewGoodsID(): void {
+    this.goodsService.getMaxGoodsID().subscribe((res) => {
+      let numberID: number = +res;
+      let IDPlus1: number = numberID + 1;
+      this.goods.goodsID = IDPlus1.toString();
+    });
+  }
 
   submitForm(): void {
     // 将提交的值赋值给用户类型
@@ -54,7 +63,7 @@ export class AddGoodsComponent implements OnInit {
       this.goods.goodsUnit = this.validateForm.controls['unit'].value;
       this.goods.goodsStorageCondition =
         this.validateForm.controls['storageCondition'].value;
-      this.goods.goodsCreatedByID = this.userService.loginID;
+      this.goods.goodsUpdatedByID = this.userService.loginID;
 
       // 确认创建用户的信息
       this.informationConfirm();
@@ -69,6 +78,7 @@ export class AddGoodsComponent implements OnInit {
   }
 
   informationConfirm(): void {
+    // 确认创建信息提示框
     this.modal.confirm({
       nzTitle: '<i>请确认新货物信息!</i>',
       nzContent: `
@@ -83,8 +93,8 @@ export class AddGoodsComponent implements OnInit {
     });
   }
 
+  // 提交创建信息
   save(): void {
-    // 提交创建信息
     this.goodsService.addGoods(this.goods).subscribe(() => {
       this.message.create('success', '新增货物成功!');
       console.log('submit', this.goods);
@@ -111,11 +121,6 @@ export class AddGoodsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.goodsService.getMaxGoodsID().subscribe((res) => {
-      let numberID: number = +res;
-      // 将数字加1
-      let IDPlus1: number = numberID + 1;
-      this.goods.goodsID = IDPlus1.toString();
-    });
+    this.getNewGoodsID();
   }
 }

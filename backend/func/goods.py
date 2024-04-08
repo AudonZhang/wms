@@ -12,9 +12,10 @@ class Goods(db.Model):
     goodsUnit = db.Column(db.String(64))
     goodsAmount = db.Column(db.Integer)
     goodsStorageCondition = db.Column(db.String(64))
-    goodsCreatedByID = db.Column(db.Integer)
-    goodsCreatedTime = db.Column(db.DateTime)
+    goodsUpdatedByID = db.Column(db.Integer)
+    goodsUpdatedTime = db.Column(db.DateTime)
 
+    # 通过货物ID获取货物信息
     @staticmethod
     def get_goods_by_id(goodsID):
         goodss = Goods.query.filter(Goods.goodsID == goodsID)
@@ -29,13 +30,14 @@ class Goods(db.Model):
                 'goodsUnit': goods.goodsUnit,
                 'goodsAmount': goods.goodsAmount,
                 'goodsStorageCondition': goods.goodsStorageCondition,
-                'goodsCreatedByID': goods.goodsCreatedByID,
-                'goodsCreatedTime': goods.goodsCreatedTime,
+                'goodsUpdatedByID': goods.goodsUpdatedByID,
+                'goodsUpdatedTime': goods.goodsUpdatedTime,
             }
             return goods_dict
         else:
             return '0'
 
+    # 获取所有货物信息
     @staticmethod
     def get_all_goods():
         goodss = Goods.query.all()
@@ -52,14 +54,15 @@ class Goods(db.Model):
                         'goodsUnit': goods.goodsUnit,
                         'goodsAmount': goods.goodsAmount,
                         'goodsStorageCondition': goods.goodsStorageCondition,
-                        'goodsCreatedByID': goods.goodsCreatedByID,
-                        'goodsCreatedTime': goods.goodsCreatedTime,
+                        'goodsUpdatedByID': goods.goodsUpdatedByID,
+                        'goodsUpdatedTime': goods.goodsUpdatedTime,
                     }
                 )
             return goods_list
         else:
             return '0'
 
+    # 修改货物信息
     @staticmethod
     def update_goods(
         goodsID,
@@ -70,8 +73,8 @@ class Goods(db.Model):
         goodsUnit,
         goodsAmount,
         goodsStorageCondition,
-        goodsCreatedByID,
-        goodsCreatedTime,
+        goodsUpdatedByID,
+        goodsUpdatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID).first()
         if goods is not None:
@@ -83,13 +86,14 @@ class Goods(db.Model):
             goods.goodsUnit = goodsUnit
             goods.goodsAmount = goodsAmount
             goods.goodsStorageCondition = goodsStorageCondition
-            goods.goodsCreatedByID = goodsCreatedByID
-            goods.goodsCreatedTime = goodsCreatedTime
+            goods.goodsUpdatedByID = goodsUpdatedByID
+            goods.goodsUpdatedTime = goodsUpdatedTime
             db.session.commit()
             return '1'
         else:
             return '0'
 
+    # 新增货物记录
     @staticmethod
     def add_goods(
         goodsID,
@@ -100,8 +104,8 @@ class Goods(db.Model):
         goodsUnit,
         goodsAmount,
         goodsStorageCondition,
-        goodsCreatedByID,
-        goodsCreatedTime,
+        goodsUpdatedByID,
+        goodsUpdatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID)
         if len(goods.all()) > 0:
@@ -116,13 +120,14 @@ class Goods(db.Model):
                 goodsUnit=goodsUnit,
                 goodsAmount=goodsAmount,
                 goodsStorageCondition=goodsStorageCondition,
-                goodsCreatedByID=goodsCreatedByID,
-                goodsCreatedTime=goodsCreatedTime,
+                goodsUpdatedByID=goodsUpdatedByID,
+                goodsUpdatedTime=goodsUpdatedTime,
             )
             db.session.add(goods)
             db.session.commit()
             return '1'
 
+    # 查询最大的货物ID（用于前端新增货物记录时自动生成货物ID）
     @staticmethod
     def get_max_goodsID():
         goodss = Goods.query.all()
@@ -130,4 +135,4 @@ class Goods(db.Model):
             max_goods_id = max(goods.goodsID for goods in goodss)
             return str(max_goods_id)
         else:
-            return '2020000001'
+            return '202400001'

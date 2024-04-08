@@ -1,23 +1,24 @@
 .logo {
-    height: 32px;
-    margin: 15px;
-    display: flex; 
-    align-items: center;
-    font-size: 20px;
-  }
+  height: 32px;
+  margin: 15px;
+  display: flex; 
+  align-items: center;
+  font-size: 20px;
+}
 
-  :host ::ng-deep .ant-layout-sider-children{
-    height: 650px;
-  } 
-  :host ::ng-deep .ant-menu{
-    background: #eef1f3;
-  }
+:host ::ng-deep .ant-layout-sider-children{
+  height: 700px;
+} 
 
-  nz-breadcrumb{
-    display: flex; 
-    align-items: center;
-    font-size: 18px;
-  } 
+:host ::ng-deep .ant-menu{
+  background: #eef1f3;
+}
+
+nz-breadcrumb{
+  display: flex; 
+  align-items: center;
+  font-size: 18px;
+} 
 
 
 

@@ -4,7 +4,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
-import { Location } from '@angular/common';
 import { Md5 } from 'ts-md5';
 
 @Component({
@@ -14,7 +13,7 @@ import { Md5 } from 'ts-md5';
 })
 export class ChangepasswordComponent implements OnInit {
   validateForm!: FormGroup;
-  passwordVisible1 = false;
+  passwordVisible1 = false; // 密码输入框是否可见
   passwordVisible2 = false;
   passwordVisible3 = false;
   user: User = {
@@ -26,19 +25,20 @@ export class ChangepasswordComponent implements OnInit {
     userEmail: '',
     userRole: '',
     userStatus: '',
-    userCreatedByID: '',
-    userCreatedTime: '',
+    userUpdatedByID: '',
+    userUpdatedTime: '',
   };
 
   constructor(
     private userService: UserService,
     private message: NzMessageService,
     private modal: NzModalService,
-    private location: Location,
     private fb: FormBuilder
   ) {}
 
+  // 用户提交后进行判断
   saveConfirm(): void {
+    // 旧密码错误
     if (
       Md5.hashStr(this.validateForm.value.OldPassword) !=
       this.user.userPasswordMD5
@@ -46,6 +46,7 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '原密码错误!');
       return;
     }
+    // 新密码与原密码相同
     if (
       this.validateForm.value.changePassword ==
       this.validateForm.value.OldPassword
@@ -53,6 +54,7 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '新密码与原密码相同!');
       return;
     }
+    // 新密码与新密码确认不相同
     if (
       this.validateForm.value.changePassword !=
       this.validateForm.value.changePasswordConfirm
@@ -60,9 +62,12 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '两次输入的密码不相等!');
       return;
     }
+    // 将新密码转化为MD5值
     this.user.userPasswordMD5 = Md5.hashStr(
       this.validateForm.value.changePassword
     );
+
+    // 弹出对话框，让用户选择确认或返回
     this.modal.confirm({
       nzTitle: '<i>确认修改密码?</i>',
       nzOnOk: () => this.save(),
@@ -70,16 +75,19 @@ export class ChangepasswordComponent implements OnInit {
     });
   }
 
+  // 用户选择确认
   save(): void {
     this.userService.updateUser(this.user).subscribe();
     this.message.info('修改成功!');
     this.resetForm();
   }
 
+  // 用户选择返回
   goBack(): void {
     this.resetForm();
   }
 
+  // 清空表格内容
   resetForm(): void {
     this.validateForm.reset();
     Object.keys(this.validateForm.controls).forEach((key) => {

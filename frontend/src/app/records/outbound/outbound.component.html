@@ -41,7 +41,23 @@
                 </tr>
             </tbody>
         </nz-table>
-        <button nz-button [nzType]="'primary'"><span>Show Modal</span></button>
+        <button nz-button [nzType]="'primary'" (click)="showModal()"><span>提交</span></button>
+
+        <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认出库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+            <ng-container *nzModalContent>
+                <div *ngFor="let goods of submittedGoods; let last = last">
+                    <p>ID：{{goods.goodsID}}</p>
+                    <p>名称：{{ goods.goodsName }}</p>
+                    <p>规格：{{ goods.goodsSpecification }}</p>
+                    <p>生产商：{{ goods.goodsManufacturer }}</p>
+                    <p>出库后剩余：{{ goods.goodsAmount }}{{ goods.goodsUnit }}</p>
+                    <hr *ngIf="!last">
+                </div>
+            </ng-container>
+
+        </nz-modal>
+
+
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <div class="ant-table-filter-dropdown">
                 <div class="search-box">

@@ -32,8 +32,8 @@ export class NewuserComponent implements OnInit {
     userEmail: '',
     userRole: '',
     userStatus: '',
-    userCreatedByID: '',
-    userCreatedTime: '',
+    userUpdatedByID: '',
+    userUpdatedTime: '',
   };
   userPassword = '';
 
@@ -59,7 +59,7 @@ export class NewuserComponent implements OnInit {
       this.user.userPhone = this.validateForm.controls['phoneNumber'].value;
       this.user.userEmail = this.validateForm.controls['email'].value;
       this.user.userStatus = '在职';
-      this.user.userCreatedByID = this.userService.loginID;
+      this.user.userUpdatedByID = this.userService.loginID;
 
       // 确认创建用户的信息
       this.informationConfirm();
@@ -73,6 +73,7 @@ export class NewuserComponent implements OnInit {
     }
   }
 
+  // 新建用户信息确认
   informationConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认新用户信息，并牢记ID与密码!!!</i>',
@@ -132,6 +133,7 @@ export class NewuserComponent implements OnInit {
     });
   }
 
+  // 开始时获取新增用户的ID
   ngOnInit(): void {
     this.userService.getMaxUserID().subscribe((res) => {
       let numberID: number = +res;

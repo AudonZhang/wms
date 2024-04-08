@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder,
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
@@ -21,15 +20,17 @@ import { Md5 } from 'ts-md5';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  passwordVisible = false;
+  passwordVisible = false; // 用户输入的密码是否可见
   validateForm: FormGroup<{
     userID: FormControl<string>;
     userPassword: FormControl<string>;
   }>;
+  // 用户将用户输入的信息提交给后端
   loginMessage: Login = {
     userID: '',
     userPasswordMD5: '',
   };
+  // 获得后端返回的登陆结果
   loginResult?: string;
 
   constructor(
@@ -45,18 +46,22 @@ export class LoginComponent {
     });
   }
 
+  // 用户点击登录按钮
   submitForm(): void {
+    // 若信息有效，则封装登录信息
     if (this.validateForm.valid) {
       this.loginMessage.userID = this.validateForm.controls['userID'].value;
       this.loginMessage.userPasswordMD5 = Md5.hashStr(
         this.validateForm.controls['userPassword'].value
       );
+      // 将封装好的登录信息提交后端
       this.userService.login(this.loginMessage).subscribe((res) => {
         this.loginResult = res;
+        // 后端返回'1'表示可以登录
         if (this.loginResult == '1') {
           this.userService.loginID += this.loginMessage?.userID;
           this.userService
-            .getUserById(this.userService.loginID)
+            .getUserById(this.userService.loginID) // 获取登陆用户的姓名、职位
             .subscribe((res) => {
               this.userService.loginName = res.userName;
               this.userService.loginRole = res.userRole;

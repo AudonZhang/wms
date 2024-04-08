@@ -8,6 +8,6 @@ export interface Goods {
   goodsUnit: string;
   goodsAmount: number;
   goodsStorageCondition: string;
-  goodsCreatedByID: string;
-  goodsCreatedTime: string;
+  goodsUpdatedByID: string;
+  goodsUpdatedTime: string;
 }

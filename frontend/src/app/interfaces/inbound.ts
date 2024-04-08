@@ -4,6 +4,6 @@ export interface Inbound {
   inboundOrderID: string;
   inboundGoodsID: string;
   inboundAmount: number;
-  inboundCreatedByID: string;
-  inboundCreatedTime: string;
+  inboundUpdatedByID: string;
+  inboundUpdatedTime: string;
 }

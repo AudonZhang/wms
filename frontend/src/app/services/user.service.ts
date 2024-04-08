@@ -32,6 +32,7 @@ export class UserService {
     };
   }
 
+  // 登录
   login(loginMessage: Login): Observable<string> {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
@@ -40,6 +41,7 @@ export class UserService {
     );
   }
 
+  // 根据ID获取用户信息
   getUserById(userID: string): Observable<User> {
     const url = `${this.userUrl}/get_user_by_id/${userID}`;
     return this.http.get<User>(url).pipe(
@@ -55,6 +57,8 @@ export class UserService {
       catchError(this.handleError<any>('更新用户信息时出错'))
     );
   }
+
+  // 新增用户
   addUser(user: User): Observable<string> {
     const url = `${this.userUrl}/add_user`;
     return this.http.post<string>(url, user, this.httpOptions).pipe(
@@ -62,6 +66,8 @@ export class UserService {
       catchError(this.handleError<string>('更新用户信息时出错', '0'))
     );
   }
+
+  // 获取所有用户信息
   getAllUsers(): Observable<User[]> {
     const url = `${this.userUrl}/get_all_users`;
     return this.http.get<User[]>(url).pipe(
@@ -88,6 +94,7 @@ export class UserService {
     );
   }
 
+  // 获取最大的用户ID（用户新增用户时自动生成ID）
   getMaxUserID(): Observable<string> {
     const url = `${this.userUrl}/get_max_userID`;
     return this.http.get<string>(url).pipe(
@@ -96,11 +103,23 @@ export class UserService {
     );
   }
 
-  backup(): Observable<string> {
+  // 备份数据库
+  backup() {
     const url = `${this.rootUrl}/backup`;
-    return this.http.get<string>(url).pipe(
-      tap((_) => console.log('已备份！')),
-      catchError(this.handleError<string>('备份时出错'))
+    this.http.get(url, { responseType: 'blob' }).subscribe(
+      (response: any) => {
+        const blob = new Blob([response], { type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '数据库备份.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      (error) => {
+        console.error('备份失败:', error);
+      }
     );
   }
 }

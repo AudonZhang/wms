@@ -27,8 +27,8 @@ class User(db.Model):
     userEmail = db.Column(db.String(64))
     userRole = db.Column(db.String(64))
     userStatus = db.Column(db.String(64))
-    userCreatedByID = db.Column(db.Integer)
-    userCreatedTime = db.Column(db.DateTime)
+    userUpdatedByID = db.Column(db.Integer)
+    userUpdatedTime = db.Column(db.DateTime)
 
 
 # 货物表
@@ -42,8 +42,8 @@ class Goods(db.Model):
     goodsUnit = db.Column(db.String(64))
     goodsAmount = db.Column(db.Integer)
     goodsStorageCondition = db.Column(db.String(64))
-    goodsCreatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
-    goodsCreatedTime = db.Column(db.DateTime)
+    goodsUpdatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    goodsUpdatedTime = db.Column(db.DateTime)
 
 
 # 入库记录表
@@ -53,8 +53,8 @@ class Inbound(db.Model):
     inboundOrderID = db.Column(db.Integer)
     inboundGoodsID = db.Column(db.Integer, db.ForeignKey("goods.goodsID"))
     inboundAmount = db.Column(db.Integer)
-    inboundCreatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
-    inboundCreatedTime = db.Column(db.DateTime)
+    inboundUpdatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    inboundUpdatedTime = db.Column(db.DateTime)
 
 
 # 出库记录表
@@ -64,8 +64,8 @@ class Outbound(db.Model):
     outboundOrderID = db.Column(db.Integer)
     outboundGoodsID = db.Column(db.Integer, db.ForeignKey("goods.goodsID"))
     outboundAmount = db.Column(db.Integer)
-    outboundCreatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
-    outboundCreatedTime = db.Column(db.DateTime)
+    outboundUpdatedByID = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    outboundUpdatedTime = db.Column(db.DateTime)
 
 
 # 出入库计划表
@@ -77,8 +77,8 @@ class Plan(db.Model):
     planExpectedTime = db.Column(db.DateTime)
     planExpectedAmount = db.Column(db.Integer)
     planStatus = db.Column(db.String(64))
-    planCreatedByID = db.Column(db.Integer)
-    planCreatedTime = db.Column(db.DateTime)
+    planUpdatedByID = db.Column(db.Integer)
+    planUpdatedTime = db.Column(db.DateTime)
     planFinishedByID = db.Column(db.Integer)
     planFinishedTime = db.Column(db.DateTime)
 
@@ -168,8 +168,8 @@ if __name__ == "__main__":
             goodsUnit="个",
             goodsAmount=0,
             goodsStorageCondition="常温",
-            goodsCreatedByID="2024001",
-            goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
+            goodsUpdatedByID="2024001",
+            goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods2 = Goods(
             goodsID="202400002",
@@ -180,8 +180,8 @@ if __name__ == "__main__":
             goodsUnit="台",
             goodsAmount=0,
             goodsStorageCondition="常温",
-            goodsCreatedByID="2024001",
-            goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
+            goodsUpdatedByID="2024001",
+            goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods3 = Goods(
             goodsID="202400003",
@@ -192,8 +192,8 @@ if __name__ == "__main__":
             goodsUnit="台",
             goodsAmount=3,
             goodsStorageCondition="常温",
-            goodsCreatedByID="2024001",
-            goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
+            goodsUpdatedByID="2024001",
+            goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods4 = Goods(
             goodsID="202400004",
@@ -202,10 +202,10 @@ if __name__ == "__main__":
             goodsManufacturer="安徽中科都菱商用电器股份有限公司",
             goodsProductionLicense="皖食药监械生产许20160038号",
             goodsUnit="台",
-            goodsAmount=0,
+            goodsAmount=5,
             goodsStorageCondition="常温",
-            goodsCreatedByID="2024001",
-            goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
+            goodsUpdatedByID="2024001",
+            goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods5 = Goods(
             goodsID="202400005",
@@ -216,8 +216,8 @@ if __name__ == "__main__":
             goodsUnit="个",
             goodsAmount=0,
             goodsStorageCondition="常温",
-            goodsCreatedByID="2024001",
-            goodsCreatedTime=datetime(2024, 1, 1, 12, 0, 0),
+            goodsUpdatedByID="2024001",
+            goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         db.session.add_all([goods1, goods2, goods3, goods4, goods5])
         db.session.commit()
@@ -229,8 +229,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 2, 20, 12, 0, 0),
             planExpectedAmount="6",
             planStatus="已完成",
-            planCreatedByID="2024001",
-            planCreatedTime=datetime(2024, 1, 20, 16, 0, 0),
+            planUpdatedByID="2024001",
+            planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
             planFinishedByID="2024001",
             planFinishedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
@@ -241,8 +241,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 2, 20, 12, 0, 0),
             planExpectedAmount="5",
             planStatus="已完成",
-            planCreatedByID="2024001",
-            planCreatedTime=datetime(2024, 1, 20, 16, 0, 0),
+            planUpdatedByID="2024001",
+            planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
             planFinishedByID="2024001",
             planFinishedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
@@ -253,8 +253,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 3, 10, 12, 0, 0),
             planExpectedAmount="6",
             planStatus="已完成",
-            planCreatedByID="2024001",
-            planCreatedTime=datetime(2024, 1, 20, 16, 0, 0),
+            planUpdatedByID="2024001",
+            planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
             planFinishedByID="2024002",
             planFinishedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
@@ -265,8 +265,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 3, 10, 12, 0, 0),
             planExpectedAmount="5",
             planStatus="已完成",
-            planCreatedByID="2024001",
-            planCreatedTime=datetime(2024, 1, 20, 16, 0, 0),
+            planUpdatedByID="2024001",
+            planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
             planFinishedByID="2024002",
             planFinishedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
@@ -277,8 +277,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 3, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="已完成",
-            planCreatedByID="2024004",
-            planCreatedTime=datetime(2024, 3, 11, 16, 0, 0),
+            planUpdatedByID="2024004",
+            planUpdatedTime=datetime(2024, 3, 11, 16, 0, 0),
             planFinishedByID="2024001",
             planFinishedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
@@ -289,8 +289,8 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 4, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="未完成",
-            planCreatedByID="2024002",
-            planCreatedTime=datetime(2024, 3, 11, 16, 0, 0),
+            planUpdatedByID="2024002",
+            planUpdatedTime=datetime(2024, 3, 11, 16, 0, 0),
         )
         plan7 = Plan(
             planID="2024000007",
@@ -299,60 +299,60 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 4, 30, 12, 0, 0),
             planExpectedAmount="10",
             planStatus="未完成",
-            planCreatedByID="2024001",
-            planCreatedTime=datetime(2024, 3, 25, 16, 0, 0),
+            planUpdatedByID="2024001",
+            planUpdatedTime=datetime(2024, 3, 25, 16, 0, 0),
         )
 
         db.session.add_all([plan1, plan2, plan3, plan4, plan5, plan6, plan7])
         db.session.commit()
 
         inbound1 = Inbound(
-            inboundID="202400001",
+            inboundID="2024000001",
             inboundOrderID="20240001",
             inboundGoodsID="202400001",
             inboundAmount="6",
-            inboundCreatedByID="2024001",
-            inboundCreatedTime=datetime(2024, 2, 20, 12, 0, 0),
+            inboundUpdatedByID="2024001",
+            inboundUpdatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound2 = Inbound(
-            inboundID="202400002",
+            inboundID="2024000002",
             inboundOrderID="20240001",
             inboundGoodsID="202400002",
             inboundAmount="3",
-            inboundCreatedByID="2024001",
-            inboundCreatedTime=datetime(2024, 2, 20, 12, 0, 0),
+            inboundUpdatedByID="2024001",
+            inboundUpdatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound3 = Inbound(
-            inboundID="202400003",
+            inboundID="2024000003",
             inboundOrderID="20240002",
             inboundGoodsID="202400002",
             inboundAmount="2",
-            inboundCreatedByID="2024001",
-            inboundCreatedTime=datetime(2024, 2, 21, 12, 0, 0),
+            inboundUpdatedByID="2024001",
+            inboundUpdatedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
         inbound4 = Inbound(
-            inboundID="202400004",
+            inboundID="2024000004",
             inboundOrderID="20240003",
             inboundGoodsID="202400003",
             inboundAmount="3",
-            inboundCreatedByID="2024001",
-            inboundCreatedTime=datetime(2024, 3, 20, 12, 0, 0),
+            inboundUpdatedByID="2024001",
+            inboundUpdatedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
         outbound1 = Outbound(
-            outboundID="202410001",
+            outboundID="2024000001",
             outboundOrderID="20240001",
             outboundGoodsID="202400001",
             outboundAmount="6",
-            outboundCreatedByID="2024002",
-            outboundCreatedTime=datetime(2024, 3, 10, 12, 0, 0),
+            outboundUpdatedByID="2024002",
+            outboundUpdatedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         outbound2 = Outbound(
-            outboundID="202410002",
+            outboundID="2024000002",
             outboundOrderID="20240001",
             outboundGoodsID="202400002",
             outboundAmount="5",
-            outboundCreatedByID="2024002",
-            outboundCreatedTime=datetime(2024, 3, 10, 12, 0, 0),
+            outboundUpdatedByID="2024002",
+            outboundUpdatedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         db.session.add_all(
             [inbound1, inbound2, inbound3, inbound4, outbound1, outbound2]

@@ -12,9 +12,10 @@ class User(db.Model):
     userEmail = db.Column(db.String(64))
     userRole = db.Column(db.String(64))
     userStatus = db.Column(db.String(64))
-    userCreatedByID = db.Column(db.Integer)
-    userCreatedTime = db.Column(db.DateTime)
+    userUpdatedByID = db.Column(db.Integer)
+    userUpdatedTime = db.Column(db.DateTime)
 
+    # 获取所有用户记录
     @staticmethod
     def get_all_users():
         users = User.query.all()
@@ -31,14 +32,15 @@ class User(db.Model):
                         'userEmail': user.userEmail,
                         'userRole': user.userRole,
                         'userStatus': user.userStatus,
-                        'userCreatedByID': user.userCreatedByID,
-                        'userCreatedTime': user.userCreatedTime,
+                        'userUpdatedByID': user.userUpdatedByID,
+                        'userUpdatedTime': user.userUpdatedTime,
                     }
                 )
             return user_list
         else:
             return '0'
 
+    # 通过用户ID获取对应的用户信息
     @staticmethod
     def get_user_by_id(userID):
         users = User.query.filter(User.userID == userID)
@@ -53,13 +55,14 @@ class User(db.Model):
                 'userEmail': user.userEmail,
                 'userRole': user.userRole,
                 'userStatus': user.userStatus,
-                'userCreatedByID': user.userCreatedByID,
-                'userCreatedTime': user.userCreatedTime,
+                'userUpdatedByID': user.userUpdatedByID,
+                'userUpdatedTime': user.userUpdatedTime,
             }
             return user_dict
         else:
             return '0'
 
+    # 根据前端输入的用户ID与密码登录
     @staticmethod
     def login(userID, userPasswordMD5):
         user = User.query.filter(
@@ -70,6 +73,7 @@ class User(db.Model):
         else:
             return '0'
 
+    # 修改用户信息
     @staticmethod
     def update_user(
         userID,
@@ -80,8 +84,8 @@ class User(db.Model):
         userEmail,
         userRole,
         userStatus,
-        userCreatedByID,
-        userCreatedTime,
+        userUpdatedByID,
+        userUpdatedTime,
     ):
         user = User.query.filter(User.userID == userID).first()
         if user is not None:
@@ -93,8 +97,8 @@ class User(db.Model):
             user.userEmail = userEmail
             user.userStatue = userStatus
             user.userRole = userRole
-            user.userCreatedByID = userCreatedByID
-            user.userCreatedTime = userCreatedTime
+            user.userUpdatedByID = userUpdatedByID
+            user.userUpdatedTime = userUpdatedTime
             db.session.commit()
             return '1'
         else:
@@ -110,6 +114,7 @@ class User(db.Model):
         else:
             return '0'
 
+    # 原下岗员工上岗
     @staticmethod
     def employ_user(userID):
         user = User.query.filter(User.userID == userID).first()
@@ -120,6 +125,7 @@ class User(db.Model):
         else:
             return '0'
 
+    # 新增用户
     @staticmethod
     def add_user(
         userID,
@@ -130,8 +136,8 @@ class User(db.Model):
         userEmail,
         userRole,
         userStatus,
-        userCreatedByID,
-        userCreatedTime,
+        userUpdatedByID,
+        userUpdatedTime,
     ):
         query_user = User.query.filter(User.userID == userID)
         if len(query_user.all()) > 0:
@@ -146,13 +152,14 @@ class User(db.Model):
                 userEmail=userEmail,
                 userStatus=userStatus,
                 userRole=userRole,
-                userCreatedByID=userCreatedByID,
-                userCreatedTime=userCreatedTime,
+                userUpdatedByID=userUpdatedByID,
+                userUpdatedTime=userUpdatedTime,
             )
             db.session.add(user)
             db.session.commit()
             return '1'
 
+    # 获取最大的用户ID（用于前端创建用户时自动生成ID）
     @staticmethod
     def get_max_userID():
         users = User.query.all()

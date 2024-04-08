@@ -27,8 +27,8 @@ export class ModifyComponent implements OnInit {
     userEmail: '',
     userRole: '',
     userStatus: '',
-    userCreatedByID: '',
-    userCreatedTime: '',
+    userUpdatedByID: '',
+    userUpdatedTime: '',
   };
 
   // 前端输入信息并点击保存后，弹出对话框确认信息
@@ -42,22 +42,23 @@ export class ModifyComponent implements OnInit {
       <p>职务：${this.user.userRole}</p>`,
       nzOnOk: () => this.save(),
     });
-    this.user.userCreatedByID = this.userService.loginID;
+    this.user.userUpdatedByID = this.userService.loginID;
   }
 
   // 提交修改的信息到后端并返回
   save(): void {
     this.userService.updateUser(this.user).subscribe(() => this.goBack());
-    this.message.info('修改成功!');
+    this.message.create('success', '修改成功!');
   }
 
+  // 修改后返回到用户信息页
   goBack(): void {
     this.router.navigateByUrl('/index/root/allUsers');
     this.userService.modifyID = ''; // 修改完成后清除
     this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
   }
 
-  // 开始时获取要修改的用户信息
+  // 开始时根据正在修改用户ID获取要修改的用户信息
   ngOnInit() {
     this.userService.getUserById(this.userService.modifyID).subscribe((res) => {
       this.user = res;

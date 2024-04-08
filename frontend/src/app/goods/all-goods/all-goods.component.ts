@@ -33,6 +33,7 @@ export class AllGoodsComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
+  // 获取所有货物信息
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
       this.goods = res;
@@ -60,6 +61,7 @@ export class AllGoodsComponent implements OnInit {
     else this.message.create('success', '已重置货物列表！');
   }
 
+  // 保存需要修改的货物ID，跳转后的组件可根据此获得对应货物信息
   setModifyGoodsID(goodsID: string): void {
     this.goodsService.modifyID = goodsID;
   }
