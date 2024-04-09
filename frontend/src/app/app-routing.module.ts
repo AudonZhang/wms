@@ -16,6 +16,7 @@ import { AllGoodsComponent } from './goods/all-goods/all-goods.component';
 import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.component';
 import { RecordsComponent } from './records/records.component';
 import { OutboundComponent } from './records/outbound/outbound.component';
+import { InboundComponent } from './records/inbound/inbound.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -113,13 +114,13 @@ const routes: Routes = [
           breadcrumb: '出入库管理',
         },
         children: [
-          // {
-          //   path: 'inbound',
-          //   component: InboundComponent,
-          //   data: {
-          //     breadcrumb: '入库',
-          //   },
-          // },
+          {
+            path: 'inbound',
+            component: InboundComponent,
+            data: {
+              breadcrumb: '入库',
+            },
+          },
           {
             path: 'outbound',
             component: OutboundComponent,

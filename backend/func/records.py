@@ -56,6 +56,52 @@ class Inbound(db.Model):
         else:
             return '0'
 
+    # 新增出库记录
+    @staticmethod
+    def add_inbound(
+        inboundID,
+        inboundOrderID,
+        inboundGoodsID,
+        inboundAmount,
+        inboundUpdatedByID,
+        inboundUpdatedTime,
+    ):
+        query_inbound = Inbound.query.filter(Inbound.inboundID == inboundID)
+        if len(query_inbound.all()) > 0:
+            return '0'
+        else:
+            inbound = Inbound(
+                inboundID=inboundID,
+                inboundOrderID=inboundOrderID,
+                inboundGoodsID=inboundGoodsID,
+                inboundAmount=inboundAmount,
+                inboundUpdatedByID=inboundUpdatedByID,
+                inboundUpdatedTime=inboundUpdatedTime,
+            )
+            db.session.add(inbound)
+            db.session.commit()
+            return '1'
+
+    # 获取最大的入库记录ID（用于入库操作时自动生成入库记录ID）
+    @staticmethod
+    def get_max_inboundID():
+        inbounds = Inbound.query.all()
+        if inbounds is not None:
+            max_inbounds_id = max(inbound.inboundID for inbound in inbounds)
+            return str(max_inbounds_id)
+        else:
+            return '2024000001'
+
+    # 获取最大的入库单ID（用于入库操作时自动入成出库单ID）
+    @staticmethod
+    def get_max_inboundOrderID():
+        inbounds = Inbound.query.all()
+        if inbounds is not None:
+            max_inboundOrder_id = max(inbound.inboundOrderID for inbound in inbounds)
+            return str(max_inboundOrder_id)
+        else:
+            return '20240001'
+
 
 # 实现与出库记录相关的类与函数
 class Outbound(db.Model):

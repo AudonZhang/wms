@@ -136,3 +136,32 @@ class Goods(db.Model):
             return str(max_goods_id)
         else:
             return '202400001'
+
+    # 判断货物是否已存在
+    @staticmethod
+    def judgeExist(
+        goodsName, goodsSpecification, goodsManufacturer, goodsProductionLicense
+    ):
+        existing_goods = Goods.query.filter(
+            Goods.goodsName == goodsName,
+            Goods.goodsSpecification == goodsSpecification,
+            Goods.goodsProductionLicense == goodsProductionLicense,
+            Goods.goodsManufacturer == goodsManufacturer,
+        ).first()
+
+        if existing_goods:
+            return existing_goods.goodsID
+        else:
+            return 0
+
+    # 判断货物是否已存在
+    @staticmethod
+    def judgeExistID(goodsID):
+        existing_goods = Goods.query.filter(
+            Goods.goodsID == goodsID,
+        ).first()
+
+        if existing_goods:
+            return 1
+        else:
+            return 0

@@ -39,6 +39,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { RecordsComponent } from './records/records.component';
 import { OutboundComponent } from './records/outbound/outbound.component';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { InboundComponent } from './records/inbound/inbound.component';
 
 registerLocaleData(zh);
 
@@ -60,6 +61,7 @@ registerLocaleData(zh);
     ModifyGoodsComponent,
     RecordsComponent,
     OutboundComponent,
+    InboundComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,45 @@
+<input type="file" (change)="selectFile($event)" />
+<button class="btn btn-success btn-sm" [disabled]="!currentFile" (click)="uploadConfirm()">
+    Upload
+</button>
+<button (click)="inboundGoods()">确认</button>
+
+<div *ngIf="isUpload">
+    <div class="container">
+        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }" [nzWidthConfig]="['80px']">
+            <thead>
+                <tr>
+                    <th nzCustomFilter style="background-color: #ffffff;">名称</th>
+                    <th style="background-color: #ffffff;">规格</th>
+                    <th style="background-color: #ffffff;">生产商</th>
+                    <th style="background-color: #ffffff;">生产许可证</th>
+                    <th style="background-color: #ffffff;">库存量</th>
+                    <th style="background-color: #ffffff;">单位</th>
+                    <th style="background-color: #ffffff;">储存条件</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let goods of goods">
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text" [(ngModel)]="goods.goodsName" />
+                    </td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
+                            [(ngModel)]="goods.goodsSpecification" /></td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
+                            [(ngModel)]="goods.goodsManufacturer" /></td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
+                            [(ngModel)]="goods.goodsProductionLicense" /></td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="number"
+                            [(ngModel)]="goods.goodsAmount" /></td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text" [(ngModel)]="goods.goodsUnit" />
+                    </td>
+                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
+                            [(ngModel)]="goods.goodsStorageCondition" /></td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="ant-table-filter-dropdown"></div>
+        </nz-dropdown-menu>
+    </div>
+</div>

@@ -36,7 +36,7 @@ export class UserService {
   login(loginMessage: Login): Observable<string> {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
-      tap((_) => console.log(`登录成功！`)),
+      tap((_) => console.log(`登录！`)),
       catchError(this.handleError<string>('登陆时出错', '0'))
     );
   }

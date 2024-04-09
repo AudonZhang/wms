@@ -1,8 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { Inbound } from '../interfaces/inbound';
 import { Outbound } from '../interfaces/outbound';
+import { Goods } from '../interfaces/goods';
 
 @Injectable({
   providedIn: 'root',
@@ -99,6 +105,24 @@ export class RecordService {
       (error) => {
         console.error('下载出库单失败:', error);
       }
+    );
+  }
+  upload(file: File): Observable<string> {
+    const url = `${this.recordUrl}/upload`;
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(url, formData, this.httpOptions).pipe(
+      tap((_) => console.log(`增加了ID为上传入库单`)),
+      catchError(this.handleError<string>('上传入库单时出错'))
+    );
+  }
+
+  // 入库
+  InboundGoods(goodsList: Goods[]): Observable<any> {
+    const url = `${this.recordUrl}/inbound`;
+    return this.http.post<Goods>(url, goodsList, this.httpOptions).pipe(
+      tap((_) => console.log(`上传ID为货物信息`)),
+      catchError(this.handleError<any>('更新货物信息时出错'))
     );
   }
 }
