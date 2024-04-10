@@ -127,154 +127,12 @@ def generate_outbound_order_by_id(outboundOrderID):
         return jsonify({"error": str(e)})
 
 
-# @record_blue.route('/inbound', methods=['GET', 'POST'])
-# def inbound():
-#     try:
-#         if request.method == 'POST':
-#             goods_list = []
-#             inboundOrderID = int(Inbound.get_max_inboundOrderID()) + 1
-#             userID = request.form.get('userID')
-#             file = request.files['file']
-#             current_dir = os.getcwd()  # 获取当前工作目录路径
-#             parent_dir = os.path.dirname(current_dir)
-#             order_dir = os.path.join(parent_dir, 'order')
-#             # 如果 /order 目录不存在，则创建它
-#             if not os.path.exists(order_dir):
-#                 os.makedirs(order_dir)
-#             filepath = os.path.join(order_dir, file.filename)
-#             file.save(filepath)
-
-#             # 入库单数据提取
-#             wb = load_workbook(filepath)
-#             ws = wb.active
-
-#             headers = [cell.value for cell in ws[1]]
-
-#             for row in ws.iter_rows(min_row=2, values_only=True):
-#                 inbound_data = dict(zip(headers, row))
-#                 goodsID = Goods.judgeExist(
-#                     inbound_data['货物名称'],
-#                     inbound_data['货物规格'],
-#                     inbound_data['生产厂商'],
-#                     inbound_data['生产许可证'],
-#                 )
-#                 if goodsID == 0:
-#                     goodsID = str(int(Goods.get_max_goodsID()) + 1)
-#                     goods_list.append(
-#                     {
-#                         'goodsID': goodsID,
-#                         'goodsName': inbound_data['货物名称'],
-#                         'goodsSpecification': inbound_data['货物规格'],
-#                         'goodsManufacturer': inbound_data['生产厂商'],
-#                         'goodsProductionLicense': inbound_data['生产许可证'],
-#                         'goodsUnit': inbound_data['计量单位'],
-#                         'goodsAmount': inbound_data['入库数量'],
-#                         'goodsStorageCondition': inbound_data['存储条件'],
-#                         'goodsUpdatedByID': userID,
-#                         'goodsUpdatedTime': datetime.now(),
-#                     })
-#                 else:
-#                     goods = Goods.get_goods_by_id(goodsID)
-#                     goods_list.append(
-#                     {
-#                         'goodsID': goods['goodsID'],
-#                         'goodsName': goods['goodsName'],
-#                         'goodsSpecification': goods['goodsSpecification'],
-#                         'goodsManufacturer': goods['goodsManufacturer'],
-#                         'goodsProductionLicense': goods['goodsProductionLicense'],
-#                         'goodsUnit': goods['goodsUnit'],
-#                         'goodsAmount': goods['goodsAmount'] + int(inbound_data['入库数量']),
-#                         'goodsStorageCondition': goods['goodsStorageCondition'],
-#                         'goodsUpdatedByID': userID,
-#                         'goodsUpdatedTime': datetime.now(),
-#                     })
-#                 Inbound.add_inbound(
-#                     str(int(Inbound.get_max_inboundID()) + 1),
-#                     inboundOrderID,
-#                     goodsID,
-#                     inbound_data['入库数量'],
-#                     userID,
-#                     datetime.now(),
-#                 )
-#             return jsonify('1')
-#     except Exception as e:
-#         logging.error(
-#             'Error occurred while upload file. Error message: {}'.format(str(e))
-#         )
-#         return jsonify({"error": str(e)})
-
-# @record_blue.route('/inboundConfirm', methods=['GET', 'POST'])
-# def inboundConfirm():
-#     try:
-#         if request.method == 'POST':
-#             userID = request.form.get('userID')
-#             file = request.files['file']
-#             current_dir = os.getcwd()  # 获取当前工作目录路径
-#             parent_dir = os.path.dirname(current_dir)
-#             order_dir = os.path.join(parent_dir, 'order')
-#             # 如果 /order 目录不存在，则创建它
-#             if not os.path.exists(order_dir):
-#                 os.makedirs(order_dir)
-#             filepath = os.path.join(order_dir, file.filename)
-#             file.save(filepath)
-
-#             # 入库单数据提取
-#             wb = load_workbook(filepath)
-#             ws = wb.active
-
-#             headers = [cell.value for cell in ws[1]]
-
-#             for row in ws.iter_rows(min_row=2, values_only=True):
-#                 inbound_data = dict(zip(headers, row))
-#                 goodsID = Goods.judgeExist(
-#                     inbound_data['货物名称'],
-#                     inbound_data['货物规格'],
-#                     inbound_data['生产厂商'],
-#                     inbound_data['生产许可证'],
-#                 )
-#                 if goodsID == 0:
-#                     goodsID = str(int(Goods.get_max_goodsID()) + 1)
-#                     Goods.add_goods(
-#                         goodsID,
-#                         inbound_data['货物名称'],
-#                         inbound_data['货物规格'],
-#                         inbound_data['生产厂商'],
-#                         inbound_data['生产许可证'],
-#                         inbound_data['计量单位'],
-#                         inbound_data['入库数量'],
-#                         inbound_data['存储条件'],
-#                         userID,
-#                         datetime.now(),
-#                     )
-#                 else:
-#                     goods = Goods.get_goods_by_id(goodsID)
-#                     Goods.update_goods(
-#                         goods['goodsID'],
-#                         goods['goodsName'],
-#                         goods['goodsSpecification'],
-#                         goods['goodsManufacturer'],
-#                         goods['goodsProductionLicense'],
-#                         goods['goodsUnit'],
-#                         goods['goodsAmount'] + int(inbound_data['入库数量']),
-#                         goods['goodsStorageCondition'],
-#                         userID,
-#                         datetime.now(),
-#                     )
-
-#             return jsonify('1')
-#     except Exception as e:
-#         logging.error(
-#             'Error occurred while upload file. Error message: {}'.format(str(e))
-#         )
-#         return jsonify({"error": str(e)})
-
-
+# 入库信息确认
 @record_blue.route('/inboundConfirm', methods=['GET', 'POST'])
 def inboundConfirm():
     try:
         if request.method == 'POST':
             goods_list = []
-            inboundOrderID = int(Inbound.get_max_inboundOrderID()) + 1
             userID = request.form.get('userID')
             file = request.files['file']
             current_dir = os.getcwd()  # 获取当前工作目录路径
@@ -289,50 +147,25 @@ def inboundConfirm():
             # 入库单数据提取
             wb = load_workbook(filepath)
             ws = wb.active
-
+            # 设置标题行
             headers = [cell.value for cell in ws[1]]
-            newGoodsID = int(Goods.get_max_goodsID()) + 1
+            # 逐行读取文件中数据并添加到字典
             for row in ws.iter_rows(min_row=2, values_only=True):
                 inbound_data = dict(zip(headers, row))
-                goodsID = Goods.judgeExist(
-                    inbound_data['货物名称'],
-                    inbound_data['货物规格'],
-                    inbound_data['生产厂商'],
-                    inbound_data['生产许可证'],
+                goods_list.append(
+                    {
+                        'goodsID': '',
+                        'goodsName': inbound_data['货物名称'],
+                        'goodsSpecification': inbound_data['货物规格'],
+                        'goodsManufacturer': inbound_data['生产厂商'],
+                        'goodsProductionLicense': inbound_data['生产许可证'],
+                        'goodsUnit': inbound_data['计量单位'],
+                        'goodsAmount': inbound_data['入库数量'],
+                        'goodsStorageCondition': inbound_data['存储条件'],
+                        'goodsUpdatedByID': userID,
+                        'goodsUpdatedTime': '',
+                    }
                 )
-                if goodsID == 0:
-
-                    goods_list.append(
-                        {
-                            'goodsID': str(newGoodsID),
-                            'goodsName': inbound_data['货物名称'],
-                            'goodsSpecification': inbound_data['货物规格'],
-                            'goodsManufacturer': inbound_data['生产厂商'],
-                            'goodsProductionLicense': inbound_data['生产许可证'],
-                            'goodsUnit': inbound_data['计量单位'],
-                            'goodsAmount': inbound_data['入库数量'],
-                            'goodsStorageCondition': inbound_data['存储条件'],
-                            'goodsUpdatedByID': userID,
-                            'goodsUpdatedTime': datetime.now(),
-                        }
-                    )
-                    newGoodsID += 1
-                else:
-                    goods = Goods.get_goods_by_id(goodsID)
-                    goods_list.append(
-                        {
-                            'goodsID': goods['goodsID'],
-                            'goodsName': goods['goodsName'],
-                            'goodsSpecification': goods['goodsSpecification'],
-                            'goodsManufacturer': goods['goodsManufacturer'],
-                            'goodsProductionLicense': goods['goodsProductionLicense'],
-                            'goodsUnit': goods['goodsUnit'],
-                            'goodsAmount': inbound_data['入库数量'],
-                            'goodsStorageCondition': goods['goodsStorageCondition'],
-                            'goodsUpdatedByID': userID,
-                            'goodsUpdatedTime': datetime.now(),
-                        }
-                    )
             return jsonify(goods_list)
     except Exception as e:
         logging.error(
@@ -341,22 +174,31 @@ def inboundConfirm():
         return jsonify({"error": str(e)})
 
 
+# 商品入库
 @record_blue.route('/inbound', methods=['GET', 'POST'])
 def inbound():
     try:
         if request.method == 'POST':
             goods_list = request.json
+            # 获取本次入库的入库单号
             inboundOrderID = int(Inbound.get_max_inboundOrderID()) + 1
+            # 新货物的ID
+            newGoodsID = int(Goods.get_max_goodsID()) + 1
             for data in goods_list:
-                goodsID = data['goodsID']
-
-                if Goods.judgeExistID(goodsID):
-                    amount = int(Goods.get_goods_by_id(goodsID)['goodsAmount']) + int(
-                        data['goodsAmount']
-                    )
-                    logging.info(amount)
+                # 判断货物是否存在
+                goodsExist = Goods.judgeExist(
+                    data['goodsName'],
+                    data['goodsSpecification'],
+                    data['goodsManufacturer'],
+                    data['goodsProductionLicense'],
+                )
+                # 货物存在，更新货物数量
+                if goodsExist != 0:
+                    amount = int(
+                        Goods.get_goods_by_id(goodsExist)['goodsAmount']
+                    ) + int(data['goodsAmount'])
                     Goods.update_goods(
-                        data['goodsID'],
+                        goodsExist,
                         data['goodsName'],
                         data['goodsSpecification'],
                         data['goodsManufacturer'],
@@ -367,9 +209,18 @@ def inbound():
                         data['goodsUpdatedByID'],
                         datetime.now(),
                     )
+                    Inbound.add_inbound(
+                        str(int(Inbound.get_max_inboundID()) + 1),
+                        str(inboundOrderID),
+                        goodsExist,
+                        data['goodsAmount'],
+                        data['goodsUpdatedByID'],
+                        datetime.now(),
+                    )
                 else:
+                    # 货物不存在，新增货物
                     Goods.add_goods(
-                        data['goodsID'],
+                        newGoodsID,
                         data['goodsName'],
                         data['goodsSpecification'],
                         data['goodsManufacturer'],
@@ -380,14 +231,16 @@ def inbound():
                         data['goodsUpdatedByID'],
                         datetime.now(),
                     )
-                Inbound.add_inbound(
-                    str(int(Inbound.get_max_inboundID()) + 1),
-                    inboundOrderID,
-                    goodsID,
-                    data['goodsAmount'],
-                    data['goodsUpdatedByID'],
-                    datetime.now(),
-                )
+                    # 新增入库记录
+                    Inbound.add_inbound(
+                        str(int(Inbound.get_max_inboundID()) + 1),
+                        str(inboundOrderID),
+                        newGoodsID,
+                        data['goodsAmount'],
+                        data['goodsUpdatedByID'],
+                        datetime.now(),
+                    )
+                    newGoodsID += 1
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error('Error occurred while inbound. Error message: {}'.format(str(e)))

@@ -153,15 +153,3 @@ class Goods(db.Model):
             return existing_goods.goodsID
         else:
             return 0
-
-    # 判断货物是否已存在
-    @staticmethod
-    def judgeExistID(goodsID):
-        existing_goods = Goods.query.filter(
-            Goods.goodsID == goodsID,
-        ).first()
-
-        if existing_goods:
-            return 1
-        else:
-            return 0

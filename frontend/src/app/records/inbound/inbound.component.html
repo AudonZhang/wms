@@ -1,12 +1,23 @@
-<input type="file" (change)="selectFile($event)" />
-<button class="btn btn-success btn-sm" [disabled]="!currentFile" (click)="uploadConfirm()">
-    Upload
-</button>
-<button (click)="inboundGoods()">确认</button>
+<div nz-row style="  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);background-color: #ececec;">
+    <div nz-col nzSpan=" 1"></div>
+    <div nz-col nzSpan="3"
+        style="display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; font-size: 15px;">
+        入库单上传：</div>
+
+    <div nz-col nzSpan="10">
+        <input type="file" accept=".xls, .xlsx, .csv" (change)="selectFile($event)" />
+        <button nz-button [disabled]="!currentFile" (click)="uploadConfirm()">
+            信息预览
+        </button>
+    </div>
+    <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="inboundGoods()">确认</button></div>
+    <div nz-col nzSpan="7"></div>
+</div>
 
 <div *ngIf="isUpload">
     <div class="container">
-        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }" [nzWidthConfig]="['80px']">
+        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }"
+            [nzWidthConfig]="['100px','100px','190px','190px','80px','50px','100px']">
             <thead>
                 <tr>
                     <th nzCustomFilter style="background-color: #ffffff;">名称</th>
@@ -20,20 +31,15 @@
             </thead>
             <tbody>
                 <tr *ngFor="let goods of goods">
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text" [(ngModel)]="goods.goodsName" />
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsName" />
                     </td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
-                            [(ngModel)]="goods.goodsSpecification" /></td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
-                            [(ngModel)]="goods.goodsManufacturer" /></td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
-                            [(ngModel)]="goods.goodsProductionLicense" /></td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="number"
-                            [(ngModel)]="goods.goodsAmount" /></td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text" [(ngModel)]="goods.goodsUnit" />
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsSpecification" /></td>
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsManufacturer" /></td>
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsProductionLicense" /></td>
+                    <td><input nzAutosize nz-input type="number" [(ngModel)]="goods.goodsAmount" /></td>
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsUnit" />
                     </td>
-                    <td><input nzAutosize nz-input [nzBorderless]='true' type="text"
-                            [(ngModel)]="goods.goodsStorageCondition" /></td>
+                    <td><input nzAutosize nz-input type="text" [(ngModel)]="goods.goodsStorageCondition" /></td>
                 </tr>
             </tbody>
         </nz-table>

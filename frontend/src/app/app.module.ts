@@ -40,6 +40,7 @@ import { RecordsComponent } from './records/records.component';
 import { OutboundComponent } from './records/outbound/outbound.component';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { InboundComponent } from './records/inbound/inbound.component';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 registerLocaleData(zh);
 
@@ -86,6 +87,7 @@ registerLocaleData(zh);
       echarts: () => import('echarts'),
     }),
     NzInputNumberModule,
+    NzUploadModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],

@@ -107,15 +107,6 @@ export class RecordService {
       }
     );
   }
-  upload(file: File): Observable<string> {
-    const url = `${this.recordUrl}/upload`;
-    const formData: FormData = new FormData();
-    formData.append('file', file);
-    return this.http.post<any>(url, formData, this.httpOptions).pipe(
-      tap((_) => console.log(`增加了ID为上传入库单`)),
-      catchError(this.handleError<string>('上传入库单时出错'))
-    );
-  }
 
   // 入库
   InboundGoods(goodsList: Goods[]): Observable<any> {
