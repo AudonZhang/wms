@@ -35,11 +35,7 @@
             <nz-form-item>
                 <nz-form-label [nzSm]="4" [nzXs]="24">储存条件</nz-form-label>
                 <nz-form-control [nzSm]="18" [nzXs]="24" style="text-align: left;">
-                    <nz-select [(ngModel)]="goods.goodsStorageCondition" name="goodsStorageCondition">
-                        <nz-option nzValue="常温" nzLabel="常温"></nz-option>
-                        <nz-option nzValue="阴凉" nzLabel="阴凉"></nz-option>
-                        <nz-option nzValue="冷藏" nzLabel="冷藏"></nz-option>
-                    </nz-select>
+                    <input nz-input [(ngModel)]="goods.goodsStorageCondition" name="goodsStorageCondition">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>

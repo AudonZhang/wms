@@ -9,7 +9,7 @@
                 <span nz-icon nzType="pie-chart"></span>
                 <span>仓库信息</span>
             </li>
-            <li nz-submenu nzTitle="出入库管理" nzIcon="swap">
+            <li nz-submenu nzTitle="出入库管理" nzIcon="swap" *ngIf="this.userRole !== '仓库文员'">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/records/inbound'>
                         <span nz-icon nzType="swap-left"></span>
@@ -19,13 +19,21 @@
                         <span nz-icon nzType="swap-right"></span>
                         <span>出库</span>
                     </li>
-                    <li nz-menu-item routerLink='index/records/plan'>
-                        <span nz-icon nzType="schedule"></span>
-                        <span>出入库计划</span>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="计划管理" nzIcon="carry-out" *ngIf="this.userRole !== '仓库文员'">
+                <ul style="background: #eef1f3;">
+                    <li nz-menu-item routerLink='index/plan/in'>
+                        <span nz-icon nzType="login"></span>
+                        <span>新增入库计划</span>
+                    </li>
+                    <li nz-menu-item routerLink='/index/plan/out'>
+                        <span nz-icon nzType="logout"></span>
+                        <span>新增出库计划</span>
                     </li>
                 </ul>
             </li>
-            <li nz-submenu nzTitle="货物管理" nzIcon="code-sandbox">
+            <li nz-submenu nzTitle="货物管理" nzIcon="code-sandbox" *ngIf="this.userRole !== '仓库文员'">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/goods/all'>
                         <span nz-icon nzType="profile"></span>
@@ -55,9 +63,41 @@
         <nz-header style="padding: 0;">
             <ul nz-menu nzTheme="light" nzMode="horizontal" style="background: #f5f5f5;">
                 <div nz-row>
-                    <div nz-col nzSpan="22" style="display: flex; align-items: center;">
+                    <div nz-col nzSpan="20" style="display: flex; align-items: center;">
                         <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
                     </div>
+                    <div nz-col nzSpan="2" class="people">
+                        <nz-badge [nzCount]="planNum" [nzSize]="'small'" style="margin-right: 24px;">
+                            <span nz-icon nzType="notification" nz-popover [nzPopoverPlacement]="'bottom'"
+                                [nzPopoverContent]="contentTemplate"></span>
+                        </nz-badge>
+                    </div>
+                    <ng-template #contentTemplate>
+                        <div>
+                            <nz-table [nzSize]="'small'">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #ffffff;">类型</th>
+                                        <th style="background-color: #ffffff;">货物名称</th>
+                                        <th style="background-color: #ffffff;">数量</th>
+                                        <th style="background-color: #ffffff;">时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <tr *ngFor="let plan of plansDisplay">
+                                        <td>{{ plan.plan.inOrOutbound | inOrOutboundPipe}}</td>
+                                        <td>{{ plan.goodsName }}</td>
+                                        <td>{{ plan.plan.planExpectedAmount}}</td>
+                                        <td>{{ plan.plan.planExpectedTime | date:'MM月dd日 HH:mm':'UTC' }}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <button nz-button nzType="primary" routerLink='/index/plan'>详细信息</button>
+                            </div>
+                        </div>
+                    </ng-template>
                     <div nz-col nzSpan="2" class="people">
                         <a nz-dropdown [nzDropdownMenu]="menu">
                             <span nz-icon nzType="reddit"></span>

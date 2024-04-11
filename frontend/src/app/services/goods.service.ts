@@ -8,6 +8,7 @@ import { Goods } from '../interfaces/goods';
 })
 export class GoodsService {
   private goodsUrl = 'http://127.0.0.1:5000/api/goods';
+  private planUrl = 'http://127.0.0.1:5000/api/plan';
   public modifyID = '';
   public afterModify = false;
   public afterOutbound = false;
@@ -56,7 +57,7 @@ export class GoodsService {
     );
   }
 
-  // 新增货物1
+  // 新增货物
   addGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/add_goods`;
     return this.http.post<string>(url, goods, this.httpOptions).pipe(
@@ -71,6 +72,20 @@ export class GoodsService {
     return this.http.get<string>(url).pipe(
       tap((_) => console.log('获取货物ID的最大值！')),
       catchError(this.handleError<string>('获取货物ID的最大值时出错'))
+    );
+  }
+
+  // 获取所有可以设置出库计划的货物信息
+  getAllOutPlanGoods(): Observable<Goods[]> {
+    const url = `${this.planUrl}/get_all_out_plan_goods`;
+    return this.http.get<Goods[]>(url).pipe(
+      tap((_) => console.log('获取所有可以设置出库计划的货物信息!')),
+      catchError(
+        this.handleError<Goods[]>(
+          '获取所有可以设置出库计划的货物信息时出错',
+          []
+        )
+      )
     );
   }
 }

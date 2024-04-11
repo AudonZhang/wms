@@ -22,7 +22,7 @@ export class AllGoodsComponent implements OnInit {
     private goodsService: GoodsService,
     private message: NzMessageService
   ) {
-    // 进入子页面修改用户信息时，不显示该页面内容
+    // 进入子页面时，不显示该页面内容
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {

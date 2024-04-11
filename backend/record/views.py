@@ -1,5 +1,5 @@
 from flask import jsonify, request, json
-from func.records import Inbound, Outbound, Plan
+from func.records import Inbound, Outbound
 from func.goods import Goods
 from record import record_blue
 import logging

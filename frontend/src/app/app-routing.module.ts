@@ -17,6 +17,9 @@ import { ModifyGoodsComponent } from './goods/modify-goods/modify-goods.componen
 import { RecordsComponent } from './records/records.component';
 import { OutboundComponent } from './records/outbound/outbound.component';
 import { InboundComponent } from './records/inbound/inbound.component';
+import { PlanComponent } from './plan/plan.component';
+import { InPlanComponent } from './plan/in-plan/in-plan.component';
+import { OutPlanComponent } from './plan/out-plan/out-plan.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -128,13 +131,29 @@ const routes: Routes = [
               breadcrumb: '出库',
             },
           },
-          // {
-          //   path: 'plan',
-          //   component: PlanComponent,
-          //   data: {
-          //     breadcrumb: '出入库计划',
-          //   },
-          // },
+        ],
+      },
+      {
+        path: 'plan',
+        component: PlanComponent,
+        data: {
+          breadcrumb: '计划管理',
+        },
+        children: [
+          {
+            path: 'in',
+            component: InPlanComponent,
+            data: {
+              breadcrumb: '入库计划',
+            },
+          },
+          {
+            path: 'out',
+            component: OutPlanComponent,
+            data: {
+              breadcrumb: '出库计划',
+            },
+          },
         ],
       },
     ],

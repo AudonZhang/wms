@@ -60,7 +60,7 @@ export class GoodsComponent implements OnInit {
           },
           data: this.goodss.map((goods) => ({
             value: goods.goodsAmount,
-            name: goods.goodsName,
+            name: `${goods.goodsSpecification} ${goods.goodsName}`,
           })),
         },
       ],

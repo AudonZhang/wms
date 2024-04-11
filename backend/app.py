@@ -20,11 +20,13 @@ from user import user_blue
 from record import record_blue
 from goods import goods_blue
 from root import root_blue
+from plan import plan_blue
 
 app.register_blueprint(user_blue)
 app.register_blueprint(record_blue)
 app.register_blueprint(goods_blue)
 app.register_blueprint(root_blue)
+app.register_blueprint(plan_blue)
 
 
 if __name__ == "__main__":

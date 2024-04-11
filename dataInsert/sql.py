@@ -134,7 +134,7 @@ if __name__ == "__main__":
             userPasswordMD5=md5_hash("2024004"),
             userEmail="103482994@qq.com",
             userStatus="在职",
-            userRole="维护专员",
+            userRole="仓库文员",
         )
         user5 = User(
             userID="2024005",
@@ -144,7 +144,7 @@ if __name__ == "__main__":
             userPasswordMD5=md5_hash("2024005"),
             userEmail="6839284895@qq.com",
             userStatus="离职",
-            userRole="维护专员",
+            userRole="仓库文员",
         )
         user6 = User(
             userID="2024006",
@@ -154,7 +154,7 @@ if __name__ == "__main__":
             userPasswordMD5=md5_hash("2024006"),
             userEmail="130595930@qq.com",
             userStatus="离职",
-            userRole="维护专员",
+            userRole="仓库文员",
         )
         db.session.add_all([user1, user2, user3, user4, user5, user6])
         db.session.commit()

@@ -41,6 +41,12 @@ import { OutboundComponent } from './records/outbound/outbound.component';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { InboundComponent } from './records/inbound/inbound.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { InPlanComponent } from './plan/in-plan/in-plan.component';
+import { OutPlanComponent } from './plan/out-plan/out-plan.component';
+import { PlanComponent } from './plan/plan.component';
+import { InOrOutboundPipePipe } from './pipes/in-or-outbound-pipe.pipe';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 registerLocaleData(zh);
 
@@ -63,6 +69,10 @@ registerLocaleData(zh);
     RecordsComponent,
     OutboundComponent,
     InboundComponent,
+    InPlanComponent,
+    OutPlanComponent,
+    PlanComponent,
+    InOrOutboundPipePipe,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +98,8 @@ registerLocaleData(zh);
     }),
     NzInputNumberModule,
     NzUploadModule,
+    NzAvatarModule,
+    NzBadgeModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],

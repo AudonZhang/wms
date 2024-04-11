@@ -8,7 +8,6 @@ import { filter } from 'rxjs';
   styleUrls: ['./records.component.css'],
 })
 export class RecordsComponent {
-  options1: any;
   constructor(private router: Router, private route: ActivatedRoute) {
     // 进入子页面修改用户信息时，不显示该页面内容
     this.router.events
