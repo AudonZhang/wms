@@ -9,7 +9,7 @@ import { User } from '../interfaces/user';
 })
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
-  private rootUrl = 'http://127.0.0.1:5000/api/root';
+
   public afterModifyRoot = false; // 在新增或修改用户信息后刷新root页的图表
 
   private httpOptions = {
@@ -101,26 +101,6 @@ export class UserService {
     return this.http.get<string>(url).pipe(
       tap((_) => console.log('获取用户ID的最大值！')),
       catchError(this.handleError<string>('获取用户ID的最大值时出错'))
-    );
-  }
-
-  // 备份数据库
-  backup() {
-    const url = `${this.rootUrl}/backup`;
-    this.http.get(url, { responseType: 'blob' }).subscribe(
-      (response: any) => {
-        const blob = new Blob([response], { type: 'application/octet-stream' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', '数据库备份.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      },
-      (error) => {
-        console.error('备份失败:', error);
-      }
     );
   }
 }

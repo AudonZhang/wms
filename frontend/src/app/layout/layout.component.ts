@@ -5,6 +5,7 @@ import { Plan } from '../interfaces/plan';
 import { PlanService } from '../services/plan.service';
 import { GoodsService } from '../services/goods.service';
 import { Goods } from '../interfaces/goods';
+import { RootService } from '../services/root.service';
 
 @Component({
   selector: 'app-layout',
@@ -14,6 +15,7 @@ import { Goods } from '../interfaces/goods';
 export class LayoutComponent implements OnInit {
   constructor(
     private userService: UserService,
+    private rootService: RootService,
     private planService: PlanService,
     private message: NzMessageService,
     private goodsService: GoodsService
@@ -40,7 +42,7 @@ export class LayoutComponent implements OnInit {
 
   // 备份功能
   backup(): void {
-    this.userService.backup();
+    this.rootService.backup();
     this.message.create('success', '备份文件已在浏览器下载!');
   }
 
