@@ -146,7 +146,7 @@ def update_user():
         return jsonify({"error": str(e)})
 
 
-# 获取最大的用户ID（用于前端新建用户时自动生成ID）
+# 获取最大的用户ID（用于前端新建用户时生成ID）
 @user_blue.route('/get_max_userID')
 def get_max_userID():
     try:

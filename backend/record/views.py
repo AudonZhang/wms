@@ -44,7 +44,7 @@ def get_outbound_record_by_user_id(userID):
         return jsonify({"error": str(e)})
 
 
-# 获取最大出库单ID的路由（用于前端出库时自动生成出库单ID）
+# 获取最大出库单ID的路由（用于前端出库时生成新出库单）
 @record_blue.route('/get_max_outboundOrderID')
 def get_max_outboundOrderID():
     try:
@@ -60,7 +60,7 @@ def get_max_outboundOrderID():
         return jsonify({"error": str(e)})
 
 
-# 获取最大出库记录ID的路由（用于前端出库时自动生成出库记录ID）
+# 获取最大出库记录ID的路由（用于前端出库时生成新出库记录ID）
 @record_blue.route('/get_max_outboundID')
 def get_max_outboundID():
     try:
@@ -100,7 +100,7 @@ def add_outbound():
         return jsonify({"error": str(e)})
 
 
-# 访问api时生成出库ID对应的出库单，浏览器会自动下载生成的出库单
+# 访问api时生成出库单ID对应的出库单，浏览器会自动下载生成的出库单
 @record_blue.route('/generate_outbound_order_by_id/<string:outboundOrderID>')
 def generate_outbound_order_by_id(outboundOrderID):
     try:

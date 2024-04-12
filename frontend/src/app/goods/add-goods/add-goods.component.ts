@@ -51,7 +51,7 @@ export class AddGoodsComponent implements OnInit {
   }
 
   submitForm(): void {
-    // 将提交的值赋值给用户类型
+    // 将提交的值赋值给货物类型
     if (this.validateForm.valid) {
       this.goods.goodsName = this.validateForm.controls['name'].value;
       this.goods.goodsSpecification =
@@ -65,7 +65,7 @@ export class AddGoodsComponent implements OnInit {
         this.validateForm.controls['storageCondition'].value;
       this.goods.goodsUpdatedByID = this.userService.loginID;
 
-      // 确认创建用户的信息
+      // 确认创建货物的信息
       this.informationConfirm();
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -95,10 +95,15 @@ export class AddGoodsComponent implements OnInit {
 
   // 提交创建信息
   save(): void {
-    this.goodsService.addGoods(this.goods).subscribe(() => {
+    this.goodsService.addGoods(this.goods).subscribe((res) => {
+      if (res == '0') {
+        this.message.create('error', '货物已存在!');
+        return;
+      }
       this.message.create('success', '新增货物成功!');
+      this.goodsService.afterModifyGoods = true; // 修改完成后在货物图表页刷新信息
       console.log('submit', this.goods);
-      this.router.navigateByUrl('/index/goods/all');
+      this.router.navigateByUrl('/index/goods/all'); // 跳转货物信息页
     });
   }
 

@@ -51,13 +51,20 @@ export class ModifyGoodsComponent implements OnInit {
 
   // 提交修改的信息到后端并返回
   save(): void {
-    this.goodsService.updateGoods(this.goods).subscribe(() => this.goBack());
-    this.message.create('success', '修改成功!');
+    this.goodsService.updateGoods(this.goods).subscribe((res) => {
+      if (res == '0') {
+        this.message.create('error', '货物已存在!');
+      } else {
+        this.goBack();
+        this.message.create('success', '修改成功!');
+      }
+    });
   }
 
   goBack(): void {
     this.goodsService.modifyID = ''; // 修改完成后清除待修改货物的ID
     this.goodsService.afterModify = true; // 修改完成后在货物信息页刷新信息
+    this.goodsService.afterModifyGoods = true; // 修改完成后在货物图表页刷新信息
     this.router.navigateByUrl('/index/goods/all');
   }
 

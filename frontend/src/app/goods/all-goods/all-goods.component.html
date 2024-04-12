@@ -2,7 +2,7 @@
 <div *ngIf="!isChildRouteActive()">
     <div class="container">
 
-        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }">
+        <nz-table #filterTable [nzData]="goodsDisplay" nzTableLayout="fixed" style="margin: 30px ">
             <thead>
                 <tr>
                     <th style="background-color: #ffffff;">ID</th>
@@ -16,14 +16,16 @@
                     <th style="background-color: #ffffff;">规格</th>
                     <th style="background-color: #ffffff;">生产商</th>
                     <th style="background-color: #ffffff;">生产许可证</th>
-                    <th style="background-color: #ffffff;">库存量</th>
+                    <th style="background-color: #ffffff;" [nzSortOrder]="null" [nzSortFn]="sortFn"
+                        [nzSortDirections]="sortDirections">库存量
+                    </th>
                     <th style="background-color: #ffffff;">单位</th>
                     <th style="background-color: #ffffff;">储存条件</th>
                     <th style="background-color: #ffffff;">编辑</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let goods of goodsDisplay">
+                <tr *ngFor="let goods of filterTable.data">
                     <td>{{ goods.goodsID }}</td>
                     <td>{{ goods.goodsName }}</td>
                     <td>{{ goods.goodsSpecification }}</td>
@@ -33,11 +35,14 @@
                     <td>{{ goods.goodsUnit }}</td>
                     <td>{{ goods.goodsStorageCondition }}</td>
                     <td>
-                        <a routerLink='/index/goods/all/modify' (click)="setModifyGoodsID(goods.goodsID)">修改</a>
+                        <a *ngIf="userRole.includes('管理员')" routerLink="/index/goods/all/modify"
+                            (click)="setModifyGoodsID(goods.goodsID)">修改</a>
+                        <a *ngIf="!userRole.includes('管理员')" class="disabled-link">修改</a>
                     </td>
                 </tr>
             </tbody>
         </nz-table>
+
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <div class="ant-table-filter-dropdown">
                 <div class="search-box">

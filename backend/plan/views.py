@@ -10,7 +10,7 @@ from datetime import datetime
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# 获取所有货物信息的路由
+# 获取所有计划信息的路由
 @plan_blue.route('/get_all_plans')
 def get_all_plans():
     try:
@@ -26,7 +26,7 @@ def get_all_plans():
         return jsonify({"error": str(e)})
 
 
-# 获取所有出库计划信息的路由
+# 获取所有无出库计划的货物的路由
 @plan_blue.route('/get_all_out_plan_goods')
 def get_all_out_plan_goods():
     try:
@@ -125,7 +125,7 @@ def update_plan():
         return jsonify({"error": str(e)})
 
 
-# 获取最大计划ID的路由（用于前端自动生成计划ID）
+# 获取最大计划ID的路由（用于前端生成新计划ID）
 @plan_blue.route('/get_max_planID')
 def get_max_planID():
     try:

@@ -15,7 +15,7 @@ class Goods(db.Model):
     goodsUpdatedByID = db.Column(db.Integer)
     goodsUpdatedTime = db.Column(db.DateTime)
 
-    # 通过货物ID获取货物信息
+    # 通过货物ID获取对应货物信息
     @staticmethod
     def get_goods_by_id(goodsID):
         goodss = Goods.query.filter(Goods.goodsID == goodsID)
@@ -93,7 +93,7 @@ class Goods(db.Model):
         else:
             return '0'
 
-    # 新增货物记录
+    # 新增货物
     @staticmethod
     def add_goods(
         goodsID,
@@ -108,6 +108,7 @@ class Goods(db.Model):
         goodsUpdatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID)
+        # 货物ID已存在
         if len(goods.all()) > 0:
             return '0'
         else:
@@ -127,7 +128,7 @@ class Goods(db.Model):
             db.session.commit()
             return '1'
 
-    # 查询最大的货物ID（用于前端新增货物记录时自动生成货物ID）
+    # 查询最大的货物ID（用于前端新增货物时生成新货物ID）
     @staticmethod
     def get_max_goodsID():
         goodss = Goods.query.all()
@@ -135,9 +136,9 @@ class Goods(db.Model):
             max_goods_id = max(goods.goodsID for goods in goodss)
             return str(max_goods_id)
         else:
-            return '202400001'
+            return '202400001'  # 若数据库中无货物，则生成第一个货物ID
 
-    # 判断货物是否已存在
+    # 根据货物信息判断货物是否存在
     @staticmethod
     def judgeExist(
         goodsName, goodsSpecification, goodsManufacturer, goodsProductionLicense
@@ -150,6 +151,6 @@ class Goods(db.Model):
         ).first()
 
         if existing_goods:
-            return existing_goods.goodsID
+            return existing_goods.goodsID  # 货物存在则返回货物ID
         else:
             return 0

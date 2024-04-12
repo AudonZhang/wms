@@ -46,19 +46,30 @@ def add_goods():
     try:
         if request.method == 'POST':
             data = json.loads(request.get_data())
-            result = Goods.add_goods(
-                data['goodsID'],
+            # 判断货物是否存在
+            judge = Goods.judgeExist(
                 data['goodsName'],
                 data['goodsSpecification'],
                 data['goodsManufacturer'],
                 data['goodsProductionLicense'],
-                data['goodsUnit'],
-                data['goodsAmount'],
-                data['goodsStorageCondition'],
-                data['goodsUpdatedByID'],
-                datetime.now(),
             )
-            return jsonify(result)
+            # 货物不存在则新建货物
+            if judge == 0:
+                result = Goods.add_goods(
+                    data['goodsID'],
+                    data['goodsName'],
+                    data['goodsSpecification'],
+                    data['goodsManufacturer'],
+                    data['goodsProductionLicense'],
+                    data['goodsUnit'],
+                    data['goodsAmount'],
+                    data['goodsStorageCondition'],
+                    data['goodsUpdatedByID'],
+                    datetime.now(),
+                )
+                return jsonify(result)
+            else:
+                return jsonify('0')
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
@@ -74,19 +85,30 @@ def update_goods():
     try:
         if request.method == 'POST':
             data = json.loads(request.get_data())
-            result = Goods.update_goods(
-                data['goodsID'],
+            # 判断修改后的货物是否存在
+            judge = Goods.judgeExist(
                 data['goodsName'],
                 data['goodsSpecification'],
                 data['goodsManufacturer'],
                 data['goodsProductionLicense'],
-                data['goodsUnit'],
-                data['goodsAmount'],
-                data['goodsStorageCondition'],
-                data['goodsUpdatedByID'],
-                datetime.now(),
             )
-            return jsonify({'status': result})
+            # 不存在则新建货物
+            if judge == 0:
+                result = Goods.update_goods(
+                    data['goodsID'],
+                    data['goodsName'],
+                    data['goodsSpecification'],
+                    data['goodsManufacturer'],
+                    data['goodsProductionLicense'],
+                    data['goodsUnit'],
+                    data['goodsAmount'],
+                    data['goodsStorageCondition'],
+                    data['goodsUpdatedByID'],
+                    datetime.now(),
+                )
+                return jsonify(result)
+            else:
+                return jsonify('0')
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
@@ -96,7 +118,7 @@ def update_goods():
         return jsonify({"error": str(e)})
 
 
-# 获取最大货物ID的路由（用于前端新建货物时自动生成货物ID）
+# 获取最大的货物ID的路由（用于前端新建货物时生成新货物ID）
 @goods_blue.route('/get_max_goodsID')
 def get_max_goodsID():
     try:

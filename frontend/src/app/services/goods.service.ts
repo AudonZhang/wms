@@ -10,8 +10,9 @@ export class GoodsService {
   private goodsUrl = 'http://127.0.0.1:5000/api/goods';
   private planUrl = 'http://127.0.0.1:5000/api/plan';
   public modifyID = '';
-  public afterModify = false;
-  public afterOutbound = false;
+  public afterModify = false; //  货物信息界面刷新
+  public afterOutbound = false; // 出库页面货物信息刷新
+  public afterModifyGoods = false; // 货物图标页刷新
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -49,7 +50,7 @@ export class GoodsService {
   }
 
   // 更新用户信息
-  updateGoods(goods: Goods): Observable<any> {
+  updateGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/update_goods`;
     return this.http.post<Goods>(url, goods, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${goods.goodsID}的货物信息`)),

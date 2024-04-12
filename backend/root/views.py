@@ -3,6 +3,7 @@ from flask import jsonify, send_file
 from func.users import User
 from func.goods import Goods
 from func.records import Inbound, Outbound
+from func.plans import Plan
 import pandas as pd
 from root import root_blue
 import logging

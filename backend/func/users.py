@@ -40,7 +40,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 通过用户ID获取对应的用户信息
+    # 根据用户ID获取对应的用户信息
     @staticmethod
     def get_user_by_id(userID):
         users = User.query.filter(User.userID == userID)
@@ -104,6 +104,7 @@ class User(db.Model):
         else:
             return '0'
 
+    # 解雇员工
     @staticmethod
     def unemploy_user(userID):
         user = User.query.filter(User.userID == userID).first()
@@ -114,7 +115,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 原下岗员工上岗
+    # 原离职员工入职
     @staticmethod
     def employ_user(userID):
         user = User.query.filter(User.userID == userID).first()
@@ -159,7 +160,7 @@ class User(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的用户ID（用于前端创建用户时自动生成ID）
+    # 获取最大的用户ID（用于前端创建用户时生成ID）
     @staticmethod
     def get_max_userID():
         users = User.query.all()
@@ -167,4 +168,4 @@ class User(db.Model):
             max_user_id = max(user.userID for user in users)
             return str(max_user_id)
         else:
-            return '2024001'
+            return '2024001'  # 若数据库中无用户，则生成第一个用户ID

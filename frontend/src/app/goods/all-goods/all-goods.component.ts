@@ -4,6 +4,8 @@ import { filter } from 'rxjs';
 import { Goods } from 'src/app/interfaces/goods';
 import { GoodsService } from '../../services/goods.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { UserService } from 'src/app/services/user.service';
+import { NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-all-goods',
@@ -15,12 +17,18 @@ export class AllGoodsComponent implements OnInit {
   goodsDisplay: Goods[] = []; // 搜索后展示内容列表
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
+  userRole = ''; // 登录用户的职务
+  // 根据货物数量排序
+  sortFn: NzTableSortFn<Goods> = (a: Goods, b: Goods) =>
+    a.goodsAmount - b.goodsAmount;
+  sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private goodsService: GoodsService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private userService: UserService
   ) {
     // 进入子页面时，不显示该页面内容
     this.router.events
@@ -68,6 +76,7 @@ export class AllGoodsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGoods();
+    this.userRole = this.userService.loginRole;
 
     // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表
     setInterval(() => {

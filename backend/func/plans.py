@@ -15,7 +15,7 @@ class Plan(db.Model):
     planFinishedByID = db.Column(db.Integer)
     planFinishedTime = db.Column(db.DateTime)
 
-    # 获取所有出入库计划
+    # 获取所有计划
     @staticmethod
     def get_all_plans():
         plans = Plan.query.all()
@@ -99,7 +99,7 @@ class Plan(db.Model):
             db.session.commit()
             return '1'
 
-    # 修改计划信息
+    # 修改计划
     @staticmethod
     def update_plan(
         planID,
@@ -115,22 +115,24 @@ class Plan(db.Model):
     ):
         plan = Plan.query.filter(Plan.planID == planID).first()
         if plan is not None:
-            planID = (planID,)
-            inOrOutbound = (inOrOutbound,)
-            planGoodsID = (planGoodsID,)
-            planExpectedTime = (planExpectedTime,)
-            planExpectedAmount = (planExpectedAmount,)
-            planStatus = (planStatus,)
-            planUpdatedByID = (planUpdatedByID,)
-            planUpdatedTime = (planUpdatedTime,)
-            planFinishedByID = (planFinishedByID,)
-            planFinishedTime = (planFinishedTime,)
+            plan = Plan(
+                planID=planID,
+                inOrOutbound=inOrOutbound,
+                planGoodsID=planGoodsID,
+                planExpectedTime=planExpectedTime,
+                planExpectedAmount=planExpectedAmount,
+                planStatus=planStatus,
+                planUpdatedByID=planUpdatedByID,
+                planUpdatedTime=planUpdatedTime,
+                planFinishedByID=planFinishedByID,
+                planFinishedTime=planFinishedTime,
+            )
             db.session.commit()
             return '1'
         else:
             return '0'
 
-    # 查询最大的计划ID（用于前端新增计划时自动生成计划ID）
+    # 查询最大的计划ID（用于前端新增计划时生成计划ID）
     @staticmethod
     def get_max_planID():
         plans = Plan.query.all()
@@ -138,4 +140,4 @@ class Plan(db.Model):
             max_plan_id = max(plan.planID for plan in plans)
             return str(max_plan_id)
         else:
-            return '2024000001'
+            return '2024000001'  # 若数据库中无计划，则生成第一个计划ID

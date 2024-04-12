@@ -14,7 +14,7 @@ class Inbound(db.Model):
     inboundUpdatedByID = db.Column(db.Integer)
     inboundUpdatedTime = db.Column(db.DateTime)
 
-    # 获取用户ID创建的入库记录
+    # 根据用户ID获取入库记录
     @staticmethod
     def get_inbound_record_by_user_id(userID):
         records = Inbound.query.filter(Inbound.inboundUpdatedByID == userID)
@@ -56,7 +56,7 @@ class Inbound(db.Model):
         else:
             return '0'
 
-    # 新增出库记录
+    # 新增入库记录
     @staticmethod
     def add_inbound(
         inboundID,
@@ -82,7 +82,7 @@ class Inbound(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的入库记录ID（用于入库操作时自动生成入库记录ID）
+    # 获取最大的入库记录ID（用于前端入库操作时生成入库记录ID）
     @staticmethod
     def get_max_inboundID():
         inbounds = Inbound.query.all()
@@ -90,9 +90,9 @@ class Inbound(db.Model):
             max_inbounds_id = max(inbound.inboundID for inbound in inbounds)
             return str(max_inbounds_id)
         else:
-            return '2024000001'
+            return '2024000001'  # 若数据库中无入库记录，则生成第一个入库记录ID
 
-    # 获取最大的入库单ID（用于入库操作时自动入成出库单ID）
+    # 获取最大的入库单ID（用于入库操作时入成入库单ID）
     @staticmethod
     def get_max_inboundOrderID():
         inbounds = Inbound.query.all()
@@ -100,7 +100,7 @@ class Inbound(db.Model):
             max_inboundOrder_id = max(inbound.inboundOrderID for inbound in inbounds)
             return str(max_inboundOrder_id)
         else:
-            return '20240001'
+            return '20240001'  # 若数据库中入库单，则生成第一个入库单ID
 
 
 # 实现与出库记录相关的类与函数
@@ -113,7 +113,7 @@ class Outbound(db.Model):
     outboundUpdatedByID = db.Column(db.Integer)
     outboundUpdatedTime = db.Column(db.DateTime)
 
-    # 获取用户ID创建的出库记录
+    # 根据用户ID获取出库记录
     @staticmethod
     def get_outbound_record_by_user_id(userID):
         records = Outbound.query.filter(Outbound.outboundUpdatedByID == userID)
@@ -155,7 +155,7 @@ class Outbound(db.Model):
         else:
             return '0'
 
-    # 获取最大的出库单ID（用于前端进行出库操作时自动生成出库单ID）
+    # 获取最大的出库单ID（用于前端进行出库操作时生成出库单ID）
     @staticmethod
     def get_max_outboundOrderID():
         outbounds = Outbound.query.all()
@@ -165,9 +165,9 @@ class Outbound(db.Model):
             )
             return str(max_outboundOrder_id)
         else:
-            return '20240001'
+            return '20240001'  # 若数据库中无出库单，则生成第一个出库单ID
 
-    # 获取最大的出库记录ID（用于前端进行出库操作时自动生成出库记录ID）
+    # 获取最大的出库记录ID（用于前端进行出库操作时生成出库记录ID）
     @staticmethod
     def get_max_outboundID():
         outbounds = Outbound.query.all()
@@ -175,7 +175,7 @@ class Outbound(db.Model):
             max_outbounds_id = max(outbound.outboundID for outbound in outbounds)
             return str(max_outbounds_id)
         else:
-            return '2024000001'
+            return '2024000001'  # 若数据库中无出库记录，则生成第一个出库记录ID
 
     # 新增出库记录
     @staticmethod
@@ -203,7 +203,7 @@ class Outbound(db.Model):
             db.session.commit()
             return '1'
 
-    # 根据出库单ID生成出库单文件并返回出库单文件名
+    # 根据出库单ID生成出库单文件并返回出库单文件名（供前端下载）
     @staticmethod
     def generate_outbound_order_by_id(outboundOrderID):
         records = Outbound.query.filter(
@@ -216,7 +216,7 @@ class Outbound(db.Model):
             # 设定文件保存目录
             current_dir = os.getcwd()  # 获取当前工作目录路径
             parent_dir = os.path.dirname(current_dir)  # 获取上级目录
-            order_dir = os.path.join(parent_dir, 'order')  # 选择上级目录的order文件夹b
+            order_dir = os.path.join(parent_dir, 'order')  # 选择上级目录的order文件夹
             # 如果 /order 目录不存在，则创建它
             if not os.path.exists(order_dir):
                 os.makedirs(order_dir)

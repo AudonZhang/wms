@@ -33,13 +33,13 @@
                     </li>
                 </ul>
             </li>
-            <li nz-submenu nzTitle="货物管理" nzIcon="code-sandbox" *ngIf="this.userRole !== '仓库文员'">
+            <li nz-submenu nzTitle="货物管理" nzIcon="code-sandbox">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/goods/all'>
                         <span nz-icon nzType="profile"></span>
                         <span>货物信息</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/goods/new'>
+                    <li nz-menu-item routerLink='/index/goods/new' *ngIf="this.userRole?.includes('管理员')">
                         <span nz-icon nzType="plus"></span>
                         <span>新建货物</span>
                     </li>
