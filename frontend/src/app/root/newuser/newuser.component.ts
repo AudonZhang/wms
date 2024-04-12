@@ -21,7 +21,7 @@ import {
   styleUrls: ['./newuser.component.css'],
 })
 export class NewuserComponent implements OnInit {
-  passwordVisible1 = false;
+  passwordVisible1 = false; // 密码输入框内容是否可见
   passwordVisible2 = false;
   user: User = {
     userID: '',
@@ -91,10 +91,15 @@ export class NewuserComponent implements OnInit {
 
   save(): void {
     // 提交创建信息
-    this.userService.addUser(this.user).subscribe(() => {
-      this.message.create('success', '新增用户成功!');
-      console.log('submit', this.validateForm.value);
-      this.router.navigateByUrl('/index/root/allUsers');
+    this.userService.addUser(this.user).subscribe((res) => {
+      if (res == '1') {
+        this.message.create('success', '新增用户成功!');
+        console.log('submit', this.validateForm.value);
+        this.userService.afterModifyRoot = true;
+        this.router.navigateByUrl('/index/root/allUsers');
+      } else {
+        this.message.create('error', '新增用户失败，用户ID已存在!');
+      }
     });
   }
 

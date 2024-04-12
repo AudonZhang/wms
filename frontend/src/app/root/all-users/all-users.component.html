@@ -18,15 +18,13 @@
                     <th style="background-color: #ffffff;">电话</th>
                     <th style="background-color: #ffffff;">邮箱</th>
                     <th style="background-color: #ffffff;" [nzFilterMultiple]="true" [nzFilters]="[
-        { text: '系统管理员', value: '系统管理员' },
-        { text: '仓库管理员', value: '仓库管理员'},
-        { text: '仓库文员', value: '仓库文员' },
-      ]" [nzFilterFn]="filterRole">
+                        { text: '系统管理员', value: '系统管理员' },
+                        { text: '仓库管理员', value: '仓库管理员'},
+                        { text: '仓库文员', value: '仓库文员' },]" [nzFilterFn]="filterRole">
                         职务</th>
                     <th style="background-color: #ffffff;" [nzFilters]="[
-                    { text: '在职', value: '在职' },
-                    { text: '离职', value: '离职'},
-                  ]" [nzFilterFn]="filterStatus">状态</th>
+                        { text: '在职', value: '在职' },
+                        { text: '离职', value: '离职'},]" [nzFilterFn]="filterStatus">状态</th>
                     <th style="background-color: #ffffff;">编辑</th>
                 </tr>
             </thead>
@@ -52,6 +50,7 @@
                 </tr>
             </tbody>
         </nz-table>
+
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <div class="ant-table-filter-dropdown">
                 <div class="search-box">

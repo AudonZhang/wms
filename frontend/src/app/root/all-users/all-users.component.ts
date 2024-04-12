@@ -31,7 +31,7 @@ export class AllUsersComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    // 进入子页面修改用户信息时，不显示该页面内容
+    // 进入子页面时，不显示该页面内容
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -111,30 +111,42 @@ export class AllUsersComponent implements OnInit {
 
   // 解雇用户
   unemployUser(userID: string): void {
-    this.userService.unemployUser(userID).subscribe(); //
-    if (userID == this.userService.loginID) {
-      // 判断是否正在解雇当前登陆账户
-      this.userService.loginID = '';
-      this.notification.create('warning', '当前用户被解雇!', '请重新登录!');
-      this.router.navigateByUrl('');
-    }
-    this.notification.create(
-      'success',
-      '解雇成功!',
-      `成功解雇ID为${userID}的用户!`
-    );
-    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
+    this.userService.unemployUser(userID).subscribe((res) => {
+      if (res == '1') {
+        if (userID == this.userService.loginID) {
+          // 判断是否正在解雇当前登陆账户
+          this.userService.loginID = '';
+          this.notification.create('warning', '当前用户被解雇!', '请重新登录!');
+          this.router.navigateByUrl('');
+        }
+        this.notification.create(
+          'success',
+          '解雇成功!',
+          `成功解雇ID为${userID}的用户!`
+        );
+        this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
+        this.userService.afterModifyRoot = true; // 修改完成后在root页刷新信息
+      } else {
+        this.message.create('error', '用户不存在');
+      }
+    }); //
   }
 
   // 恢复用户
   employUser(userID: string): void {
-    this.userService.employUser(userID).subscribe();
-    this.notification.create(
-      'success',
-      '恢复成功!',
-      `成功恢复ID为${userID}的用户!`
-    );
-    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
+    this.userService.employUser(userID).subscribe((res) => {
+      if (res == '1') {
+        this.notification.create(
+          'success',
+          '恢复成功!',
+          `成功恢复ID为${userID}的用户!`
+        );
+        this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
+        this.userService.afterModifyRoot = true; // 修改完成后在root页刷新信息
+      } else {
+        this.message.create('error', '用户不存在');
+      }
+    });
   }
   // 与确认是否解雇当前管理员账户
   administratorConfirm(userID: string, userName: string): void {

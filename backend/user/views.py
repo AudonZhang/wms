@@ -18,7 +18,7 @@ def get_all_users():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting users from the database. Error message: {}".format(
+            "Error occurred while getting all users from the database. Error message: {}".format(
                 str(e)
             )
         )
@@ -34,7 +34,7 @@ def login():
             userID = data["userID"]
             userPasswordMD5 = data["userPasswordMD5"]
             judge = User.login(userID, userPasswordMD5)
-            return judge
+            return jsonify(judge)
         else:
             return jsonify({"status": "GET"})
     except Exception as e:
@@ -47,7 +47,7 @@ def login():
 def get_user_by_id(userID):
     try:
         result = User.get_user_by_id(userID)
-        logging.info("获得" + userID + "的信息")
+        logging.info("获得" + userID + "用户的信息")
         return jsonify(result)
     except Exception as e:
         logging.error(
@@ -64,7 +64,7 @@ def unemploy_user(userID):
     try:
         if request.method == 'POST':
             result = User.unemploy_user(userID)
-            return jsonify({'status': result})
+            return jsonify(result)
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
@@ -80,7 +80,7 @@ def employ_user(userID):
     try:
         if request.method == 'POST':
             result = User.employ_user(userID)
-            return jsonify({'status': result})
+            return jsonify(result)
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
@@ -136,7 +136,7 @@ def update_user():
                 data['userUpdatedByID'],
                 datetime.now(),
             )
-            return jsonify({'status': result})
+            return jsonify(result)
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:
@@ -146,7 +146,7 @@ def update_user():
         return jsonify({"error": str(e)})
 
 
-# 获取最大的用户ID（用于前端新建用户时生成ID）
+# 获取最大的用户ID（用于前端新建用户时生成新ID）
 @user_blue.route('/get_max_userID')
 def get_max_userID():
     try:

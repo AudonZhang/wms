@@ -141,6 +141,7 @@ class User(db.Model):
         userUpdatedTime,
     ):
         query_user = User.query.filter(User.userID == userID)
+        # 数据库中已存在该ID的用户
         if len(query_user.all()) > 0:
             return '0'
         else:
@@ -160,7 +161,7 @@ class User(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的用户ID（用于前端创建用户时生成ID）
+    # 获取最大的用户ID（用于前端创建用户时生成新ID）
     @staticmethod
     def get_max_userID():
         users = User.query.all()

@@ -29,7 +29,7 @@ export class RootComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService
   ) {
-    // 进入子页面修改用户信息时，不显示该页面内容
+    // 进入子页面时，不显示该页面内容
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -42,6 +42,7 @@ export class RootComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // 获取所用用户信息并统计
     this.userService.getAllUsers().subscribe((res) => {
       this.users = res;
       this.maleCount = this.users.filter(
@@ -69,8 +70,43 @@ export class RootComponent implements OnInit {
       // 在获取用户数据后，更新图表数据
       this.updateChartData();
     });
+
+    // 每秒判断用户信息是否修改或新增
+    setInterval(() => {
+      if (this.userService.afterModifyRoot) {
+        this.userService.afterModifyRoot = false;
+        this.userService.getAllUsers().subscribe((res) => {
+          this.users = res;
+          this.maleCount = this.users.filter(
+            (user) => user.userGender === '男'
+          ).length;
+          this.femaleCount = this.users.filter(
+            (user) => user.userGender === '女'
+          ).length;
+          this.onJobCount = this.users.filter(
+            (user) => user.userStatus === '在职'
+          ).length;
+          this.quitCount = this.users.filter(
+            (user) => user.userStatus === '离职'
+          ).length;
+          this.sysAdminCount = this.users.filter(
+            (user) => user.userRole === '系统管理员'
+          ).length;
+          this.warehouseAdminCount = this.users.filter(
+            (user) => user.userRole === '仓库管理员'
+          ).length;
+          this.maintenanceCount = this.users.filter(
+            (user) => user.userRole === '仓库文员'
+          ).length;
+
+          // 在获取用户数据后，更新图表数据
+          this.updateChartData();
+        });
+      }
+    }, 1000);
   }
 
+  // echarts配置
   updateChartData(): void {
     this.userCount = this.users.length;
     this.options1 = {

@@ -47,15 +47,22 @@ export class ModifyComponent implements OnInit {
 
   // 提交修改的信息到后端并返回
   save(): void {
-    this.userService.updateUser(this.user).subscribe(() => this.goBack());
-    this.message.create('success', '修改成功!');
+    this.userService.updateUser(this.user).subscribe((res) => {
+      if (res == '1') {
+        this.goBack();
+        this.message.create('success', '修改成功!');
+      } else {
+        this.message.create('error', '未找到用户信息!');
+      }
+    });
   }
 
   // 修改后返回到用户信息页
   goBack(): void {
+    this.userService.afterModifyRoot = true; // 修改完成后在root页刷新信息
+    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
     this.router.navigateByUrl('/index/root/allUsers');
     this.userService.modifyID = ''; // 修改完成后清除
-    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
   }
 
   // 开始时根据正在修改用户ID获取要修改的用户信息

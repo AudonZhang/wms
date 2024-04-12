@@ -10,6 +10,7 @@ import { User } from '../interfaces/user';
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
   private rootUrl = 'http://127.0.0.1:5000/api/root';
+  public afterModifyRoot = false; // 在新增或修改用户信息后刷新root页的图表
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -50,7 +51,7 @@ export class UserService {
     );
   }
   // 更新用户信息
-  updateUser(user: User): Observable<any> {
+  updateUser(user: User): Observable<string> {
     const url = `${this.userUrl}/update_user`;
     return this.http.post<User>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
@@ -77,20 +78,20 @@ export class UserService {
   }
 
   // 将员工状态设定为"离职"
-  unemployUser(userID: string): Observable<User> {
+  unemployUser(userID: string): Observable<string> {
     const url = `${this.userUrl}/unemploy_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
       tap((_) => console.log(`解雇ID为${userID}的员工`)),
-      catchError(this.handleError<User>(`解雇ID为${userID}的员工时出错`))
+      catchError(this.handleError<any>(`解雇ID为${userID}的员工时出错`))
     );
   }
 
   // 将员工状态设定为"在职"
-  employUser(userID: string): Observable<User> {
+  employUser(userID: string): Observable<string> {
     const url = `${this.userUrl}/employ_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
       tap((_) => console.log(`继续聘用ID为${userID}的员工`)),
-      catchError(this.handleError<User>(`继续聘用ID为${userID}的员工时出错`))
+      catchError(this.handleError<any>(`继续聘用ID为${userID}的员工时出错`))
     );
   }
 
