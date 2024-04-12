@@ -102,7 +102,7 @@ def backup():
         os.makedirs(backup_dir, exist_ok=True)  # 创建"backup"文件夹（如果不存在）
         save_path = os.path.join(backup_dir, 'backup.xlsx')  # 构造保存文件的完整路径
 
-        # 写入Excel文件，并指定表单名为中文
+        # 写入Excel文件，并指定表单名
         with pd.ExcelWriter(save_path) as writer:
             users_df.to_excel(writer, sheet_name='用户信息', index=False)
             goods_df.to_excel(writer, sheet_name='货物信息', index=False)

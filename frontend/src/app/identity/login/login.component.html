@@ -1,9 +1,12 @@
 <div class="container">
     <div class="login">
+
         <div class="logo">
             <img src="assets/wm1.png" />
         </div>
+
         <div class="title">仓库管理系统</div>
+
         <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
             <nz-form-item>
                 <nz-form-control nzErrorTip="ID为7位数字">
@@ -26,5 +29,6 @@
             </nz-form-item>
             <button nz-button [nzType]="'primary'" [nzGhost]="'true'" nzBlock>登录</button>
         </form>
+
     </div>
 </div>

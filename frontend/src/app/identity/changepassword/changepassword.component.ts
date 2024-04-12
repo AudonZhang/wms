@@ -38,7 +38,7 @@ export class ChangepasswordComponent implements OnInit {
 
   // 用户提交后进行判断
   saveConfirm(): void {
-    // 旧密码错误
+    // 原密码错误
     if (
       Md5.hashStr(this.validateForm.value.OldPassword) !=
       this.user.userPasswordMD5
@@ -54,12 +54,12 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '新密码与原密码相同!');
       return;
     }
-    // 新密码与新密码确认不相同
+    // 新密码与新密码确认不同
     if (
       this.validateForm.value.changePassword !=
       this.validateForm.value.changePasswordConfirm
     ) {
-      this.message.create('warning', '两次输入的密码不相等!');
+      this.message.create('warning', '两次输入的密码不同!');
       return;
     }
     // 将新密码转化为MD5值

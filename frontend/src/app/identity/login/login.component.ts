@@ -72,7 +72,7 @@ export class LoginComponent {
               );
             });
           const url = '/index';
-          this.router.navigateByUrl(url);
+          this.router.navigateByUrl(url); // 跳转到主页
         } else this.message.create('error', '用户信息错误或用户不存在！');
       });
     } else {

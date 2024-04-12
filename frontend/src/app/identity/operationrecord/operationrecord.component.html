@@ -1,96 +1,118 @@
 <div class="container">
-    <div class="custom-select">
-        <select [(ngModel)]="selectedOption">
-            <option value="出库">出库</option>
-            <option value="入库">入库</option>
-        </select>
+    <div nz-row
+        style="  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);background-color: #ececec;display: flex;align-items: center;">
+        <div nz-col nzSpan="2"></div>
+        <div nz-col nzSpan="2" style="background-color: #ececec;">
+            <select [(ngModel)]="selectedOption" style="font-size: 15px;background-color: #ececec;">
+                <option value="出库">出库</option>
+                <option value="入库">入库</option>
+            </select>
+        </div>
+        <div nz-col nzSpan="1"></div>
+        <div nz-col nzSpan="6" style="background-color: #ececec;">
+            <input type="date" [(ngModel)]="startDate">-
+            <input type="date" [(ngModel)]="endDate">
+        </div>
+        <div nz-col nzSpan="1"></div>
+        <div nz-col nzSpan="1"><button type="button" (click)="filterDate(startDate,endDate)"
+                style="background-color: #ececec;"
+                [disabled]="startDate.length === 0 || endDate.length === 0">确定</button></div>
+        <div nz-col nzSpan="1"></div>
+        <div nz-col nzSpan="1"><button type="button" (click)="reset()" style="background-color: #ececec;">重置</button>
+        </div>
     </div>
+</div>
 
-    <div *ngIf="selectedOption === '入库'">
-        <nz-table nzTableLayout="fixed" style="margin: 30px" [nzPageSize]="5">
-            <thead>
-                <tr>
-                    <th style="background-color: #ffffff;">入库记录ID</th>
-                    <th nzCustomFilter style="background-color: #ffffff;">入库单ID
-                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
-                            [nzDropdownMenu]="menu">
-                            <i nz-icon nzType="search"></i>
-                        </nz-filter-trigger>
-                    </th>
-                    <th style="background-color: #ffffff;">货物ID</th>
-                    <th style="background-color: #ffffff;">入库数量</th>
-                    <th style="background-color: #ffffff;">入库时间</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let record of filterRecords()">
-                    <td>{{ record.inboundID }}</td>
-                    <td>{{ record.inboundOrderID }}</td>
-                    <td>
-                        <span (click)="handleClick(record.inboundGoodsID)" (mouseleave)="clearPopoverContent()"
-                            style="text-decoration: underline; color: blue;">
-                            <span nz-popover [nzPopoverContent]="popoverContent">
-                                {{ record.inboundGoodsID }}
-                            </span>
+
+
+<div *ngIf="selectedOption === '入库'">
+    <nz-table nzTableLayout="fixed" style="margin: 30px" [nzPageSize]="5">
+        <thead>
+            <tr>
+                <th style="background-color: #ffffff;">入库记录ID</th>
+                <th nzCustomFilter style="background-color: #ffffff;">入库单ID
+                    <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menu">
+                        <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
+                </th>
+                <th style="background-color: #ffffff;">货物ID</th>
+                <th style="background-color: #ffffff;">入库数量</th>
+                <th style="background-color: #ffffff;">入库日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of filterRecords()">
+                <td>{{ record.inboundID }}</td>
+                <td>{{ record.inboundOrderID }}</td>
+                <td>
+                    <span (click)="handleClick(record.inboundGoodsID)" (mouseleave)="clearPopoverContent()"
+                        style="text-decoration: underline; color: blue;">
+                        <span nz-popover [nzPopoverContent]="popoverContent">
+                            {{ record.inboundGoodsID }}
                         </span>
-                    </td>
-                    <td>{{ record.inboundAmount }}</td>
-                    <td>{{ record.inboundUpdatedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
-                </tr>
-            </tbody>
-        </nz-table>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <div class="ant-table-filter-dropdown">
-                <div class="search-box">
-                    <input type="text" nz-input placeholder="请输入入库单ID" [(ngModel)]="searchValue" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="inboundSearch()"
-                        class="search-button">搜索</button>
-                    <button nz-button nzSize="small" (click)="inboundReset()">重置</button>
-                </div>
+                    </span>
+                </td>
+                <td>{{ record.inboundAmount }}</td>
+                <td>{{ record.inboundUpdatedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <div class="ant-table-filter-dropdown">
+            <div class="search-box">
+                <input type="text" nz-input placeholder="请输入入库单ID" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="inboundSearch()"
+                    class="search-button">搜索</button>
+                <button nz-button nzSize="small" (click)="reset()">重置</button>
             </div>
-        </nz-dropdown-menu>
-    </div>
-    <div *ngIf="selectedOption === '出库'">
-        <nz-table nzTableLayout="fixed" style="margin: 30px">
-            <thead>
-                <tr>
-                    <th style="background-color: #ffffff;">出库记录ID</th>
-                    <th nzCustomFilter style="background-color: #ffffff;">出库单ID
-                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
-                            [nzDropdownMenu]="menu">
-                            <i nz-icon nzType="search"></i>
-                        </nz-filter-trigger>
-                    </th>
-                    <th style="background-color: #ffffff;">货物ID</th>
-                    <th style="background-color: #ffffff;">出库数量</th>
-                    <th style="background-color: #ffffff;">出库时间</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let record of filterRecords()">
-                    <td>{{ record.outboundID }}</td>
-                    <td>{{ record.outboundOrderID }}</td>
-                    <td>
-                        <span (click)="handleClick(record.outboundGoodsID)" (mouseleave)="clearPopoverContent()"
-                            style="text-decoration: underline; color: blue;">
-                            <span nz-popover [nzPopoverContent]="popoverContent">
-                                {{ record.outboundGoodsID }}
-                            </span>
+        </div>
+    </nz-dropdown-menu>
+</div>
+
+<div *ngIf="selectedOption === '出库'">
+    <nz-table nzTableLayout="fixed" style="margin: 30px">
+        <thead>
+            <tr>
+                <th style="background-color: #ffffff;">出库记录ID</th>
+                <th nzCustomFilter style="background-color: #ffffff;">出库单ID
+                    <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menu">
+                        <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
+                </th>
+                <th style="background-color: #ffffff;">货物ID</th>
+                <th style="background-color: #ffffff;">出库数量</th>
+                <th style="background-color: #ffffff;">出库日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of filterRecords()">
+                <td>{{ record.outboundID }}</td>
+                <td>{{ record.outboundOrderID }}</td>
+                <td>
+                    <span (click)="handleClick(record.outboundGoodsID)" (mouseleave)="clearPopoverContent()"
+                        style="text-decoration: underline; color: blue;">
+                        <span nz-popover [nzPopoverContent]="popoverContent">
+                            {{ record.outboundGoodsID }}
                         </span>
-                    </td>
-                    <td>{{ record.outboundAmount }}</td>
-                    <td>{{ record.outboundUpdatedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
-                </tr>
-            </tbody>
-        </nz-table>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <div class="ant-table-filter-dropdown">
-                <div class="search-box">
-                    <input type="text" nz-input placeholder="请输入出库单ID" [(ngModel)]="searchValue" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="outboundSearch()"
-                        class="search-button">搜索</button>
-                    <button nz-button nzSize="small" (click)="outboundReset()">重置</button>
-                </div>
+                    </span>
+                </td>
+                <td>{{ record.outboundAmount }}</td>
+                <td>{{ record.outboundUpdatedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <div class="ant-table-filter-dropdown">
+            <div class="search-box">
+                <input type="text" nz-input placeholder="请输入出库单ID" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="outboundSearch()"
+                    class="search-button">搜索</button>
+                <button nz-button nzSize="small" (click)="reset()">重置</button>
             </div>
-        </nz-dropdown-menu>
-    </div>
+        </div>
+    </nz-dropdown-menu>
+
+</div>
