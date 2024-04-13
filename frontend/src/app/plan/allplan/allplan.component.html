@@ -1,0 +1,58 @@
+<div class="container">
+
+    <nz-table nzTableLayout="fixed" style="margin: 10px " #filterTable [nzData]="plansDisplay">
+        <thead>
+            <tr>
+                <th style="background-color: #ffffff;">ID</th>
+                <th style="background-color: #ffffff;" [nzFilters]="[
+                { text: '出库', value: 'Outbound' },
+                { text: '入库', value: 'Inbound'},]" [nzFilterFn]="filterInOut">出/入库</th>
+                <th style="background-color: #ffffff;" [nzFilters]="[
+                { text: '未完成', value: '未完成' },
+                { text: '已完成', value: '已完成'},]" [nzFilterFn]="filterStatus">状态</th>
+                <th style="background-color: #ffffff;">货物ID</th>
+                <th nzCustomFilter style="background-color: #ffffff;">
+                    货物名称
+                    <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menu">
+                        <i nz-icon nzType="search"></i>
+                    </nz-filter-trigger>
+                </th>
+                <th style="background-color: #ffffff;">货物规格</th>
+                <th style="background-color: #ffffff;">货物生产商</th>
+                <th style="background-color: #ffffff;">预计时间</th>
+                <th style="background-color: #ffffff;">预计数量</th>
+                <th style="background-color: #ffffff;" *ngIf="userRole.includes('管理员')">编辑</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let plan of filterTable.data"
+                [ngClass]="{'inbound-row': plan.plan.inOrOutbound === 'Inbound', 'outbound-row': plan.plan.inOrOutbound === 'Outbound'}">
+                <td>{{ plan.plan.planID }}</td>
+                <td>{{ plan.plan.inOrOutbound | inOrOutboundPipe}}</td>
+                <td>{{ plan.plan.planStatus }}</td>
+                <td>{{ plan.plan.planGoodsID }}</td>
+                <td>{{ plan.goodsName }}</td>
+                <td>{{ plan.goodsSpecification }}</td>
+                <td>{{ plan.goodsManufacturer }}</td>
+                <td>{{ plan.plan.planExpectedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
+                <td>{{ plan.plan.planExpectedAmount}}</td>
+                <td>
+                    <a *ngIf="userRole.includes('管理员')" (click)="deleteConfirm(plan.plan.planID)">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <div class="ant-table-filter-dropdown">
+            <div class="search-box">
+                <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">搜索</button>
+                <button nz-button nzSize="small" (click)="reset()">重置</button>
+            </div>
+        </div>
+    </nz-dropdown-menu>
+
+</div>
+
+<router-outlet></router-outlet>

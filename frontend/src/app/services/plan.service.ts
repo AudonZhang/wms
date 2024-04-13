@@ -9,7 +9,7 @@ import { Plan } from '../interfaces/plan';
 export class PlanService {
   private planUrl = 'http://127.0.0.1:5000/api/plan';
   public afterModifyLayout = false;
-  public afterAddOutPlan = false;
+  public afterModifyPlan = false;
   constructor(private http: HttpClient) {}
   private httpOptions = {
     headers: new HttpHeaders({
@@ -47,6 +47,24 @@ export class PlanService {
     return this.http.post<string>(url, plan, this.httpOptions).pipe(
       tap((_) => console.log(`增加了ID为${plan.planID}的计划`)),
       catchError(this.handleError<string>('新增计划时出错', '0'))
+    );
+  }
+
+  // 完成计划
+  finishPlan(plan: Plan): Observable<string> {
+    const url = `${this.planUrl}/finish_plan`;
+    return this.http.post<string>(url, plan, this.httpOptions).pipe(
+      tap((_) => console.log(`完成了ID为${plan.planID}的计划`)),
+      catchError(this.handleError<string>('完成计划时出错', '0'))
+    );
+  }
+  // 删除计划
+  deletePlan(planID: string): Observable<string> {
+    const url = `${this.planUrl}/delete_plan/${planID}`;
+    return this.http.post<string>(url, this.httpOptions).pipe(
+      // POST需要删除的学生id到对应api实现删除学生用户功能
+      tap((_) => console.log(`删除学号为${planID}的学生信息`)),
+      catchError(this.handleError<string>('deleteStudent'))
     );
   }
 }

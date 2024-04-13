@@ -47,6 +47,9 @@ import { PlanComponent } from './plan/plan.component';
 import { InOrOutboundPipePipe } from './pipes/in-or-outbound-pipe.pipe';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { AllboundComponent } from './records/allbound/allbound.component';
+import { AllplanComponent } from './plan/allplan/allplan.component';
+import { FinishPlanComponent } from './plan/finish-plan/finish-plan.component';
 
 registerLocaleData(zh);
 
@@ -73,6 +76,9 @@ registerLocaleData(zh);
     OutPlanComponent,
     PlanComponent,
     InOrOutboundPipePipe,
+    AllboundComponent,
+    AllplanComponent,
+    FinishPlanComponent,
   ],
   imports: [
     BrowserModule,

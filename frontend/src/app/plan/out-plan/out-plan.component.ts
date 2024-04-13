@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
 import { Goods } from 'src/app/interfaces/goods';
 import { GoodsService } from '../../services/goods.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { UserService } from 'src/app/services/user.service';
 import { PlanService } from 'src/app/services/plan.service';
 import { Plan } from 'src/app/interfaces/plan';
-import { User } from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-out-plan',
@@ -30,8 +27,7 @@ export class OutPlanComponent implements OnInit {
   }[] = []; // 记录出库计划相关信息
   plans: Plan[] = []; // 提交到后端的出库计划
   newPlanID = ''; // 新出库计划ID
-  // searchValue = ''; // 搜索内容
-  // visible = false; // 搜索框是否可见
+
   confirmVisible = false; // 确认出库对话框
 
   constructor(
@@ -64,29 +60,6 @@ export class OutPlanComponent implements OnInit {
     });
   }
 
-  // 重置搜索内容
-  // reset(): void {
-  //   this.searchValue = '';
-  //   this.search();
-  // }
-
-  // // 根据货物名搜索
-  // search(): void {
-  //   this.visible = false;
-  //   this.goodsDisplay = this.goods
-  //     .map((goods) => ({ goods, selected: false, outAmount: 0 }))
-  //     .filter(
-  //       (item: { goods: Goods; selected: boolean }) =>
-  //         item.goods.goodsName.indexOf(this.searchValue) !== -1
-  //     );
-  //   if (this.searchValue != '')
-  //     this.message.create(
-  //       'success',
-  //       `已展示所有名字包含 ${this.searchValue} 的货物信息!`
-  //     );
-  //   else this.message.create('success', '已重置货物列表！');
-  // }
-
   showModal(): void {
     let hasSelectedGoods = false; // 判断是否有选择的商品
     // 检查是否有选择的商品
@@ -108,22 +81,31 @@ export class OutPlanComponent implements OnInit {
         hasUnenteredAmount = true;
       }
     });
-    // 如果有商品未输入出库数量，则不显示对话框
+    // 如果有商品未输入出库数量，则显示错误消息
     if (hasUnenteredAmount) {
       this.message.create('warning', '请输入商品的出库数量');
       return;
     }
     let hasUnenteredDate = false; // 判断是否有商品未输入计划日期
+    let hasPastDate = false; // 判断是否有选择过去的日期
     // 如果存在选择的商品，则检查是否有商品未输入出库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.outDate == '') {
         // 如果选择了商品但出库数量为零，则设置标志为true
         hasUnenteredDate = true;
+      } else if (item.selected && new Date(item.outDate) < new Date()) {
+        // 如果选择了商品且选择的日期在过去，则设置标志为true
+        hasPastDate = true;
       }
     });
     // 如果有商品未输入出库数量，则不显示对话框
     if (hasUnenteredDate) {
       this.message.create('warning', '请输入预计出库时间');
+      return;
+    }
+    // 如果有选择过去的日期，则显示错误消息
+    if (hasPastDate) {
+      this.message.create('error', '请选择预计出库日期!');
       return;
     }
     // 准备要提交的商品信息
@@ -133,17 +115,15 @@ export class OutPlanComponent implements OnInit {
     this.confirmVisible = true;
   }
 
+  // 使用JavaScript的Date对象解析日期时间字符串
   convertToGMTFormat(dateTimeString: string): string {
-    // 使用JavaScript的Date对象解析日期时间字符串
     const date = new Date(dateTimeString);
-
     // 构建GMT格式的字符串
     const gmtDateString = date.toUTCString();
-
     return gmtDateString;
   }
 
-  // // 用户确认提交
+  // 用户确认提交
   handleOk(): void {
     this.plansSubmit.forEach((item) => {
       const plan: Plan = {
@@ -168,7 +148,7 @@ export class OutPlanComponent implements OnInit {
     });
 
     this.confirmVisible = false;
-    this.planService.afterAddOutPlan = true;
+    this.planService.afterModifyPlan = true;
     this.planService.afterModifyLayout = true;
     this.message.create('success', '新增出库计划成功');
   }
@@ -181,12 +161,11 @@ export class OutPlanComponent implements OnInit {
   ngOnInit(): void {
     this.getGoods();
     this.getPlanID();
-    // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表并下载出库单
     setInterval(() => {
-      if (this.planService.afterAddOutPlan) {
+      if (this.planService.afterModifyPlan) {
         this.getGoods();
         this.getPlanID();
-        this.planService.afterAddOutPlan = false;
+        this.planService.afterModifyPlan = false;
       }
     }, 1000);
   }

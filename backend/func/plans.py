@@ -115,18 +115,16 @@ class Plan(db.Model):
     ):
         plan = Plan.query.filter(Plan.planID == planID).first()
         if plan is not None:
-            plan = Plan(
-                planID=planID,
-                inOrOutbound=inOrOutbound,
-                planGoodsID=planGoodsID,
-                planExpectedTime=planExpectedTime,
-                planExpectedAmount=planExpectedAmount,
-                planStatus=planStatus,
-                planUpdatedByID=planUpdatedByID,
-                planUpdatedTime=planUpdatedTime,
-                planFinishedByID=planFinishedByID,
-                planFinishedTime=planFinishedTime,
-            )
+            plan.planID = planID
+            plan.inOrOutbound = inOrOutbound
+            plan.planGoodsID = planGoodsID
+            plan.planExpectedTime = planExpectedTime
+            plan.planExpectedAmount = planExpectedAmount
+            plan.planStatus = planStatus
+            plan.planUpdatedByID = planUpdatedByID
+            plan.planUpdatedTime = planUpdatedTime
+            plan.planFinishedByID = planFinishedByID
+            plan.planFinishedTime = planFinishedTime
             db.session.commit()
             return '1'
         else:
@@ -141,3 +139,13 @@ class Plan(db.Model):
             return str(max_plan_id)
         else:
             return '2024000001'  # 若数据库中无计划，则生成第一个计划ID
+
+    @staticmethod
+    def delete_Plan(planID):  # 删除计划
+        plan = Plan.query.filter(Plan.planID == planID).first()
+        if plan:
+            db.session.delete(plan)
+            db.session.commit()
+            return '1'
+        else:
+            return '0'

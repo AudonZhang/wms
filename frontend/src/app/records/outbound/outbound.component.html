@@ -2,7 +2,9 @@
 <div *ngIf="!isChildRouteActive()">
     <div class="container">
 
-        <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }">
+        <button nz-button [nzType]="'primary'" (click)="showModal()"
+            style="margin-left: 10px;margin-top: 10px;"><span>提交</span></button>
+        <nz-table nzTableLayout="fixed" style="margin: 10px">
             <thead>
                 <tr>
                     <th style="background-color: #ffffff;">选择</th>
@@ -41,7 +43,6 @@
                 </tr>
             </tbody>
         </nz-table>
-        <button nz-button [nzType]="'primary'" (click)="showModal()"><span>提交</span></button>
 
         <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认出库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
             <ng-container *nzModalContent>

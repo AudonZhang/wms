@@ -20,6 +20,9 @@ import { InboundComponent } from './records/inbound/inbound.component';
 import { PlanComponent } from './plan/plan.component';
 import { InPlanComponent } from './plan/in-plan/in-plan.component';
 import { OutPlanComponent } from './plan/out-plan/out-plan.component';
+import { AllboundComponent } from './records/allbound/allbound.component';
+import { AllplanComponent } from './plan/allplan/allplan.component';
+import { FinishPlanComponent } from './plan/finish-plan/finish-plan.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -131,6 +134,13 @@ const routes: Routes = [
               breadcrumb: '出库',
             },
           },
+          {
+            path: 'allbound',
+            component: AllboundComponent,
+            data: {
+              breadcrumb: '出入库信息',
+            },
+          },
         ],
       },
       {
@@ -144,14 +154,28 @@ const routes: Routes = [
             path: 'in',
             component: InPlanComponent,
             data: {
-              breadcrumb: '入库计划',
+              breadcrumb: '新增入库计划',
             },
           },
           {
             path: 'out',
             component: OutPlanComponent,
             data: {
-              breadcrumb: '出库计划',
+              breadcrumb: '新增出库计划',
+            },
+          },
+          {
+            path: 'finish',
+            component: FinishPlanComponent,
+            data: {
+              breadcrumb: '完成计划',
+            },
+          },
+          {
+            path: 'all',
+            component: AllplanComponent,
+            data: {
+              breadcrumb: '全部计划',
             },
           },
         ],

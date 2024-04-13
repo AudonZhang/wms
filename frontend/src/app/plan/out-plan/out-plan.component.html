@@ -1,14 +1,16 @@
 <div class="container">
 
-    <nz-table nzTableLayout="fixed" style="margin: 30px " [nzScroll]="{ y: '480px' }"
+    <button nz-button [nzType]="'primary'" (click)="showModal()"
+        style="margin-left: 10px;margin-top: 10px;"><span>提交</span></button>
+    <nz-table nzTableLayout="fixed" style="margin: 10px"
         [nzWidthConfig]="['50px','100px','100px','200px','80px','70px','130px']">
         <thead>
             <tr>
                 <th style="background-color: #ffffff;">选择</th>
-                <th style="background-color: #ffffff;">货物名称</th>
+                <th style="background-color: #ffffff;">货物名称：</th>
                 <th style="background-color: #ffffff;">规格</th>
                 <th style="background-color: #ffffff;">生产商</th>
-                <th style="background-color: #ffffff;">库存量</th>
+                <th style="background-color: #ffffff;">无计划数量</th>
                 <th style="background-color: #ffffff;">计划数量</th>
                 <th style="background-color: #ffffff;">计划时间</th>
             </tr>
@@ -30,7 +32,6 @@
             </tr>
         </tbody>
     </nz-table>
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>提交</span></button>
 
     <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认出库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <ng-container *nzModalContent>
@@ -45,9 +46,6 @@
         </ng-container>
 
     </nz-modal>
-
-
-
 
 </div>
 

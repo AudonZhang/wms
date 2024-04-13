@@ -1,1 +1,50 @@
-<p>in-plan works!</p>
+<div class="container">
+
+    <button nz-button [nzType]="'primary'" (click)="showModal()"
+        style="margin-left: 10px;margin-top: 10px;"><span>提交</span></button>
+    <nz-table nzTableLayout="fixed" style="margin: 10px"
+        [nzWidthConfig]="['50px','100px','100px','200px','80px','70px','130px']">
+        <thead>
+            <tr>
+                <th style="background-color: #ffffff;">选择</th>
+                <th style="background-color: #ffffff;">货物名称：</th>
+                <th style="background-color: #ffffff;">规格</th>
+                <th style="background-color: #ffffff;">生产商</th>
+                <th style="background-color: #ffffff;">库存量</th>
+                <th style="background-color: #ffffff;">计划数量</th>
+                <th style="background-color: #ffffff;">计划时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let goods of goodsDisplay">
+                <td><input type="checkbox" [(ngModel)]="goods.selected" /></td>
+                <td>{{ goods.goods.goodsName }}</td>
+                <td>{{ goods.goods.goodsSpecification }}</td>
+                <td>{{ goods.goods.goodsManufacturer }}</td>
+                <td>{{ goods.goods.goodsAmount }}</td>
+                <td>
+                    <nz-input-number [nzMin]="1" style="width: 70px;" [(ngModel)]="goods.inAmount"></nz-input-number>
+                </td>
+                <td>
+                    <input type="datetime-local" [(ngModel)]="goods.inDate">
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认入库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+            <div *ngFor="let plan of plansSubmit; let last = last">
+                <p>货物名称：{{plan.goods.goodsID}}</p>
+                <p>规格：{{ plan.goods.goodsSpecification }}</p>
+                <p>生产商：{{ plan.goods.goodsManufacturer }}</p>
+                <p>计划数量：{{ plan.inAmount }}</p>
+                <p>计划时间：{{ plan.inDate | date: 'yyyy-MM-dd HH:mm' }}</p>
+                <hr *ngIf="!last">
+            </div>
+        </ng-container>
+    </nz-modal>
+
+</div>
+
+<router-outlet></router-outlet>

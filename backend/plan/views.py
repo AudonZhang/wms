@@ -107,13 +107,13 @@ def update_plan():
                 data['planID'],
                 data['inOrOutbound'],
                 data['planGoodsID'],
-                data['planExpectedTime'],
+                datetime.strptime(data['planExpectedTime'], '%a, %d %b %Y %H:%M:%S %Z'),
                 data['planExpectedAmount'],
                 data['planStatus'],
                 data['planUpdatedByID'],
-                data['planUpdatedTime'],
-                data['planFinishedByID'],
                 datetime.now(),
+                None,
+                None,
             )
             return jsonify(result)
         else:
@@ -137,5 +137,49 @@ def get_max_planID():
             "Error occurred while getting max planID from the database. Error message: {}".format(
                 str(e)
             )
+        )
+        return jsonify({"error": str(e)})
+
+
+# 完成计划的路由
+@plan_blue.route('/finish_plan', methods=['GET', 'POST'])
+def finish_plan():
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.get_data())
+            result = Plan.update_plan(
+                data['planID'],
+                data['inOrOutbound'],
+                data['planGoodsID'],
+                datetime.strptime(data['planExpectedTime'], '%a, %d %b %Y %H:%M:%S %Z'),
+                data['planExpectedAmount'],
+                data['planStatus'],
+                data['planUpdatedByID'],
+                datetime.strptime(data['planUpdatedTime'], '%a, %d %b %Y %H:%M:%S %Z'),
+                data['planFinishedByID'],
+                datetime.now(),
+            )
+            return jsonify(result)
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while finish plan. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
+
+
+# 获取前端提交的id，删除id对应的计划
+@plan_blue.route('/delete_plan/<string:plan_id>', methods=['GET', 'POST'])
+def delete_plan(plan_id):
+    try:
+        if request.method == 'POST':
+            result = Plan.delete_Plan(plan_id)
+            return jsonify({'status': result})
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while deleting plan. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})

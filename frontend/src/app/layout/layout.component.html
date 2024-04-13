@@ -21,15 +21,23 @@
                     </li>
                 </ul>
             </li>
-            <li nz-submenu nzTitle="计划管理" nzIcon="carry-out" *ngIf="this.userRole !== '仓库文员'">
+            <li nz-submenu nzTitle="计划管理" nzIcon="carry-out">
                 <ul style="background: #eef1f3;">
-                    <li nz-menu-item routerLink='index/plan/in'>
+                    <li nz-menu-item routerLink='index/plan/in' *ngIf="this.userRole !== '仓库文员'">
                         <span nz-icon nzType="login"></span>
                         <span>新增入库计划</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/plan/out'>
+                    <li nz-menu-item routerLink='/index/plan/out' *ngIf="this.userRole !== '仓库文员'">
                         <span nz-icon nzType="logout"></span>
                         <span>新增出库计划</span>
+                    </li>
+                    <li nz-menu-item routerLink='/index/plan/finish'>
+                        <span nz-icon nzType="check"></span>
+                        <span>完成计划</span>
+                    </li>
+                    <li nz-menu-item routerLink='/index/plan/all'>
+                        <span nz-icon nzType="ordered-list"></span>
+                        <span>全部计划</span>
                     </li>
                 </ul>
             </li>
