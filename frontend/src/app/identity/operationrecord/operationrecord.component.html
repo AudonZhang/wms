@@ -1,14 +1,18 @@
 <div class="container">
     <div nz-row
         style="  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);background-color: #ececec;display: flex;align-items: center;">
-        <div nz-col nzSpan="2"></div>
+        <div nz-col nzSpan="2"
+            style="display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; font-size: 15px;">
+            记录筛选：</div>
         <div nz-col nzSpan="2" style="background-color: #ececec;">
             <select [(ngModel)]="selectedOption" style="font-size: 15px;background-color: #ececec;">
                 <option value="出库">出库</option>
                 <option value="入库">入库</option>
             </select>
         </div>
-        <div nz-col nzSpan="1"></div>
+        <div nz-col nzSpan="2"
+            style="display: flex; align-items: center; justify-content: center; text-align: center; font-weight: bold; font-size: 15px;">
+            日期筛选：</div>
         <div nz-col nzSpan="6" style="background-color: #ececec;">
             <input type="date" [(ngModel)]="startDate" style="background-color: #ececec;">-
             <input type="date" [(ngModel)]="endDate" style="background-color: #ececec;">
