@@ -176,6 +176,8 @@ export class OutboundComponent implements OnInit {
     });
     this.oldOrderID = this.outboundOrderID;
     this.confirmVisible = false;
+    this.recordService.afterModifyOut = true;
+    this.recordService.afterModifyChart = true;
   }
 
   downloadOutboundOrder(): void {
@@ -199,8 +201,8 @@ export class OutboundComponent implements OnInit {
 
     // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表并下载出库单
     setInterval(() => {
-      if (this.goodsService.afterOutbound) {
-        this.goodsService.afterOutbound = false;
+      if (this.recordService.afterModifyOut) {
+        this.recordService.afterModifyOut = false;
         this.getGoods();
         this.getOutboundID();
         this.getOutboundOrderID();

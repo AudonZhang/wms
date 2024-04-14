@@ -115,7 +115,7 @@ export class InPlanComponent implements OnInit {
     this.confirmVisible = true;
   }
 
-  // 使用JavaScript的Date对象解析日期时间字符串
+  // 解析日期时间字符串
   convertToGMTFormat(dateTimeString: string): string {
     const date = new Date(dateTimeString);
     // 构建GMT格式的字符串

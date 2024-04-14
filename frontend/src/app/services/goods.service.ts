@@ -11,7 +11,6 @@ export class GoodsService {
   private planUrl = 'http://127.0.0.1:5000/api/plan';
   public modifyID = '';
   public afterModify = false; //  货物信息界面刷新
-  public afterOutbound = false; // 出库页面货物信息刷新
   public afterModifyGoods = false; // 货物图标页刷新
 
   private httpOptions = {

@@ -32,6 +32,7 @@ export class FinishPlanComponent {
   visible = false; // 搜索框是否可见
   confirmVisible = false; // 确认出库对话框
 
+  // 筛选函数
   filterInOut: NzTableFilterFn<{
     plan: Plan;
     goodsName: string;
@@ -57,12 +58,10 @@ export class FinishPlanComponent {
   getPlans(): void {
     this.planService.getAllPlans().subscribe((res) => {
       this.plans = res;
-
-      // 筛选出 planStatus 为 '未完成' 的计划
+      // 筛选未完成的计划
       const unfinishedPlans = this.plans.filter(
         (plan) => plan.planStatus === '未完成'
       );
-
       this.plansDisplay = unfinishedPlans.map((plan) => {
         return {
           selected: false,
@@ -140,7 +139,7 @@ export class FinishPlanComponent {
     this.confirmVisible = true;
   }
 
-  // 使用JavaScript的Date对象解析日期时间字符串
+  // 解析日期时间字符串
   convertToGMTFormat(dateTimeString: string): string {
     const date = new Date(dateTimeString);
     // 构建GMT格式的字符串
@@ -171,7 +170,7 @@ export class FinishPlanComponent {
     this.planService.afterModifyPlan = true;
     this.planService.afterModifyPlan2 = true;
     this.planService.afterModifyLayout = true;
-    this.message.create('success', '完成计划成功');
+    this.message.create('success', '计划完成');
   }
 
   handleCancel(): void {

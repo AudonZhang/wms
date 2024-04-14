@@ -90,6 +90,12 @@ export class PlanComponent implements OnInit {
 
   // 更新图表数据
   updateChartData(inboundPlanData: any[], outboundPlanData: any[]): void {
+    // 合并入库和出库的日期数据，并按照日期排序
+    const allDays = [
+      ...inboundPlanData.map((data) => data.day),
+      ...outboundPlanData.map((data) => data.day),
+    ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
     // 总体计划统计图表选项（饼图）
     this.options1 = {
       title: {
@@ -167,25 +173,31 @@ export class PlanComponent implements OnInit {
         trigger: 'axis',
       },
       legend: {
-        data: ['计划入库数量', '计划出库数量'],
+        data: ['计划入库量', '计划出库量'],
         left: 'left',
       },
       xAxis: {
         type: 'category',
-        data: inboundPlanData.map((data) => data.day), // 这里填入时间数据
+        data: allDays,
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          name: '计划入库数量',
-          data: inboundPlanData.map((data) => data.amount),
+          name: '计划入库量',
+          data: allDays.map((day) => {
+            const foundData = inboundPlanData.find((data) => data.day === day);
+            return foundData ? foundData.amount : 0;
+          }),
           type: 'line',
         },
         {
-          name: '计划出库数量',
-          data: outboundPlanData.map((data) => data.amount),
+          name: '计划出库量',
+          data: allDays.map((day) => {
+            const foundData = outboundPlanData.find((data) => data.day === day);
+            return foundData ? foundData.amount : 0;
+          }),
           type: 'line',
         },
       ],

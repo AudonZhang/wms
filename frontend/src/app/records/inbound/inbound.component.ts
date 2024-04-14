@@ -58,5 +58,6 @@ export class InboundComponent {
     this.message.create('success', '入库成功!');
     this.goods = [];
     this.currentFile = undefined;
+    this.recordService.afterModifyChart = true;
   }
 }

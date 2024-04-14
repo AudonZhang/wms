@@ -1,5 +1,10 @@
 <!-- 如果在子页面，则不显示该div层内内容 -->
-<div *ngIf="!isChildRouteActive()">AAA
+<div *ngIf="!isChildRouteActive()" class="container">
+    <div class="top-left">
+        <p class="company-count">计划总数：<span>{{totalRecordsCount}}</span></p>
+    </div>
+    <div class="top-right" echarts [options]="options1"></div>
+    <div class="bottom-left" echarts [options]="options2"></div>
 </div>
 
 <router-outlet></router-outlet>

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Plan } from '../../interfaces/plan';
 import { PlanService } from '../../services/plan.service';
@@ -27,6 +25,7 @@ export class AllplanComponent implements OnInit {
   visible = false; // 搜索框是否可见
   userRole = '';
 
+  // 筛选函数
   filterInOut: NzTableFilterFn<{
     plan: Plan;
     goodsName: string;

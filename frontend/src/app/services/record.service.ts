@@ -15,6 +15,8 @@ import { Goods } from '../interfaces/goods';
 })
 export class RecordService {
   public recordUrl = 'http://127.0.0.1:5000/api/record';
+  public afterModifyOut = false;
+  public afterModifyChart = false;
 
   private httpOptions = {
     headers: new HttpHeaders({

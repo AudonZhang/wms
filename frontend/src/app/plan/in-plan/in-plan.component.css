@@ -1,19 +1,19 @@
 nz-table{
-    border-style:solid;
-    border-width:1px;
-    border-color:#cccccc;
-  }
-  .disabled-link {
-    color: gray;
-    pointer-events: none;
-  }
+  border-style:solid;
+  border-width:1px;
+  border-color:#cccccc;
+}
+.disabled-link {
+  color: gray;
+  pointer-events: none;
+}
   
-  .custom-button {
-    position: relative;
-    width: 80px;
-    height: 40px;
-    margin-left:900px;
-    margin-top: 30px;
-  }
+.custom-button {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left:900px;
+  margin-top: 30px;
+}
   
   
