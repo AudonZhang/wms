@@ -176,7 +176,6 @@ export class OutboundComponent implements OnInit {
     });
     this.oldOrderID = this.outboundOrderID;
     this.confirmVisible = false;
-    this.goodsService.afterOutbound = true;
   }
 
   downloadOutboundOrder(): void {

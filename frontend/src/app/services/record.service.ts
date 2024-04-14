@@ -53,6 +53,24 @@ export class RecordService {
     );
   }
 
+  // 获取所有入库记录
+  getAllInbounds(): Observable<Inbound[]> {
+    const url = `${this.recordUrl}/get_all_inbounds`;
+    return this.http.get<Inbound[]>(url).pipe(
+      tap((_) => console.log(`获取所有入库操作记录！`)),
+      catchError(this.handleError<Inbound[]>(`获取所有入库操作记录时出错`))
+    );
+  }
+
+  // 获取所有出库记录
+  getAllOutbounds(): Observable<Outbound[]> {
+    const url = `${this.recordUrl}/get_all_outbounds`;
+    return this.http.get<Outbound[]>(url).pipe(
+      tap((_) => console.log(`获取所有出库操作记录！`)),
+      catchError(this.handleError<Outbound[]>(`获取所有出库操作记录时出错`))
+    );
+  }
+
   // 获取最大的出库单ID（用于生成新出库单ID）
   getMaxOutboundOrderID(): Observable<string> {
     const url = `${this.recordUrl}/get_max_outboundOrderID`;

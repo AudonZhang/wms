@@ -169,6 +169,7 @@ export class FinishPlanComponent {
 
     this.confirmVisible = false;
     this.planService.afterModifyPlan = true;
+    this.planService.afterModifyPlan2 = true;
     this.planService.afterModifyLayout = true;
     this.message.create('success', '完成计划成功');
   }

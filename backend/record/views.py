@@ -44,6 +44,38 @@ def get_outbound_record_by_user_id(userID):
         return jsonify({"error": str(e)})
 
 
+# 获取所有入库记录的路由
+@record_blue.route('/get_all_inbounds')
+def get_all_inbounds():
+    try:
+        result = Inbound.get_all_inbounds()
+        logging.info('获得所有入库操作记录信息')
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            'Error occurred while getting all inbound records from the database. Error message: {}'.format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})
+
+
+# 获取所有出库记录的路由
+@record_blue.route('/get_all_outbounds')
+def outbounds():
+    try:
+        result = Outbound.get_all_outbounds()
+        logging.info('获得所有出库操作记录信息')
+        return jsonify(result)
+    except Exception as e:
+        logging.error(
+            'Error occurred while getting all outbound records from the database. Error message: {}'.format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})
+
+
 # 获取最大出库单ID的路由（用于前端出库时生成新出库单）
 @record_blue.route('/get_max_outboundOrderID')
 def get_max_outboundOrderID():

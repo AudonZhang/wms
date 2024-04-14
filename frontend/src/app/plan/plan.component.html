@@ -1,53 +1,11 @@
-<!-- 如果在子页面，则不显示该div层内内容 -->
-<div *ngIf="!isChildRouteActive()">
-    <div class="container">
-
-        <nz-table nzTableLayout="fixed" style="margin: 10px " [nzScroll]="{ y: '480px' }">
-            <thead>
-                <tr>
-                    <th style="background-color: #ffffff;">ID</th>
-                    <th style="background-color: #ffffff;">出库/入库</th>
-                    <th style="background-color: #ffffff;">货物ID</th>
-                    <th nzCustomFilter style="background-color: #ffffff;">
-                        货物名称
-                        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
-                            [nzDropdownMenu]="menu">
-                            <i nz-icon nzType="search"></i>
-                        </nz-filter-trigger>
-                    </th>
-                    <th style="background-color: #ffffff;">货物规格</th>
-                    <th style="background-color: #ffffff;">货物生产商</th>
-                    <th style="background-color: #ffffff;">预计时间</th>
-                    <th style="background-color: #ffffff;">预计数量</th>
-                    <th style="background-color: #ffffff;">状态</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let plan of plansDisplay"
-                    [ngClass]="{'inbound-row': plan.plan.inOrOutbound === 'Inbound', 'outbound-row': plan.plan.inOrOutbound === 'Outbound'}">
-                    <td>{{ plan.plan.planID }}</td>
-                    <td>{{ plan.plan.inOrOutbound | inOrOutboundPipe}}</td>
-                    <td>{{ plan.plan.planGoodsID }}</td>
-                    <td>{{ plan.goodsName }}</td>
-                    <td>{{ plan.goodsSpecification }}</td>
-                    <td>{{ plan.goodsManufacturer }}</td>
-                    <td>{{ plan.plan.planExpectedTime | date:'yyyy-MM-dd- HH:mm':'UTC'}}</td>
-                    <td>{{ plan.plan.planExpectedAmount}}</td>
-                    <td>{{ plan.plan.planStatus }}</td>
-                </tr>
-            </tbody>
-        </nz-table>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <div class="ant-table-filter-dropdown">
-                <div class="search-box">
-                    <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()"
-                        class="search-button">搜索</button>
-                    <button nz-button nzSize="small" (click)="reset()">重置</button>
-                </div>
-            </div>
-        </nz-dropdown-menu>
-
+<div *ngIf="!isChildRouteActive()" class="container">
+    <div class="top-left">
+        <p class="company-count">计划总数：<span>{{totalPlansCount}}</span></p>
     </div>
+    <div class="top-right" echarts [options]="options1"></div>
+    <div class="bottom-left" echarts [options]="options2"></div>
+    <div class="bottom-right" echarts [options]="options3"></div>
 </div>
+
+
 <router-outlet></router-outlet>

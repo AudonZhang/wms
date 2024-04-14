@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Plan } from '../interfaces/plan';
 import { PlanService } from '../services/plan.service';
-import { Goods } from '../interfaces/goods';
-import { GoodsService } from '../services/goods.service';
-import { NzTableFilterFn } from 'ng-zorro-antd/table';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-plan',
@@ -14,21 +9,18 @@ import { NzTableFilterFn } from 'ng-zorro-antd/table';
   styleUrls: ['./plan.component.css'],
 })
 export class PlanComponent implements OnInit {
-  plans: Plan[] = [];
-  plansDisplay: {
-    plan: Plan;
-    goodsName: string;
-    goodsSpecification: string;
-    goodsManufacturer: string;
-  }[] = [];
-  searchValue = ''; // 搜索内容
-  visible = false; // 搜索框是否可见
+  totalPlansCount?: number;
+  inboundPlansCount?: number;
+  outboundPlansCount?: number;
+  completedPlansCount?: number;
+  pendingPlansCount?: number;
+  options1: any; // 总体计划统计图表选项
+  options2: any; // 出入库计划状态图表选项
+  options3: any; // 出入库计划数量和时间折线图选项
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private planService: PlanService,
-    private message: NzMessageService,
-    private goodsService: GoodsService
+    private planService: PlanService
   ) {
     // 进入子页面时，不显示该页面内容
     this.router.events
@@ -41,88 +33,162 @@ export class PlanComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
-  // 获取所有计划
-  getPlans(): void {
-    this.planService.getAllPlans().subscribe((res) => {
-      this.plans = res;
-      // 更新 plansDisplay，使用 PlanService 中的 getGoodsById 获取 goodsName
-      this.plansDisplay = this.plans.map((plan) => {
-        return {
-          plan: plan,
-          goodsName: '',
-          goodsManufacturer: '',
-          goodsSpecification: '',
-        };
-      });
-      // 为每个计划获取 goodsName
-      this.plansDisplay.forEach((planDisplay, index) => {
-        this.goodsService
-          .getGoodsById(planDisplay.plan.planGoodsID)
-          .subscribe((goods: Goods) => {
-            this.plansDisplay[index].goodsName = goods.goodsName;
-            this.plansDisplay[index].goodsManufacturer =
-              goods.goodsManufacturer;
-            this.plansDisplay[index].goodsSpecification =
-              goods.goodsSpecification;
-          });
-      });
-      this.plansDisplay.sort((a, b) => {
-        // 按照 planStatus 排序
-        if (a.plan.planStatus === '未完成' && b.plan.planStatus === '已完成') {
-          return -1; // 未完成排在已完成之上
-        } else if (
-          a.plan.planStatus === '已完成' &&
-          b.plan.planStatus === '未完成'
-        ) {
-          return 1; // 已完成排在未完成之下
-        } else {
-          // 如果状态相同，则按照 planExpectedTime 排序
-          const timeA = new Date(a.plan.planExpectedTime).getTime();
-          const timeB = new Date(b.plan.planExpectedTime).getTime();
-          return timeB - timeA;
-        }
-      });
+  getData(): void {
+    this.planService.getAllPlans().subscribe((plans) => {
+      this.totalPlansCount = plans.length;
+      this.inboundPlansCount = plans.filter(
+        (plan) => plan.inOrOutbound === 'Inbound'
+      ).length;
+      this.outboundPlansCount = plans.filter(
+        (plan) => plan.inOrOutbound === 'Outbound'
+      ).length;
+      this.completedPlansCount = plans.filter(
+        (plan) => plan.planStatus === '已完成'
+      ).length;
+      this.pendingPlansCount = plans.filter(
+        (plan) => plan.planStatus === '未完成'
+      ).length;
+
+      // 获取出入库计划的日期和数量信息
+      const inboundPlanData = this.aggregateByDay(
+        plans.filter((plan) => plan.inOrOutbound === 'Inbound')
+      );
+      const outboundPlanData = this.aggregateByDay(
+        plans.filter((plan) => plan.inOrOutbound === 'Outbound')
+      );
+
+      // 更新图表数据
+      this.updateChartData(inboundPlanData, outboundPlanData);
     });
   }
 
-  // 重置搜索内容
-  reset(): void {
-    this.searchValue = '';
-    this.search();
-  }
-
-  search(): void {
-    this.visible = false;
-    if (this.searchValue !== '') {
-      this.plansDisplay = this.plansDisplay.filter((item) =>
-        item.goodsName.includes(this.searchValue)
-      );
-      this.message.create(
-        'success',
-        `已展示所有名称包含 "${this.searchValue}" 的货物信息!`
-      );
-    } else {
-      // 如果搜索值为空，则重置货物列表
-      this.getPlans();
-      this.message.create('success', '已重置货物列表！');
-    }
-  }
-
-  // 保存需要修改的货物ID，跳转后的组件可根据此获得对应货物信息
-  // setModifyGoodsID(goodsID: string): void {
-  //   this.goodsService.modifyID = goodsID;
-  // }
-
   ngOnInit(): void {
-    this.getPlans();
+    this.getData();
+    setInterval(() => {
+      if (this.planService.afterModifyPlan2) {
+        this.getData();
+        this.planService.afterModifyPlan2 = false;
+      }
+    }, 1000);
+  }
+  // 将计划按天进行汇总
+  aggregateByDay(plans: any[]): any[] {
+    const aggregateData: { [key: string]: number } = {};
+    plans.forEach((plan) => {
+      const day = new Date(plan.planExpectedTime).toLocaleDateString(); // 获取日期，忽略具体时间
+      if (aggregateData[day]) {
+        aggregateData[day] += plan.planExpectedAmount; // 如果这一天已经有数据，则累加数量
+      } else {
+        aggregateData[day] = plan.planExpectedAmount; // 否则，创建新的条目
+      }
+    });
+    return Object.entries(aggregateData).map(([day, amount]) => ({
+      day,
+      amount,
+    }));
+  }
 
-    // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表
-    //   setInterval(() => {
-    //     if (this.goodsService.afterModify) {
-    //       this.goodsService.afterModify = false;
-    //       this.getGoods();
-    //     }
-    //   }, 1000);
-    // }
+  // 更新图表数据
+  updateChartData(inboundPlanData: any[], outboundPlanData: any[]): void {
+    // 总体计划统计图表选项（饼图）
+    this.options1 = {
+      title: {
+        text: '出入库计划比例',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)',
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+      },
+      series: [
+        {
+          name: '计划类型',
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: this.inboundPlansCount, name: '入库计划' },
+            { value: this.outboundPlansCount, name: '出库计划' },
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    };
+
+    // 出入库计划状态图表选项（饼图）
+    this.options2 = {
+      title: {
+        text: '出入库计划状态',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'item',
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+      },
+      series: [
+        {
+          name: '计划状态',
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: this.completedPlansCount, name: '已完成' },
+            { value: this.pendingPlansCount, name: '未完成' },
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    };
+
+    // 出入库计划数量和时间折线图选项
+    this.options3 = {
+      title: {
+        text: '计划吞吐量',
+        left: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['计划入库数量', '计划出库数量'],
+        left: 'left',
+      },
+      xAxis: {
+        type: 'category',
+        data: inboundPlanData.map((data) => data.day), // 这里填入时间数据
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: '计划入库数量',
+          data: inboundPlanData.map((data) => data.amount),
+          type: 'line',
+        },
+        {
+          name: '计划出库数量',
+          data: outboundPlanData.map((data) => data.amount),
+          type: 'line',
+        },
+      ],
+    };
   }
 }

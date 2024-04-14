@@ -8,8 +8,9 @@ import { Plan } from '../interfaces/plan';
 })
 export class PlanService {
   private planUrl = 'http://127.0.0.1:5000/api/plan';
-  public afterModifyLayout = false;
-  public afterModifyPlan = false;
+  public afterModifyLayout = false; //  更新计划信息提示
+  public afterModifyPlan = false; //  更新全部计划页
+  public afterModifyPlan2 = false; //  更新计划页图表
   constructor(private http: HttpClient) {}
   private httpOptions = {
     headers: new HttpHeaders({

@@ -138,6 +138,7 @@ export class AllplanComponent implements OnInit {
     // 删除预约信息
     this.planService.deletePlan(id).subscribe();
     this.planService.afterModifyPlan = true;
+    this.planService.afterModifyPlan2 = true;
     this.message.create('success', '删除成功!');
   }
 
