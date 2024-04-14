@@ -153,4 +153,4 @@ class Goods(db.Model):
         if existing_goods:
             return existing_goods.goodsID  # 货物存在则返回货物ID
         else:
-            return 0
+            return '0'

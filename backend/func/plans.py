@@ -130,7 +130,7 @@ class Plan(db.Model):
         else:
             return '0'
 
-    # 查询最大的计划ID（用于前端新增计划时生成计划ID）
+    # 查询最大的计划ID（用于前端新增计划时生成新计划ID）
     @staticmethod
     def get_max_planID():
         plans = Plan.query.all()
@@ -140,8 +140,9 @@ class Plan(db.Model):
         else:
             return '2024000001'  # 若数据库中无计划，则生成第一个计划ID
 
+    # 删除计划
     @staticmethod
-    def delete_Plan(planID):  # 删除计划
+    def delete_Plan(planID):
         plan = Plan.query.filter(Plan.planID == planID).first()
         if plan:
             db.session.delete(plan)

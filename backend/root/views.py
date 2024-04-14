@@ -12,7 +12,7 @@ import logging
 # 错误日志
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
-# 备份时将英文列名映射为中文列名
+# 备份时将英文列名转换为中文列名
 user_column_name_mapping = {
     'userID': '用户ID',
     'userName': '用户姓名',

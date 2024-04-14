@@ -14,7 +14,7 @@ class Inbound(db.Model):
     inboundUpdatedByID = db.Column(db.Integer)
     inboundUpdatedTime = db.Column(db.DateTime)
 
-    # 根据用户ID获取入库记录
+    # 根据用户ID获取对应的入库记录
     @staticmethod
     def get_inbound_record_by_user_id(userID):
         records = Inbound.query.filter(Inbound.inboundUpdatedByID == userID)
@@ -82,7 +82,7 @@ class Inbound(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的入库记录ID（用于前端入库操作时生成入库记录ID）
+    # 获取最大的入库记录ID（用于前端入库操作时生成新入库记录ID）
     @staticmethod
     def get_max_inboundID():
         inbounds = Inbound.query.all()
@@ -92,7 +92,7 @@ class Inbound(db.Model):
         else:
             return '2024000001'  # 若数据库中无入库记录，则生成第一个入库记录ID
 
-    # 获取最大的入库单ID（用于入库操作时入成入库单ID）
+    # 获取最大的入库单ID（用于入库操作时生产新入库单ID）
     @staticmethod
     def get_max_inboundOrderID():
         inbounds = Inbound.query.all()
@@ -113,7 +113,7 @@ class Outbound(db.Model):
     outboundUpdatedByID = db.Column(db.Integer)
     outboundUpdatedTime = db.Column(db.DateTime)
 
-    # 根据用户ID获取出库记录
+    # 根据用户ID获取对应的出库记录
     @staticmethod
     def get_outbound_record_by_user_id(userID):
         records = Outbound.query.filter(Outbound.outboundUpdatedByID == userID)
@@ -155,7 +155,7 @@ class Outbound(db.Model):
         else:
             return '0'
 
-    # 获取最大的出库单ID（用于前端进行出库操作时生成出库单ID）
+    # 获取最大的出库单ID（用于前端进行出库操作时生成新出库单ID）
     @staticmethod
     def get_max_outboundOrderID():
         outbounds = Outbound.query.all()
@@ -167,7 +167,7 @@ class Outbound(db.Model):
         else:
             return '20240001'  # 若数据库中无出库单，则生成第一个出库单ID
 
-    # 获取最大的出库记录ID（用于前端进行出库操作时生成出库记录ID）
+    # 获取最大的出库记录ID（用于前端进行出库操作时生成新出库记录ID）
     @staticmethod
     def get_max_outboundID():
         outbounds = Outbound.query.all()
@@ -235,6 +235,7 @@ class Outbound(db.Model):
                 ]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
+
                 for record in records:
                     # 根据商品ID查询商品信息
                     goods_info = Goods.get_goods_by_id(record.outboundGoodsID)

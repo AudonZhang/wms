@@ -132,7 +132,7 @@ def add_outbound():
         return jsonify({"error": str(e)})
 
 
-# 访问api时生成出库单ID对应的出库单，浏览器会自动下载生成的出库单
+# 访问api时生成出库单ID对应的出库单，浏览器自动下载生成的出库单
 @record_blue.route('/generate_outbound_order_by_id/<string:outboundOrderID>')
 def generate_outbound_order_by_id(outboundOrderID):
     try:
@@ -167,6 +167,7 @@ def inboundConfirm():
             goods_list = []
             userID = request.form.get('userID')
             file = request.files['file']
+
             current_dir = os.getcwd()  # 获取当前工作目录路径
             parent_dir = os.path.dirname(current_dir)
             order_dir = os.path.join(parent_dir, 'order')
@@ -225,7 +226,7 @@ def inbound():
                     data['goodsProductionLicense'],
                 )
                 # 货物存在，更新货物数量
-                if goodsExist != 0:
+                if goodsExist != '0':
                     amount = int(
                         Goods.get_goods_by_id(goodsExist)['goodsAmount']
                     ) + int(data['goodsAmount'])

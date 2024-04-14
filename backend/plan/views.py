@@ -34,8 +34,10 @@ def get_all_out_plan_goods():
         goodsResult = Goods.get_all_goods()
         out_plan_goods_list = []
         for goods in goodsResult:
+            # 货物数量为0不可设定出库计划
             if goods['goodsAmount'] == 0:
                 continue
+            # 计算货物库存量减去出库计划中的货物数量
             for plan in planResult:
                 if (
                     plan['inOrOutbound'] == 'Outbound'
@@ -43,6 +45,7 @@ def get_all_out_plan_goods():
                     and plan['planStatus'] == '未完成'
                 ):
                     goods['goodsAmount'] -= plan['planExpectedAmount']
+            # 若除去计划外货物无剩余，不可设定出库计划
             if goods['goodsAmount'] <= 0:
                 continue
             out_plan_goods_list.append(
@@ -175,7 +178,7 @@ def delete_plan(plan_id):
     try:
         if request.method == 'POST':
             result = Plan.delete_Plan(plan_id)
-            return jsonify({'status': result})
+            return jsonify(result)
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:

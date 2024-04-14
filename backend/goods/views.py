@@ -54,7 +54,7 @@ def add_goods():
                 data['goodsProductionLicense'],
             )
             # 货物不存在则新建货物
-            if judge == 0:
+            if judge == '0':
                 result = Goods.add_goods(
                     data['goodsID'],
                     data['goodsName'],
@@ -93,7 +93,7 @@ def update_goods():
                 data['goodsProductionLicense'],
             )
             # 不存在则新建货物
-            if judge == 0:
+            if judge == '0':
                 result = Goods.update_goods(
                     data['goodsID'],
                     data['goodsName'],
