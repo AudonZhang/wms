@@ -22,7 +22,7 @@
                 <th style="background-color: #ffffff;">货物生产商</th>
                 <th style="background-color: #ffffff;">预计时间</th>
                 <th style="background-color: #ffffff;">预计数量</th>
-                <th style="background-color: #ffffff;" *ngIf="userRole.includes('管理员')">编辑</th>
+                <th style="background-color: #ffffff;">编辑</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
                 <td>{{ plan.plan.planExpectedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
                 <td>{{ plan.plan.planExpectedAmount}}</td>
                 <td>
-                    <a *ngIf="userRole.includes('管理员')" (click)="deleteConfirm(plan.plan.planID)">删除</a>
+                    <a (click)="deleteConfirm(plan.plan.planID)">删除</a>
                 </td>
             </tr>
         </tbody>

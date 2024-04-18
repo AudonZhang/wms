@@ -104,7 +104,7 @@ if __name__ == "__main__":
             userPasswordMD5=md5_hash("2024001"),
             userEmail="765707885@qq.com",
             userStatus="在职",
-            userRole="系统管理员",
+            userRole="管理员",
         )
         user2 = User(
             userID="2024002",
@@ -114,7 +114,7 @@ if __name__ == "__main__":
             userPasswordMD5=md5_hash("2024002"),
             userEmail="287582739@qq.com",
             userStatus="在职",
-            userRole="仓库管理员",
+            userRole="仓库运维",
         )
         user3 = User(
             userID="2024003",
@@ -123,40 +123,10 @@ if __name__ == "__main__":
             userPhone="17637998773",
             userPasswordMD5=md5_hash("2024003"),
             userEmail="795379541@qq.com",
-            userStatus="在职",
-            userRole="仓库管理员",
-        )
-        user4 = User(
-            userID="2024004",
-            userName="武博容",
-            userGender="男",
-            userPhone="15619058204",
-            userPasswordMD5=md5_hash("2024004"),
-            userEmail="103482994@qq.com",
-            userStatus="在职",
-            userRole="仓库运维",
-        )
-        user5 = User(
-            userID="2024005",
-            userName="郑宏恺",
-            userGender="男",
-            userPhone="15235167211",
-            userPasswordMD5=md5_hash("2024005"),
-            userEmail="6839284895@qq.com",
             userStatus="离职",
             userRole="仓库运维",
         )
-        user6 = User(
-            userID="2024006",
-            userName="汲宏义",
-            userGender="男",
-            userPhone="15869060091",
-            userPasswordMD5=md5_hash("2024006"),
-            userEmail="130595930@qq.com",
-            userStatus="离职",
-            userRole="仓库运维",
-        )
-        db.session.add_all([user1, user2, user3, user4, user5, user6])
+        db.session.add_all([user1, user2, user3])
         db.session.commit()
 
         goods1 = Goods(
@@ -192,7 +162,7 @@ if __name__ == "__main__":
             goodsUnit="台",
             goodsAmount=3,
             goodsStorageCondition="常温",
-            goodsUpdatedByID="2024001",
+            goodsUpdatedByID="2024002",
             goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods4 = Goods(
@@ -204,7 +174,7 @@ if __name__ == "__main__":
             goodsUnit="台",
             goodsAmount=5,
             goodsStorageCondition="常温",
-            goodsUpdatedByID="2024001",
+            goodsUpdatedByID="2024002",
             goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         goods5 = Goods(
@@ -216,7 +186,7 @@ if __name__ == "__main__":
             goodsUnit="个",
             goodsAmount=0,
             goodsStorageCondition="常温",
-            goodsUpdatedByID="2024001",
+            goodsUpdatedByID="2024003",
             goodsUpdatedTime=datetime(2024, 1, 1, 12, 0, 0),
         )
         db.session.add_all([goods1, goods2, goods3, goods4, goods5])
@@ -231,7 +201,7 @@ if __name__ == "__main__":
             planStatus="已完成",
             planUpdatedByID="2024001",
             planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
-            planFinishedByID="2024001",
+            planFinishedByID="2024002",
             planFinishedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         plan2 = Plan(
@@ -243,7 +213,7 @@ if __name__ == "__main__":
             planStatus="已完成",
             planUpdatedByID="2024001",
             planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
-            planFinishedByID="2024001",
+            planFinishedByID="2024002",
             planFinishedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
         plan3 = Plan(
@@ -267,7 +237,7 @@ if __name__ == "__main__":
             planStatus="已完成",
             planUpdatedByID="2024001",
             planUpdatedTime=datetime(2024, 1, 20, 16, 0, 0),
-            planFinishedByID="2024002",
+            planFinishedByID="2024003",
             planFinishedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         plan5 = Plan(
@@ -277,9 +247,9 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 3, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="已完成",
-            planUpdatedByID="2024004",
+            planUpdatedByID="2024001",
             planUpdatedTime=datetime(2024, 3, 11, 16, 0, 0),
-            planFinishedByID="2024001",
+            planFinishedByID="2024003",
             planFinishedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
         plan6 = Plan(
@@ -289,7 +259,7 @@ if __name__ == "__main__":
             planExpectedTime=datetime(2024, 4, 20, 12, 0, 0),
             planExpectedAmount="3",
             planStatus="未完成",
-            planUpdatedByID="2024002",
+            planUpdatedByID="2024001",
             planUpdatedTime=datetime(2024, 3, 11, 16, 0, 0),
         )
         plan7 = Plan(
@@ -311,7 +281,7 @@ if __name__ == "__main__":
             inboundOrderID="20240001",
             inboundGoodsID="202400001",
             inboundAmount="6",
-            inboundUpdatedByID="2024001",
+            inboundUpdatedByID="2024002",
             inboundUpdatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound2 = Inbound(
@@ -319,7 +289,7 @@ if __name__ == "__main__":
             inboundOrderID="20240001",
             inboundGoodsID="202400002",
             inboundAmount="3",
-            inboundUpdatedByID="2024001",
+            inboundUpdatedByID="2024002",
             inboundUpdatedTime=datetime(2024, 2, 20, 12, 0, 0),
         )
         inbound3 = Inbound(
@@ -327,7 +297,7 @@ if __name__ == "__main__":
             inboundOrderID="20240002",
             inboundGoodsID="202400002",
             inboundAmount="2",
-            inboundUpdatedByID="2024001",
+            inboundUpdatedByID="2024002",
             inboundUpdatedTime=datetime(2024, 2, 21, 12, 0, 0),
         )
         inbound4 = Inbound(
@@ -335,7 +305,7 @@ if __name__ == "__main__":
             inboundOrderID="20240003",
             inboundGoodsID="202400003",
             inboundAmount="3",
-            inboundUpdatedByID="2024001",
+            inboundUpdatedByID="2024003",
             inboundUpdatedTime=datetime(2024, 3, 20, 12, 0, 0),
         )
         outbound1 = Outbound(
@@ -351,7 +321,7 @@ if __name__ == "__main__":
             outboundOrderID="20240001",
             outboundGoodsID="202400002",
             outboundAmount="5",
-            outboundUpdatedByID="2024002",
+            outboundUpdatedByID="2024003",
             outboundUpdatedTime=datetime(2024, 3, 10, 12, 0, 0),
         )
         db.session.add_all(

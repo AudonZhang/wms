@@ -35,9 +35,7 @@
                     <td>{{ goods.goodsUnit }}</td>
                     <td>{{ goods.goodsStorageCondition }}</td>
                     <td>
-                        <a *ngIf="userRole.includes('管理员')" routerLink="/index/goods/all/modify"
-                            (click)="setModifyGoodsID(goods.goodsID)">修改</a>
-                        <a *ngIf="!userRole.includes('管理员')" class="disabled-link">修改</a>
+                        <a routerLink="/index/goods/all/modify" (click)="setModifyGoodsID(goods.goodsID)">修改</a>
                     </td>
                 </tr>
             </tbody>

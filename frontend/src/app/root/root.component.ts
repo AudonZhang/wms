@@ -17,7 +17,6 @@ export class RootComponent implements OnInit {
   femaleCount?: number;
   onJobCount?: number;
   quitCount?: number;
-  sysAdminCount?: number;
   warehouseAdminCount?: number;
   maintenanceCount?: number;
   options1: any;
@@ -57,11 +56,8 @@ export class RootComponent implements OnInit {
       this.quitCount = this.users.filter(
         (user) => user.userStatus === '离职'
       ).length;
-      this.sysAdminCount = this.users.filter(
-        (user) => user.userRole === '系统管理员'
-      ).length;
       this.warehouseAdminCount = this.users.filter(
-        (user) => user.userRole === '仓库管理员'
+        (user) => user.userRole === '管理员'
       ).length;
       this.maintenanceCount = this.users.filter(
         (user) => user.userRole === '仓库运维'
@@ -89,11 +85,8 @@ export class RootComponent implements OnInit {
           this.quitCount = this.users.filter(
             (user) => user.userStatus === '离职'
           ).length;
-          this.sysAdminCount = this.users.filter(
-            (user) => user.userRole === '系统管理员'
-          ).length;
           this.warehouseAdminCount = this.users.filter(
-            (user) => user.userRole === '仓库管理员'
+            (user) => user.userRole === '管理员'
           ).length;
           this.maintenanceCount = this.users.filter(
             (user) => user.userRole === '仓库运维'
@@ -197,8 +190,7 @@ export class RootComponent implements OnInit {
             show: false,
           },
           data: [
-            { value: this.sysAdminCount, name: '系统管理员' },
-            { value: this.warehouseAdminCount, name: '仓库管理员' },
+            { value: this.warehouseAdminCount, name: '管理员' },
             { value: this.maintenanceCount, name: '仓库运维' },
           ],
         },

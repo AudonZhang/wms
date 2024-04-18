@@ -5,13 +5,13 @@
             仓库管理系统
         </div>
         <ul nz-menu nzTheme="light" nzMode="inline">
-            <li nz-submenu nzTitle="出入库管理" nzIcon="swap" *ngIf="this.userRole !== '仓库运维'">
+            <li nz-submenu nzTitle="出入库管理" nzIcon="swap">
                 <ul style="background: #eef1f3;">
-                    <li nz-menu-item routerLink='index/records/inbound'>
+                    <li nz-menu-item routerLink='index/records/inbound' *ngIf="this.userRole === '仓库运维'">
                         <span nz-icon nzType="swap-left"></span>
                         <span>入库</span>
                     </li>
-                    <li nz-menu-item routerLink='index/records/outbound'>
+                    <li nz-menu-item routerLink='index/records/outbound' *ngIf="this.userRole === '仓库运维'">
                         <span nz-icon nzType="swap-right"></span>
                         <span>出库</span>
                     </li>
@@ -23,15 +23,15 @@
             </li>
             <li nz-submenu nzTitle="计划管理" nzIcon="carry-out">
                 <ul style="background: #eef1f3;">
-                    <li nz-menu-item routerLink='index/plan/in' *ngIf="this.userRole !== '仓库运维'">
+                    <li nz-menu-item routerLink='index/plan/in' *ngIf="this.userRole === '管理员'">
                         <span nz-icon nzType="login"></span>
                         <span>新增入库计划</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/plan/out' *ngIf="this.userRole !== '仓库运维'">
+                    <li nz-menu-item routerLink='/index/plan/out' *ngIf="this.userRole === '管理员'">
                         <span nz-icon nzType="logout"></span>
                         <span>新增出库计划</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/plan/finish'>
+                    <li nz-menu-item routerLink='/index/plan/finish' *ngIf="this.userRole === '仓库运维'">
                         <span nz-icon nzType="check"></span>
                         <span>完成计划</span>
                     </li>
@@ -47,13 +47,13 @@
                         <span nz-icon nzType="profile"></span>
                         <span>货物信息</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/goods/new' *ngIf="this.userRole?.includes('管理员')">
+                    <li nz-menu-item routerLink='/index/goods/new'>
                         <span nz-icon nzType="plus"></span>
                         <span>新建货物</span>
                     </li>
                 </ul>
             </li>
-            <li nz-submenu nzTitle="用户管理" nzIcon="user" *ngIf="this.userRole === '系统管理员'">
+            <li nz-submenu nzTitle="用户管理" nzIcon="user" *ngIf="this.userRole === '管理员'">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/root/allUsers'>
                         <span nz-icon nzType="team"></span>
@@ -113,9 +113,10 @@
                         </a>
                         <nz-dropdown-menu #menu="nzDropdownMenu">
                             <ul nz-menu nzSelectable>
-                                <li nz-menu-item routerLink='index/{{userID}}/operationrecord'>操作记录</li>
+                                <li nz-menu-item routerLink='index/{{userID}}/operationrecord'
+                                    *ngIf="this.userRole === '仓库运维'">操作记录</li>
                                 <li nz-menu-item routerLink='index/{{userID}}/changepassword'>密码修改</li>
-                                <li nz-menu-item (click)="backup()" *ngIf="this.userRole === '系统管理员'">数据备份</li>
+                                <li nz-menu-item (click)="backup()" *ngIf="this.userRole === '管理员'">数据备份</li>
                                 <li nz-menu-item nzDanger (click)="exit()">退出登录</li>
                             </ul>
                         </nz-dropdown-menu>
