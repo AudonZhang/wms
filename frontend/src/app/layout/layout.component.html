@@ -5,7 +5,7 @@
             仓库管理系统
         </div>
         <ul nz-menu nzTheme="light" nzMode="inline">
-            <li nz-submenu nzTitle="出入库管理" nzIcon="swap" *ngIf="this.userRole !== '仓库文员'">
+            <li nz-submenu nzTitle="出入库管理" nzIcon="swap" *ngIf="this.userRole !== '仓库运维'">
                 <ul style="background: #eef1f3;">
                     <li nz-menu-item routerLink='index/records/inbound'>
                         <span nz-icon nzType="swap-left"></span>
@@ -23,11 +23,11 @@
             </li>
             <li nz-submenu nzTitle="计划管理" nzIcon="carry-out">
                 <ul style="background: #eef1f3;">
-                    <li nz-menu-item routerLink='index/plan/in' *ngIf="this.userRole !== '仓库文员'">
+                    <li nz-menu-item routerLink='index/plan/in' *ngIf="this.userRole !== '仓库运维'">
                         <span nz-icon nzType="login"></span>
                         <span>新增入库计划</span>
                     </li>
-                    <li nz-menu-item routerLink='/index/plan/out' *ngIf="this.userRole !== '仓库文员'">
+                    <li nz-menu-item routerLink='/index/plan/out' *ngIf="this.userRole !== '仓库运维'">
                         <span nz-icon nzType="logout"></span>
                         <span>新增出库计划</span>
                     </li>

@@ -64,7 +64,7 @@ export class RootComponent implements OnInit {
         (user) => user.userRole === '仓库管理员'
       ).length;
       this.maintenanceCount = this.users.filter(
-        (user) => user.userRole === '仓库文员'
+        (user) => user.userRole === '仓库运维'
       ).length;
 
       // 在获取用户数据后，更新图表数据
@@ -96,7 +96,7 @@ export class RootComponent implements OnInit {
             (user) => user.userRole === '仓库管理员'
           ).length;
           this.maintenanceCount = this.users.filter(
-            (user) => user.userRole === '仓库文员'
+            (user) => user.userRole === '仓库运维'
           ).length;
 
           // 在获取用户数据后，更新图表数据
@@ -199,7 +199,7 @@ export class RootComponent implements OnInit {
           data: [
             { value: this.sysAdminCount, name: '系统管理员' },
             { value: this.warehouseAdminCount, name: '仓库管理员' },
-            { value: this.maintenanceCount, name: '仓库文员' },
+            { value: this.maintenanceCount, name: '仓库运维' },
           ],
         },
       ],
