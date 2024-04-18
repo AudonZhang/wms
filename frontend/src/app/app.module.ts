@@ -50,6 +50,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { AllboundComponent } from './records/allbound/allbound.component';
 import { AllplanComponent } from './plan/allplan/allplan.component';
 import { FinishPlanComponent } from './plan/finish-plan/finish-plan.component';
+import { ChangeInformationComponent } from './identity/change-information/change-information.component';
 
 registerLocaleData(zh);
 
@@ -79,6 +80,7 @@ registerLocaleData(zh);
     AllboundComponent,
     AllplanComponent,
     FinishPlanComponent,
+    ChangeInformationComponent,
   ],
   imports: [
     BrowserModule,

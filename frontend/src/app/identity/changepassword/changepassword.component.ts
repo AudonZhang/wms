@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 import { Md5 } from 'ts-md5';
@@ -33,7 +34,8 @@ export class ChangepasswordComponent implements OnInit {
     private userService: UserService,
     private message: NzMessageService,
     private modal: NzModalService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notification: NzNotificationService
   ) {}
 
   // 用户提交后进行判断
@@ -78,8 +80,11 @@ export class ChangepasswordComponent implements OnInit {
   // 用户选择确认
   save(): void {
     this.userService.updateUser(this.user).subscribe();
-    this.message.info('修改成功!');
-    this.resetForm();
+    this.notification.create('success', '修改成功!', `请重新登录 !`);
+    this.userService.loginID = '';
+    this.userService.loginName = '';
+    this.userService.loginRole = '';
+    window.location.reload();
   }
 
   // 用户选择返回

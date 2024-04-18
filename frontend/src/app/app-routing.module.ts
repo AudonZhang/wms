@@ -23,6 +23,7 @@ import { OutPlanComponent } from './plan/out-plan/out-plan.component';
 import { AllboundComponent } from './records/allbound/allbound.component';
 import { AllplanComponent } from './plan/allplan/allplan.component';
 import { FinishPlanComponent } from './plan/finish-plan/finish-plan.component';
+import { ChangeInformationComponent } from './identity/change-information/change-information.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -36,10 +37,17 @@ const routes: Routes = [
     },
     children: [
       {
-        path: ':userID/changepassword',
+        path: ':userID/changePassword',
         component: ChangepasswordComponent,
         data: {
           breadcrumb: '密码修改',
+        },
+      },
+      {
+        path: ':userID/changeInformation',
+        component: ChangeInformationComponent,
+        data: {
+          breadcrumb: '信息修改',
         },
       },
       {

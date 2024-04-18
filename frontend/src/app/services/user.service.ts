@@ -23,6 +23,7 @@ export class UserService {
   public loginRole = '';
   public modifyID = '';
   public afterModify = false;
+  public afterModifyLayout = false;
 
   constructor(private http: HttpClient) {}
 

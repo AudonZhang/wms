@@ -90,6 +90,10 @@ export class LayoutComponent implements OnInit {
         this.getPlans();
         this.planService.afterModifyLayout = false;
       }
+      if (this.userService.afterModifyLayout) {
+        this.userName = this.userService.loginName;
+        this.userService.afterModifyLayout = false;
+      }
     }, 1000);
   }
 }
