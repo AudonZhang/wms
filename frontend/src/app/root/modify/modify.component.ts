@@ -47,25 +47,27 @@ export class ModifyComponent implements OnInit {
 
   // 提交修改的信息到后端并返回
   save(): void {
-    this.userService.updateUser(this.user).subscribe((res) => {
-      if (res == '1') {
-        this.goBack();
-        this.message.create('success', '修改成功!');
-      } else {
-        this.message.create('error', '未找到用户信息!');
-      }
+    this.userService.updateUser(this.user).subscribe(() => {
+      this.updateInformation();
+      this.goBack();
+      this.message.create('success', '修改成功!');
     });
+  }
+
+  // 更新其他组件的信息
+  updateInformation(): void {
+    this.userService.updateRoot = true; // 更新root页的图表
+    this.userService.updateAllUsers = true; // 修改完成后在用户信息页刷新信息
+    this.userService.updateName = true; // 更新屏幕右上角的姓名
   }
 
   // 修改后返回到用户信息页
   goBack(): void {
-    this.userService.afterModifyRoot = true; // 修改完成后在root页刷新信息
-    this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
     this.router.navigateByUrl('/index/root/allUsers');
-    this.userService.modifyID = ''; // 修改完成后清除
+    this.userService.modifyID = ''; // 修改完成后清除正在修改用户ID
   }
 
-  // 开始时根据正在修改用户ID获取要修改的用户信息
+  // 根据正在修改用户ID获取要修改的用户信息
   ngOnInit() {
     this.userService.getUserById(this.userService.modifyID).subscribe((res) => {
       this.user = res;

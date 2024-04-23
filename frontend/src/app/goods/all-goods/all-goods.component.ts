@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { Goods } from 'src/app/interfaces/goods';
@@ -12,7 +12,7 @@ import { NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
   templateUrl: './all-goods.component.html',
   styleUrls: ['./all-goods.component.css'],
 })
-export class AllGoodsComponent implements OnInit {
+export class AllGoodsComponent implements OnInit, DoCheck {
   goods: Goods[] = [];
   goodsDisplay: Goods[] = []; // 搜索后展示内容列表
   searchValue = ''; // 搜索内容
@@ -79,11 +79,13 @@ export class AllGoodsComponent implements OnInit {
     this.userRole = this.userService.loginRole;
 
     // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表
-    setInterval(() => {
-      if (this.goodsService.afterModify) {
-        this.goodsService.afterModify = false;
-        this.getGoods();
-      }
-    }, 1000);
+    setInterval(() => {}, 1000);
+  }
+
+  ngDoCheck(): void {
+    if (this.goodsService.afterModify) {
+      this.getGoods();
+      this.goodsService.afterModify = false;
+    }
   }
 }

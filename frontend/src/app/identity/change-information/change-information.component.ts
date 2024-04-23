@@ -48,10 +48,9 @@ export class ChangeInformationComponent implements OnInit {
     this.userService.updateUser(this.user).subscribe((res) => {
       if (res == '1') {
         this.message.create('success', '修改成功!');
-        this.userService.afterModifyRoot = true; // 修改完成后在root页刷新信息
-        this.userService.afterModify = true; // 修改完成后在用户信息页刷新信息
-        this.userService.afterModifyLayout = true; // 修改完成后右上角刷新信息
+        this.userService.updateRoot = true; // 更新root页的图表
         this.userService.loginName = this.user.userName;
+        this.userService.updateName = true; // 更新屏幕右上角的姓名
       } else {
         this.message.create('error', '未找到用户信息!');
       }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { PlanService } from '../services/plan.service';
 import { filter } from 'rxjs';
+import { Plan } from '../interfaces/plan';
 
 @Component({
   selector: 'app-plan',
@@ -9,6 +10,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./plan.component.css'],
 })
 export class PlanComponent implements OnInit {
+  plans: Plan[] = [];
   totalPlansCount?: number;
   inboundPlansCount?: number;
   outboundPlansCount?: number;
@@ -35,7 +37,7 @@ export class PlanComponent implements OnInit {
 
   getData(): void {
     this.planService.getAllPlans().subscribe((plans) => {
-      this.totalPlansCount = plans.length;
+      this.plans = plans;
       this.inboundPlansCount = plans.filter(
         (plan) => plan.inOrOutbound === 'Inbound'
       ).length;
@@ -65,17 +67,20 @@ export class PlanComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     setInterval(() => {
-      if (this.planService.afterModifyPlan2) {
+      if (this.planService.updatePlan) {
         this.getData();
-        this.planService.afterModifyPlan2 = false;
+        this.planService.updatePlan = false;
       }
     }, 1000);
   }
+
   // 将计划按天进行汇总
   aggregateByDay(plans: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     plans.forEach((plan) => {
-      const day = new Date(plan.planExpectedTime).toLocaleDateString(); // 获取日期，忽略具体时间
+      const day = new Date(plan.planExpectedTime).toLocaleDateString('zh-CN', {
+        timeZone: 'UTC',
+      }); // 获取日期，忽略具体时间
       if (aggregateData[day]) {
         aggregateData[day] += plan.planExpectedAmount; // 如果这一天已经有数据，则累加数量
       } else {
@@ -90,6 +95,7 @@ export class PlanComponent implements OnInit {
 
   // 更新图表数据
   updateChartData(inboundPlanData: any[], outboundPlanData: any[]): void {
+    this.totalPlansCount = this.plans.length;
     // 合并入库和出库的日期数据，并按照日期排序
     const allDays = [
       ...inboundPlanData.map((data) => data.day),

@@ -133,15 +133,15 @@ export class OutboundComponent implements OnInit {
       return;
     }
 
-    // 计算货物的剩余数量
-    this.goodsDisplay.forEach((item) => {
-      if (item.selected && item.outAmount > 0) {
-        item.goods.goodsAmount -= item.outAmount;
-      }
-    });
-    // 准备要提交的商品信息
+    // 计算货物的剩余数量并准备要提交的商品信息
     this.submittedGoods = this.goodsDisplay
-      .filter((item) => item.selected)
+      .filter((item) => {
+        if (item.selected && item.outAmount > 0) {
+          item.goods.goodsAmount -= item.outAmount;
+          return true; // 保留选中且有出库数量的商品
+        }
+        return false; // 过滤掉未选中或无出库数量的商品
+      })
       .map((item) => item.goods);
 
     // 打开确认对话框
@@ -152,7 +152,7 @@ export class OutboundComponent implements OnInit {
   handleOk(): void {
     this.submittedGoods.forEach((goods) => {
       goods.goodsUpdatedByID = this.userService.loginID;
-      this.goodsService.updateGoods(goods).subscribe();
+      this.goodsService.outGoods(goods).subscribe();
     });
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
@@ -169,9 +169,7 @@ export class OutboundComponent implements OnInit {
         let IDPlus1: number = numberID + 1;
         this.outboundID = IDPlus1.toString();
 
-        this.recordService.addOutbound(outbound).subscribe(() => {
-          console.log('submit', outbound.outboundID);
-        });
+        this.recordService.addOutbound(outbound).subscribe(() => {});
       }
     });
     this.oldOrderID = this.outboundOrderID;
@@ -185,6 +183,7 @@ export class OutboundComponent implements OnInit {
     this.recordService.downloadOutboundOrder(
       this.oldOrderID,
       this.userService.loginID,
+      this.userService.loginName,
       new Date()
     );
     this.oldOrderID = '';
@@ -202,12 +201,12 @@ export class OutboundComponent implements OnInit {
     // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表并下载出库单
     setInterval(() => {
       if (this.recordService.afterModifyOut) {
-        this.recordService.afterModifyOut = false;
         this.getGoods();
         this.getOutboundID();
         this.getOutboundOrderID();
         this.downloadOutboundOrder();
         this.message.create('success', `浏览器已下载出库单！`);
+        this.recordService.afterModifyOut = false;
       }
     }, 1000);
   }

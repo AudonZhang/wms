@@ -118,6 +118,7 @@ export class OutPlanComponent implements OnInit {
   // 解析日期时间字符串
   convertToGMTFormat(dateTimeString: string): string {
     const date = new Date(dateTimeString);
+    date.setHours(date.getHours() + 8);
     // 构建GMT格式的字符串
     const gmtDateString = date.toUTCString();
     return gmtDateString;
@@ -148,9 +149,10 @@ export class OutPlanComponent implements OnInit {
     });
 
     this.confirmVisible = false;
-    this.planService.afterModifyPlan = true;
-    this.planService.afterModifyPlan2 = true;
-    this.planService.afterModifyLayout = true;
+    this.planService.updateAllPlan = true;
+    this.planService.updateIndex = true;
+    this.planService.updatePlan = true;
+    this.planService.updateLayout = true;
     this.message.create('success', '新增出库计划成功');
   }
 
@@ -163,10 +165,10 @@ export class OutPlanComponent implements OnInit {
     this.getGoods();
     this.getPlanID();
     setInterval(() => {
-      if (this.planService.afterModifyPlan) {
+      if (this.planService.updateAllPlan) {
         this.getGoods();
         this.getPlanID();
-        this.planService.afterModifyPlan = false;
+        this.planService.updateAllPlan = false;
       }
     }, 1000);
   }

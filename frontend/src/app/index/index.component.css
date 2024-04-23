@@ -1,0 +1,16 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  height: 90vh; 
+}
+
+.dashboard-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+
+

@@ -11,8 +11,7 @@ export class GoodsService {
   private planUrl = 'http://127.0.0.1:5000/api/plan';
   public modifyID = '';
   public afterModify = false; //  货物信息界面刷新
-  public afterModifyGoods = false; // 货物图标页刷新
-
+  public afterModifyGoods = false; // 货物图表页刷新
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -48,9 +47,18 @@ export class GoodsService {
     );
   }
 
-  // 更新用户信息
+  // 更新货物信息
   updateGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/update_goods`;
+    return this.http.post<Goods>(url, goods, this.httpOptions).pipe(
+      tap((_) => console.log(`修改了ID为${goods.goodsID}的货物信息`)),
+      catchError(this.handleError<any>('更新货物信息时出错'))
+    );
+  }
+
+  // 出库货物信息
+  outGoods(goods: Goods): Observable<string> {
+    const url = `${this.goodsUrl}/out_goods`;
     return this.http.post<Goods>(url, goods, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${goods.goodsID}的货物信息`)),
       catchError(this.handleError<any>('更新货物信息时出错'))

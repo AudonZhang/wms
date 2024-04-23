@@ -77,15 +77,13 @@ export class AllplanComponent implements OnInit {
         };
       });
       // 为每个计划获取对应的货物信息
-      this.plansDisplay.forEach((planDisplay, index) => {
+      this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
           .subscribe((goods: Goods) => {
-            this.plansDisplay[index].goodsName = goods.goodsName;
-            this.plansDisplay[index].goodsManufacturer =
-              goods.goodsManufacturer;
-            this.plansDisplay[index].goodsSpecification =
-              goods.goodsSpecification;
+            planDisplay.goodsName = goods.goodsName;
+            planDisplay.goodsManufacturer = goods.goodsManufacturer;
+            planDisplay.goodsSpecification = goods.goodsSpecification;
           });
       });
       this.plansDisplay.sort((a, b) => {
@@ -136,8 +134,9 @@ export class AllplanComponent implements OnInit {
   deletePlan(id: string): void {
     // 删除预约信息
     this.planService.deletePlan(id).subscribe();
-    this.planService.afterModifyPlan = true;
-    this.planService.afterModifyPlan2 = true;
+    this.planService.updateAllPlan = true;
+    this.planService.updatePlan = true;
+    this.planService.updateIndex = true;
     this.message.create('success', '删除成功!');
   }
 
@@ -151,9 +150,9 @@ export class AllplanComponent implements OnInit {
     this.userRole = this.userService.loginRole;
     this.getPlans();
     setInterval(() => {
-      if (this.planService.afterModifyPlan) {
+      if (this.planService.updateAllPlan) {
         this.getPlans();
-        this.planService.afterModifyPlan = false;
+        this.planService.updateAllPlan = false;
       }
     }, 1000);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { Goods } from '../interfaces/goods';
@@ -9,7 +9,7 @@ import { GoodsService } from '../services/goods.service';
   templateUrl: './goods.component.html',
   styleUrls: ['./goods.component.css'],
 })
-export class GoodsComponent implements OnInit {
+export class GoodsComponent implements OnInit, DoCheck {
   goodss: Goods[] = [];
   options1: any; // 货物分布饼图样式
   options2: any; // 生产商分布柱状图样式
@@ -148,15 +148,15 @@ export class GoodsComponent implements OnInit {
       this.goodss = res;
       this.setupChart();
     });
-    // 每秒判断货物信息是否修改或新增
-    setInterval(() => {
-      if (this.goodService.afterModifyGoods) {
+  }
+
+  ngDoCheck(): void {
+    if (this.goodService.afterModifyGoods) {
+      this.goodService.getAllGoods().subscribe((res) => {
+        this.goodss = res;
+        this.setupChart();
         this.goodService.afterModifyGoods = false;
-        this.goodService.getAllGoods().subscribe((res) => {
-          this.goodss = res;
-          this.setupChart();
-        });
-      }
-    }, 1000);
+      });
+    }
   }
 }

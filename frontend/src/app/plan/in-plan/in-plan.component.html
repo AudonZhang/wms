@@ -35,7 +35,7 @@
     <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认入库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <ng-container *nzModalContent>
             <div *ngFor="let plan of plansSubmit; let last = last">
-                <p>货物名称：{{plan.goods.goodsID}}</p>
+                <p>货物名称：{{plan.goods.goodsName}}</p>
                 <p>规格：{{ plan.goods.goodsSpecification }}</p>
                 <p>生产商：{{ plan.goods.goodsManufacturer }}</p>
                 <p>计划数量：{{ plan.inAmount }}</p>

@@ -69,7 +69,7 @@ export class LayoutComponent implements OnInit {
       this.plansDisplay.sort((a, b) => {
         const timeA = new Date(a.plan.planExpectedTime).getTime();
         const timeB = new Date(b.plan.planExpectedTime).getTime();
-        return timeB - timeA;
+        return timeA - timeB;
       });
       // 筛选出状态为'未完成'的计划
       this.plansDisplay = this.plansDisplay.filter(
@@ -82,17 +82,24 @@ export class LayoutComponent implements OnInit {
   // 每秒获取登录用户的信息
   ngOnInit(): void {
     this.getPlans();
+    this.userID = this.userService.loginID;
+    this.userName = this.userService.loginName;
+    this.userRole = this.userService.loginRole;
     setInterval(() => {
-      this.userID = this.userService.loginID;
-      this.userName = this.userService.loginName;
-      this.userRole = this.userService.loginRole;
-      if (this.planService.afterModifyLayout) {
+      if (this.planService.updateLayout) {
         this.getPlans();
-        this.planService.afterModifyLayout = false;
+        this.planService.updateLayout = false;
       }
-      if (this.userService.afterModifyLayout) {
-        this.userName = this.userService.loginName;
-        this.userService.afterModifyLayout = false;
+      if (this.userService.updateName) {
+        this.userService
+          .getUserById(this.userService.loginID)
+          .subscribe((res) => {
+            this.userService.loginName = res.userName;
+            this.userService.loginRole = res.userRole;
+            this.userName = res.userName;
+            this.userRole = res.userRole;
+          });
+        this.userService.updateName = false;
       }
     }, 1000);
   }

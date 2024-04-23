@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { UserService } from '../services/user.service';
@@ -9,20 +9,7 @@ import { User } from '../interfaces/user';
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.css'],
 })
-export class RootComponent implements OnInit {
-  users: User[] = []; // 学生列表
-  // 一些与echarts相关的变量
-  userCount?: number;
-  maleCount?: number;
-  femaleCount?: number;
-  onJobCount?: number;
-  quitCount?: number;
-  warehouseAdminCount?: number;
-  maintenanceCount?: number;
-  options1: any;
-  options2: any;
-  options3: any;
-
+export class RootComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -40,8 +27,20 @@ export class RootComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
-  ngOnInit(): void {
-    // 获取所用用户信息并统计
+  users: User[] = []; // 所有用户
+  // 一些与echarts相关的变量
+  userCount?: number;
+  maleCount?: number;
+  femaleCount?: number;
+  onJobCount?: number;
+  quitCount?: number;
+  warehouseAdminCount?: number;
+  maintenanceCount?: number;
+  options1: any;
+  options2: any;
+  options3: any;
+
+  initCharts(): void {
     this.userService.getAllUsers().subscribe((res) => {
       this.users = res;
       this.maleCount = this.users.filter(
@@ -66,37 +65,17 @@ export class RootComponent implements OnInit {
       // 在获取用户数据后，更新图表数据
       this.updateChartData();
     });
+  }
 
-    // 每秒判断用户信息是否修改或新增
-    setInterval(() => {
-      if (this.userService.afterModifyRoot) {
-        this.userService.afterModifyRoot = false;
-        this.userService.getAllUsers().subscribe((res) => {
-          this.users = res;
-          this.maleCount = this.users.filter(
-            (user) => user.userGender === '男'
-          ).length;
-          this.femaleCount = this.users.filter(
-            (user) => user.userGender === '女'
-          ).length;
-          this.onJobCount = this.users.filter(
-            (user) => user.userStatus === '在职'
-          ).length;
-          this.quitCount = this.users.filter(
-            (user) => user.userStatus === '离职'
-          ).length;
-          this.warehouseAdminCount = this.users.filter(
-            (user) => user.userRole === '管理员'
-          ).length;
-          this.maintenanceCount = this.users.filter(
-            (user) => user.userRole === '仓库运维'
-          ).length;
+  ngOnInit(): void {
+    this.initCharts();
+  }
 
-          // 在获取用户数据后，更新图表数据
-          this.updateChartData();
-        });
-      }
-    }, 1000);
+  ngDoCheck(): void {
+    if (this.userService.updateRoot) {
+      this.initCharts();
+      this.userService.updateRoot = false;
+    }
   }
 
   // echarts配置

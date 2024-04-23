@@ -104,6 +104,7 @@ export class RecordService {
   downloadOutboundOrder(
     outboundOrderID: string,
     userID: string,
+    userName: string,
     time: Date
   ): void {
     const formattedTime = time.toLocaleDateString('zh-CN');
@@ -116,7 +117,7 @@ export class RecordService {
         link.href = URL.createObjectURL(blob);
         link.setAttribute(
           'download',
-          `出库单号：${outboundOrderID}，出库人：${userID}，出库时间：${formattedTime}.csv`
+          `公司：xxxx有限公司，出库单号：${outboundOrderID}，出库人ID：${userID}，出库人姓名：${userName}，出库时间：${formattedTime}.csv`
         );
         document.body.appendChild(link);
         link.click();

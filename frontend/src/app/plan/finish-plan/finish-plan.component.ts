@@ -73,15 +73,13 @@ export class FinishPlanComponent {
       });
 
       // 为每个计划获取对应的货物信息
-      this.plansDisplay.forEach((planDisplay, index) => {
+      this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
-          .subscribe((goods: Goods) => {
-            this.plansDisplay[index].goodsName = goods.goodsName;
-            this.plansDisplay[index].goodsManufacturer =
-              goods.goodsManufacturer;
-            this.plansDisplay[index].goodsSpecification =
-              goods.goodsSpecification;
+          .subscribe((goods) => {
+            planDisplay.goodsName = goods.goodsName;
+            planDisplay.goodsManufacturer = goods.goodsManufacturer;
+            planDisplay.goodsSpecification = goods.goodsSpecification;
           });
       });
 
@@ -167,9 +165,10 @@ export class FinishPlanComponent {
     });
 
     this.confirmVisible = false;
-    this.planService.afterModifyPlan = true;
-    this.planService.afterModifyPlan2 = true;
-    this.planService.afterModifyLayout = true;
+    this.planService.updateAllPlan = true;
+    this.planService.updatePlan = true;
+    this.planService.updateLayout = true;
+    this.planService.updateIndex = true;
     this.message.create('success', '计划完成');
   }
 
@@ -181,9 +180,9 @@ export class FinishPlanComponent {
   ngOnInit(): void {
     this.getPlans();
     setInterval(() => {
-      if (this.planService.afterModifyPlan) {
+      if (this.planService.updateAllPlan) {
         this.getPlans();
-        this.planService.afterModifyPlan = false;
+        this.planService.updateAllPlan = false;
       }
     }, 1000);
   }

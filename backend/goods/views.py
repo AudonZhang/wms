@@ -92,7 +92,7 @@ def update_goods():
                 data['goodsManufacturer'],
                 data['goodsProductionLicense'],
             )
-            # 不存在则新建货物
+            # 不存在则修改货物信息
             if judge == '0':
                 result = Goods.update_goods(
                     data['goodsID'],
@@ -109,6 +109,35 @@ def update_goods():
                 return jsonify(result)
             else:
                 return jsonify('0')
+        else:
+            return jsonify({'status': 'GET'})
+    except Exception as e:
+        logging.error(
+            'Error occurred while updating goods. Error message: {}'.format(str(e))
+        )
+        return jsonify({"error": str(e)})
+
+
+# 修改货物信息的路由
+@goods_blue.route('/out_goods', methods=['GET', 'POST'])
+def out_goods():
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.get_data())
+            result = Goods.update_goods(
+                data['goodsID'],
+                data['goodsName'],
+                data['goodsSpecification'],
+                data['goodsManufacturer'],
+                data['goodsProductionLicense'],
+                data['goodsUnit'],
+                data['goodsAmount'],
+                data['goodsStorageCondition'],
+                data['goodsUpdatedByID'],
+                datetime.now(),
+            )
+            return jsonify(result)
+
         else:
             return jsonify({'status': 'GET'})
     except Exception as e:

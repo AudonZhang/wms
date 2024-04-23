@@ -10,8 +10,6 @@ import { User } from '../interfaces/user';
 export class UserService {
   private userUrl = 'http://127.0.0.1:5000/api/user';
 
-  public afterModifyRoot = false; // 在新增或修改用户信息后刷新root页的图表
-
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -22,8 +20,9 @@ export class UserService {
   public loginName = '';
   public loginRole = '';
   public modifyID = '';
-  public afterModify = false;
-  public afterModifyLayout = false;
+  public updateAllUsers = false; // 更新allUsers页的信息
+  public updateName = false; // 更新屏幕右上角的姓名
+  public updateRoot = false; // 更新root页的图表
 
   constructor(private http: HttpClient) {}
 
@@ -39,7 +38,7 @@ export class UserService {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
       tap((_) => console.log(`登录！`)),
-      catchError(this.handleError<string>('登陆时出错', '0'))
+      catchError(this.handleError<string>('登录时出错', '0'))
     );
   }
 

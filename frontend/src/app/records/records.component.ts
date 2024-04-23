@@ -57,7 +57,10 @@ export class RecordsComponent implements OnInit {
   aggregateByDayIn(records: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     records.forEach((records) => {
-      const day = new Date(records.inboundUpdatedTime).toLocaleDateString(); // 获取日期，忽略具体时间
+      const day = new Date(records.inboundUpdatedTime).toLocaleDateString(
+        'en-US',
+        { timeZone: 'UTC' }
+      ); // 获取日期，忽略具体时间
       if (aggregateData[day]) {
         aggregateData[day] += records.inboundAmount; // 如果这一天已经有数据，则累加数量
       } else {
@@ -73,7 +76,11 @@ export class RecordsComponent implements OnInit {
   aggregateByDayOut(records: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     records.forEach((records) => {
-      const day = new Date(records.outboundUpdatedTime).toLocaleDateString(); // 获取日期，忽略具体时间
+      const day = new Date(records.outboundUpdatedTime).toLocaleDateString(
+        'en-US',
+        { timeZone: 'UTC' }
+      ); // 获取日期，忽略具体时间
+      console.log(day);
       if (aggregateData[day]) {
         aggregateData[day] += records.outboundAmount; // 如果这一天已经有数据，则累加数量
       } else {

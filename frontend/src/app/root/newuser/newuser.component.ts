@@ -21,6 +21,24 @@ import {
   styleUrls: ['./newuser.component.css'],
 })
 export class NewuserComponent implements OnInit {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private modal: NzModalService,
+    private userService: UserService,
+    private message: NzMessageService,
+    private router: Router
+  ) {
+    this.validateForm = this.fb.group({
+      gender: [''],
+      role: ['', [Validators.required]],
+      email: ['', [Validators.email]],
+      password: ['', [Validators.required]],
+      checkPassword: ['', [Validators.required, this.confirmationValidator]],
+      name: ['', [Validators.required]],
+      phoneNumber: [''],
+    });
+  }
+
   passwordVisible1 = false; // 密码输入框内容是否可见
   passwordVisible2 = false;
   user: User = {
@@ -48,7 +66,7 @@ export class NewuserComponent implements OnInit {
   }>;
 
   submitForm(): void {
-    // 将提交的值赋值给用户类型
+    // 将提交的值赋值给用户数据类型
     if (this.validateForm.valid) {
       this.user.userName = this.validateForm.controls['name'].value;
       this.user.userGender = this.validateForm.controls['gender'].value;
@@ -90,16 +108,12 @@ export class NewuserComponent implements OnInit {
   }
 
   save(): void {
-    // 提交创建信息
-    this.userService.addUser(this.user).subscribe((res) => {
-      if (res == '1') {
-        this.message.create('success', '新增用户成功!');
-        console.log('submit', this.validateForm.value);
-        this.userService.afterModifyRoot = true;
-        this.router.navigateByUrl('/index/root/allUsers');
-      } else {
-        this.message.create('error', '新增用户失败，用户ID已存在!');
-      }
+    // 提交新用户信息
+    this.userService.addUser(this.user).subscribe(() => {
+      this.message.create('success', '新增用户成功!');
+      console.log('submit', this.validateForm.value);
+      this.userService.updateRoot = true; // 更新root页的图表
+      this.router.navigateByUrl('/index/root/allUsers');
     });
   }
 
@@ -119,24 +133,6 @@ export class NewuserComponent implements OnInit {
     }
     return {};
   };
-
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private modal: NzModalService,
-    private userService: UserService,
-    private message: NzMessageService,
-    private router: Router
-  ) {
-    this.validateForm = this.fb.group({
-      gender: [''],
-      role: ['', [Validators.required]],
-      email: ['', [Validators.email]],
-      password: ['', [Validators.required]],
-      checkPassword: ['', [Validators.required, this.confirmationValidator]],
-      name: ['', [Validators.required]],
-      phoneNumber: [''],
-    });
-  }
 
   // 开始时获取新增用户的ID
   ngOnInit(): void {
