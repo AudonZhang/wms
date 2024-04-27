@@ -21,9 +21,32 @@ export class AllplanComponent implements OnInit {
     goodsSpecification: string;
     goodsManufacturer: string;
   }[] = []; // 前端展示的计划信息
+  planSelected: {
+    plan: Plan;
+    goodsName: string;
+    goodsSpecification: string;
+    goodsManufacturer: string;
+  } = {
+    plan: {
+      planID: '',
+      inOrOutbound: '',
+      planGoodsID: '',
+      planExpectedTime: '',
+      planExpectedAmount: 0,
+      planStatus: '',
+      planUpdatedByID: '',
+      planUpdatedTime: '',
+      planFinishedByID: '',
+      planFinishedTime: '',
+    },
+    goodsName: '',
+    goodsSpecification: '',
+    goodsManufacturer: '',
+  };
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
   userRole = '';
+  confirmVisible = false; // 确认出库对话框
 
   // 筛选函数
   filterInOut: NzTableFilterFn<{
@@ -123,21 +146,38 @@ export class AllplanComponent implements OnInit {
     }
   }
 
-  deleteConfirm(id: string): void {
-    // 确认删除对话框
-    this.modal.confirm({
-      nzTitle: '<i>确认删除计划?</i>',
-      nzOnOk: () => this.deletePlan(id),
-    });
+  deletePlan(id: string): void {
+    // 使用find方法查找匹配id的计划
+    const selectedPlan = this.plansDisplay.find(
+      (plan) => plan.plan.planID === id
+    );
+
+    // 如果找到了匹配的计划，将其赋值给planSelected
+    if (selectedPlan) {
+      this.planSelected = selectedPlan;
+    } else {
+      // 如果没有找到匹配的计划，可以进行适当的处理，比如给出提示信息
+      console.error(`无法找到ID为${id}的计划信息。`);
+    }
+    this.showModal();
   }
 
-  deletePlan(id: string): void {
-    // 删除预约信息
-    this.planService.deletePlan(id).subscribe();
+  showModal(): void {
+    // 打开确认对话框
+    this.confirmVisible = true;
+  }
+
+  handleOk(): void {
+    this.planService.deletePlan(this.planSelected.plan.planID).subscribe();
     this.planService.updateAllPlan = true;
     this.planService.updatePlan = true;
     this.planService.updateIndex = true;
+    this.confirmVisible = false;
     this.message.create('success', '删除成功!');
+  }
+
+  handleCancel(): void {
+    this.confirmVisible = false;
   }
 
   // 重置搜索内容

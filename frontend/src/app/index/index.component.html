@@ -1,34 +1,46 @@
 <!-- 若当前是子路由页面，则不显示index页内容 -->
 <div *ngIf="!isChildRouteActive()">
+    <div class="dashboard-grid">
+        <div class="dashboard-item" style="grid-row: 1 / span 2; grid-column: 1 / span 2;">
+            <h2 style="text-align: center;">未完成计划</h2>
+            <div>
+                <nz-table [nzSize]="'small'" [nzNoResult]="' '">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #ffffff;">类型</th>
+                            <th style="background-color: #ffffff;">货物名称</th>
+                            <th style="background-color: #ffffff;">货物规格</th>
+                            <th style="background-color: #ffffff;">生产商</th>
+                            <th style="background-color: #ffffff;">数量</th>
+                            <th style="background-color: #ffffff;">计划时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <tr *ngFor="let plan of plansDisplay">
+                            <td>{{ plan.plan.inOrOutbound | inOrOutboundPipe}}</td>
+                            <td>{{ plan.goodsName }}</td>
+                            <td>{{ plan.goodsSpecification }}</td>
+                            <td>{{ plan.goodsManufacturer }}</td>
+                            <td>{{ plan.plan.planExpectedAmount}}</td>
+                            <td>{{ plan.plan.planExpectedTime | date:'MM月dd日 HH:mm':'UTC' }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+        <div class="dashboard-item" style="grid-row: 1 / span 1; grid-column: 3;" echarts [options]="optionGoodsAmount">
+        </div>
+        <div echarts [options]="optionUserStatus" class="dashboard-item"
+            style="grid-row: 2 / span 1; grid-column: 3;height:100%;width:100%">
+        </div>
+        <div class="dashboard-item" style="grid-row: 3; grid-column: 1;height:100%;width:100%" echarts
+            [options]="optionGoodsCategory"></div>
+        <div class="dashboard-item" style="grid-row: 3; grid-column: 2 / span 2;" echarts
+            [options]="optionInventoryChange">
+        </div>
 
-    <h2 style="text-align: center;">未完成计划</h2>
-
-    <nz-table [nzNoResult]="' '">
-        <thead>
-            <tr>
-                <th style="background-color: #ffffff;">类型</th>
-                <th style="background-color: #ffffff;">货物名称</th>
-                <th style="background-color: #ffffff;">货物规格</th>
-                <th style="background-color: #ffffff;">生产商</th>
-                <th style="background-color: #ffffff;">数量</th>
-                <th style="background-color: #ffffff;">计划时间</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <tr *ngFor="let plan of plansDisplay">
-                <td>{{ plan.plan.inOrOutbound | inOrOutboundPipe}}</td>
-                <td>{{ plan.goodsName }}</td>
-                <td>{{ plan.goodsSpecification }}</td>
-                <td>{{ plan.goodsManufacturer }}</td>
-                <td>{{ plan.plan.planExpectedAmount}}</td>
-                <td>{{ plan.plan.planExpectedTime | date:'MM月dd日 HH:mm':'UTC' }}</td>
-            </tr>
-        </tbody>
-    </nz-table>
-
-
+    </div>
 </div>
-
 
 <router-outlet></router-outlet>

@@ -142,7 +142,7 @@ def out_goods():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while updating goods. Error message: {}'.format(str(e))
+            'Error occurred while out goods. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
 

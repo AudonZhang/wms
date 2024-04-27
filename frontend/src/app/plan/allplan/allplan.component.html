@@ -38,11 +38,13 @@
                 <td>{{ plan.plan.planExpectedTime | date:'yyyy-MM-dd HH:mm':'UTC'}}</td>
                 <td>{{ plan.plan.planExpectedAmount}}</td>
                 <td>
-                    <a (click)="deleteConfirm(plan.plan.planID)">删除</a>
+                    <a (click)="deletePlan(plan.plan.planID)">删除</a>
                 </td>
             </tr>
         </tbody>
     </nz-table>
+
+
     <nz-dropdown-menu #menu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">
             <div class="search-box">
@@ -52,6 +54,18 @@
             </div>
         </div>
     </nz-dropdown-menu>
+
+    <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认删除计划信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+            <p>计划ID：{{planSelected.plan.planID}}</p>
+            <p>出/入库：{{ planSelected.plan.inOrOutbound | inOrOutboundPipe }}</p>
+            <p>货物名称：{{ planSelected.goodsName }}</p>
+            <p>货物规格：{{ planSelected.goodsSpecification }}</p>
+            <p>计划数量：{{ planSelected.plan.planExpectedAmount }}</p>
+            <p>计划日期：{{ planSelected.plan.planExpectedTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+        </ng-container>
+    </nz-modal>
+
 
 </div>
 
