@@ -42,7 +42,7 @@ def login():
         return jsonify({"error": str(e)})
 
 
-# 获取指定ID的学生信息
+# 获取指定ID的用户信息
 @user_blue.route("/get_user_by_id/<string:userID>")
 def get_user_by_id(userID):
     try:

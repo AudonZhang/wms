@@ -1,9 +1,4 @@
-import {
-  HttpClient,
-  HttpEvent,
-  HttpHeaders,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
 import { Inbound } from '../interfaces/inbound';
@@ -133,8 +128,8 @@ export class RecordService {
   InboundGoods(goodsList: Goods[]): Observable<any> {
     const url = `${this.recordUrl}/inbound`;
     return this.http.post<Goods>(url, goodsList, this.httpOptions).pipe(
-      tap((_) => console.log(`上传ID为货物信息`)),
-      catchError(this.handleError<any>('更新货物信息时出错'))
+      tap((_) => console.log(`入库`)),
+      catchError(this.handleError<any>('入库时出错'))
     );
   }
 }

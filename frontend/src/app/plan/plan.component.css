@@ -10,7 +10,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 36px;
-  white-space: nowrap; /* 不换行 */
+  white-space: nowrap;
 }
   
 .company-count span {

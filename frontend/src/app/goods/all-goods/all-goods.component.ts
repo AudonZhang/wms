@@ -77,11 +77,9 @@ export class AllGoodsComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.getGoods();
     this.userRole = this.userService.loginRole;
-
-    // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表
-    setInterval(() => {}, 1000);
   }
 
+  // 若已修改货物信息，则刷新货物信息列表
   ngDoCheck(): void {
     if (this.goodsService.afterModify) {
       this.getGoods();

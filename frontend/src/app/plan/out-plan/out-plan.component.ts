@@ -54,7 +54,6 @@ export class OutPlanComponent implements OnInit {
   getPlanID(): void {
     this.planService.getMaxPlanID().subscribe((res) => {
       let numberID: number = +res;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.newPlanID = IDPlus1.toString();
     });
@@ -140,7 +139,6 @@ export class OutPlanComponent implements OnInit {
         planFinishedTime: '',
       };
       let numberID: number = +this.newPlanID;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.newPlanID = IDPlus1.toString();
       this.planService.addPlan(plan).subscribe(() => {
@@ -150,7 +148,6 @@ export class OutPlanComponent implements OnInit {
 
     this.confirmVisible = false;
     this.planService.updateAllPlan = true;
-    this.planService.updateIndex = true;
     this.planService.updatePlan = true;
     this.planService.updateLayout = true;
     this.message.create('success', '新增出库计划成功');

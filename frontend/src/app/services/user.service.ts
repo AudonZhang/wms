@@ -38,7 +38,7 @@ export class UserService {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
       tap((_) => console.log(`登录！`)),
-      catchError(this.handleError<string>('登录时出错', '0'))
+      catchError(this.handleError<string>('登录时出错'))
     );
   }
 
@@ -64,7 +64,7 @@ export class UserService {
     const url = `${this.userUrl}/add_user`;
     return this.http.post<string>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`增加了ID为${user.userID}的用户`)),
-      catchError(this.handleError<string>('更新用户信息时出错', '0'))
+      catchError(this.handleError<string>('新增用户时出错', '0'))
     );
   }
 
@@ -72,7 +72,7 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     const url = `${this.userUrl}/get_all_users`;
     return this.http.get<User[]>(url).pipe(
-      tap((_) => console.log('获取所有学生的信息！')),
+      tap((_) => console.log('获取所有用户的信息！')),
       catchError(this.handleError<User[]>('获取所有用户信息时出错', []))
     );
   }

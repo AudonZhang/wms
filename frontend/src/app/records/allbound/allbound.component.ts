@@ -119,12 +119,12 @@ export class AllboundComponent implements OnInit {
       const endDate = new Date(end);
 
       filteredInbound = filteredInbound.filter((record) => {
-        const recordDate = new Date(record.inboundUpdatedTime); // 根据实际的日期属性进行调整
+        const recordDate = new Date(record.inboundUpdatedTime);
         return recordDate >= startDate && recordDate <= endDate;
       });
 
       filteredOutbound = filteredOutbound.filter((record) => {
-        const recordDate = new Date(record.outboundUpdatedTime); // 根据实际的日期属性进行调整
+        const recordDate = new Date(record.outboundUpdatedTime);
         return recordDate >= startDate && recordDate <= endDate;
       });
     }

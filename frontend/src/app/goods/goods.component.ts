@@ -80,7 +80,7 @@ export class GoodsComponent implements OnInit, DoCheck {
       },
       xAxis: {
         type: 'category',
-        data: sortedManufacturers, // 使用排序后的生产商名称
+        data: sortedManufacturers,
         axisLabel: {
           interval: 0,
           rotate: 0,
@@ -94,7 +94,7 @@ export class GoodsComponent implements OnInit, DoCheck {
       series: [
         {
           type: 'bar',
-          data: sortedCounts, // 使用排序后的生产商供货数量
+          data: sortedCounts,
         },
       ],
     };
@@ -150,6 +150,7 @@ export class GoodsComponent implements OnInit, DoCheck {
     });
   }
 
+  // 货物信息改变后更新图标
   ngDoCheck(): void {
     if (this.goodService.afterModifyGoods) {
       this.goodService.getAllGoods().subscribe((res) => {

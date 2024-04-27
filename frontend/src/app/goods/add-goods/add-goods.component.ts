@@ -51,7 +51,7 @@ export class AddGoodsComponent implements OnInit {
   }
 
   submitForm(): void {
-    // 将提交的值赋值给货物类型
+    // 将表单中的值储存
     if (this.validateForm.valid) {
       this.goods.goodsName = this.validateForm.controls['name'].value;
       this.goods.goodsSpecification =

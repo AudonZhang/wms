@@ -9,7 +9,7 @@ import { Goods } from '../interfaces/goods';
 export class GoodsService {
   private goodsUrl = 'http://127.0.0.1:5000/api/goods';
   private planUrl = 'http://127.0.0.1:5000/api/plan';
-  public modifyID = '';
+  public modifyID = ''; // 正在修改的用户ID
   public afterModify = false; //  货物信息界面刷新
   public afterModifyGoods = false; // 货物图表页刷新
   private httpOptions = {
@@ -69,8 +69,8 @@ export class GoodsService {
   addGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/add_goods`;
     return this.http.post<string>(url, goods, this.httpOptions).pipe(
-      tap((_) => console.log(`增加了ID为${goods.goodsID}的货物`)),
-      catchError(this.handleError<string>('更新货物信息时出错', '0'))
+      tap((_) => console.log(`更新了ID为${goods.goodsID}的货物信息`)),
+      catchError(this.handleError<string>('新增货物信息时出错', '0'))
     );
   }
 

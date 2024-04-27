@@ -71,6 +71,7 @@ export class RootComponent implements OnInit, DoCheck {
     this.initCharts();
   }
 
+  // 用户信息更新后刷新图表
   ngDoCheck(): void {
     if (this.userService.updateRoot) {
       this.initCharts();

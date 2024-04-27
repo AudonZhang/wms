@@ -427,11 +427,5 @@ export class IndexComponent implements OnInit {
     this.getGoods();
     this.getInventory();
     this.getUsers();
-    setInterval(() => {
-      if (this.planService.updateIndex) {
-        this.getPlans();
-        this.planService.updateIndex = false;
-      }
-    }, 1000);
   }
 }

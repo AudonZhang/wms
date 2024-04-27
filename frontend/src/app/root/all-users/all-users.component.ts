@@ -33,10 +33,10 @@ export class AllUsersComponent implements OnInit, DoCheck {
     return this.route.children.length > 0;
   }
 
-  users: User[] = []; // 展示所有学生信息
+  users: User[] = []; // 展示所有用户信息
   searchValue = ''; // 搜索内容
   visible = false; // 搜索框是否可见
-  usersDisplay: User[] = []; // 搜索后的学生信息
+  usersDisplay: User[] = []; // 搜索后的用户信息
 
   // 筛选职务函数
   filterRole: NzTableFilterFn<User> = (list: string[], item: User) =>
@@ -163,6 +163,7 @@ export class AllUsersComponent implements OnInit, DoCheck {
     this.getUsers();
   }
 
+  // 用户信息更新后重新获取用户数据
   ngDoCheck(): void {
     if (this.userService.updateAllUsers) {
       this.getUsers();

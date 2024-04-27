@@ -54,14 +54,13 @@ export class InPlanComponent implements OnInit {
   getPlanID(): void {
     this.planService.getMaxPlanID().subscribe((res) => {
       let numberID: number = +res;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.newPlanID = IDPlus1.toString();
     });
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 判断是否有选择的商品
+    let hasSelectedGoods = false; // 用于判断是否有选择的商品
     // 检查是否有选择的商品
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
@@ -73,7 +72,7 @@ export class InPlanComponent implements OnInit {
       this.message.create('error', '请选择要入库的商品');
       return;
     }
-    let hasUnenteredAmount = false; // 判断是否有商品未输入入库数量
+    let hasUnenteredAmount = false; // 用于判断是否有商品未输入入库数量
     // 如果存在选择的商品，则检查是否有商品未输入入库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.inAmount == 0) {
@@ -86,8 +85,8 @@ export class InPlanComponent implements OnInit {
       this.message.create('warning', '请输入商品的入库数量');
       return;
     }
-    let hasUnenteredDate = false; // 判断是否有商品未输入计划日期
-    let hasPastDate = false; // 判断是否有选择过去的日期
+    let hasUnenteredDate = false; // 用于判断是否有商品未输入计划日期
+    let hasPastDate = false; // 用于判断是否有选择过去的日期
     // 如果存在选择的商品，则检查是否有商品未输入入库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.inDate == '') {
@@ -115,11 +114,10 @@ export class InPlanComponent implements OnInit {
     this.confirmVisible = true;
   }
 
-  // 解析日期时间字符串
+  // 转换日期格式
   convertToGMTFormat(dateTimeString: string): string {
     const date = new Date(dateTimeString);
     date.setHours(date.getHours() + 8);
-    // 构建GMT格式的字符串
     const gmtDateString = date.toUTCString();
     return gmtDateString;
   }
@@ -140,7 +138,6 @@ export class InPlanComponent implements OnInit {
         planFinishedTime: '',
       };
       let numberID: number = +this.newPlanID;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.newPlanID = IDPlus1.toString();
       this.planService.addPlan(plan).subscribe(() => {
@@ -150,7 +147,6 @@ export class InPlanComponent implements OnInit {
 
     this.confirmVisible = false;
     this.planService.updateAllPlan = true;
-    this.planService.updateIndex = true;
     this.planService.updatePlan = true;
     this.planService.updateLayout = true;
     this.message.create('success', '新增入库计划成功');

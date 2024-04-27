@@ -3,6 +3,7 @@ nz-table{
   border-width:1px;
   border-color:#cccccc;
 }
+
 .disabled-link {
   color: gray;
   pointer-events: none;

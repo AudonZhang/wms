@@ -138,7 +138,6 @@ export class NewuserComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getMaxUserID().subscribe((res) => {
       let numberID: number = +res;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.user.userID = IDPlus1.toString();
     });

@@ -49,14 +49,13 @@ export class LayoutComponent implements OnInit {
   getPlans(): void {
     this.planService.getAllPlans().subscribe((res) => {
       this.plans = res;
-      // 更新 plansDisplay，使用 PlanService 中的 getGoodsById 获取 goodsName
       this.plansDisplay = this.plans.map((plan) => {
         return {
           plan: plan,
           goodsName: '',
         };
       });
-      // 为每个计划获取 goodsName
+      // 获取计划中的货物名称
       this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)

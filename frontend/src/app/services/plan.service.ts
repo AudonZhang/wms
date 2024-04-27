@@ -11,7 +11,6 @@ export class PlanService {
   public updateLayout = false; //  更新计划信息提示
   public updateAllPlan = false; //  更新全部计划页
   public updatePlan = false; //  更新计划页图表
-  public updateIndex = false; //更新Index页表格
   constructor(private http: HttpClient) {}
   private httpOptions = {
     headers: new HttpHeaders({
@@ -48,7 +47,7 @@ export class PlanService {
     const url = `${this.planUrl}/add_plan`;
     return this.http.post<string>(url, plan, this.httpOptions).pipe(
       tap((_) => console.log(`增加了ID为${plan.planID}的计划`)),
-      catchError(this.handleError<string>('新增计划时出错', '0'))
+      catchError(this.handleError<string>('新增计划时出错'))
     );
   }
 
@@ -57,16 +56,16 @@ export class PlanService {
     const url = `${this.planUrl}/finish_plan`;
     return this.http.post<string>(url, plan, this.httpOptions).pipe(
       tap((_) => console.log(`完成了ID为${plan.planID}的计划`)),
-      catchError(this.handleError<string>('完成计划时出错', '0'))
+      catchError(this.handleError<string>('完成计划时出错'))
     );
   }
   // 删除计划
   deletePlan(planID: string): Observable<string> {
     const url = `${this.planUrl}/delete_plan/${planID}`;
     return this.http.post<string>(url, this.httpOptions).pipe(
-      // POST需要删除的学生id到对应api实现删除学生用户功能
-      tap((_) => console.log(`删除学号为${planID}的学生信息`)),
-      catchError(this.handleError<string>('deleteStudent'))
+      // POST需要删除的用户id到对应api实现删除用户功能
+      tap((_) => console.log(`删除学号为${planID}的用户信息`)),
+      catchError(this.handleError<string>('删除用户信息时出错'))
     );
   }
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableFilterFn } from 'ng-zorro-antd/table';
-import { Goods } from 'src/app/interfaces/goods';
 import { Plan } from 'src/app/interfaces/plan';
 import { GoodsService } from 'src/app/services/goods.service';
 import { PlanService } from 'src/app/services/plan.service';
@@ -137,14 +136,6 @@ export class FinishPlanComponent {
     this.confirmVisible = true;
   }
 
-  // 解析日期时间字符串
-  convertToGMTFormat(dateTimeString: string): string {
-    const date = new Date(dateTimeString);
-    // 构建GMT格式的字符串
-    const gmtDateString = date.toUTCString();
-    return gmtDateString;
-  }
-
   // 用户确认提交
   handleOk(): void {
     const date = new Date();
@@ -168,7 +159,6 @@ export class FinishPlanComponent {
     this.planService.updateAllPlan = true;
     this.planService.updatePlan = true;
     this.planService.updateLayout = true;
-    this.planService.updateIndex = true;
     this.message.create('success', '计划完成');
   }
 

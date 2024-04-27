@@ -80,7 +80,7 @@ export class PlanComponent implements OnInit {
     plans.forEach((plan) => {
       const day = new Date(plan.planExpectedTime).toLocaleDateString('zh-CN', {
         timeZone: 'UTC',
-      }); // 获取日期，忽略具体时间
+      });
       if (aggregateData[day]) {
         aggregateData[day] += plan.planExpectedAmount; // 如果这一天已经有数据，则累加数量
       } else {

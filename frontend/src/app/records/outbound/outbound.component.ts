@@ -62,7 +62,6 @@ export class OutboundComponent implements OnInit {
   getOutboundID(): void {
     this.recordService.getMaxOutboundID().subscribe((res) => {
       let numberID: number = +res;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.outboundID = IDPlus1.toString();
     });
@@ -72,7 +71,6 @@ export class OutboundComponent implements OnInit {
   getOutboundOrderID(): void {
     this.recordService.getMaxOutboundOrderID().subscribe((res) => {
       let numberID: number = +res;
-      // 将数字加一
       let IDPlus1: number = numberID + 1;
       this.outboundOrderID = IDPlus1.toString();
     });
@@ -102,7 +100,7 @@ export class OutboundComponent implements OnInit {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 判断是否有选择的商品
+    let hasSelectedGoods = false; // 用于判断是否有选择的商品
 
     // 检查是否有选择的商品
     this.goodsDisplay.forEach((item) => {
@@ -117,7 +115,7 @@ export class OutboundComponent implements OnInit {
       return;
     }
 
-    let hasUnenteredAmount = false; // 判断是否有商品未输入出库数量
+    let hasUnenteredAmount = false; // 用于判断是否有商品未输入出库数量
 
     // 如果存在选择的商品，则检查是否有商品未输入出库数量
     this.goodsDisplay.forEach((item) => {
@@ -165,7 +163,6 @@ export class OutboundComponent implements OnInit {
           outboundUpdatedTime: '', // 后端负责设置时间
         };
         let numberID: number = +this.outboundID;
-        // 将数字加一
         let IDPlus1: number = numberID + 1;
         this.outboundID = IDPlus1.toString();
 

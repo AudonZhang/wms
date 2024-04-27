@@ -147,16 +147,14 @@ export class AllplanComponent implements OnInit {
   }
 
   deletePlan(id: string): void {
-    // 使用find方法查找匹配id的计划
+    // 根据ID查找计划信息
     const selectedPlan = this.plansDisplay.find(
       (plan) => plan.plan.planID === id
     );
 
-    // 如果找到了匹配的计划，将其赋值给planSelected
     if (selectedPlan) {
       this.planSelected = selectedPlan;
     } else {
-      // 如果没有找到匹配的计划，可以进行适当的处理，比如给出提示信息
       console.error(`无法找到ID为${id}的计划信息。`);
     }
     this.showModal();
@@ -171,7 +169,6 @@ export class AllplanComponent implements OnInit {
     this.planService.deletePlan(this.planSelected.plan.planID).subscribe();
     this.planService.updateAllPlan = true;
     this.planService.updatePlan = true;
-    this.planService.updateIndex = true;
     this.confirmVisible = false;
     this.message.create('success', '删除成功!');
   }

@@ -1,6 +1,6 @@
 input[nz-input] {
-    border: none; /* 删除边框 */
-    padding: 0; /* 删除内边距 */
-    margin: 0; /* 删除外边距 */
-    outline: none; /* 删除聚焦时的轮廓 */
+    border: none; 
+    padding: 0;
+    margin: 0;
+    outline: none;
 }
