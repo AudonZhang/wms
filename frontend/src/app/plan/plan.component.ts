@@ -17,7 +17,7 @@ export class PlanComponent implements OnInit {
   completedPlansCount?: number;
   pendingPlansCount?: number;
   options1: any; // 总体计划统计图表选项
-  options2: any; // 出入库计划状态图表选项
+  options2: any; // 计划状态图表选项
   options3: any; // 出入库计划数量和时间折线图选项
   constructor(
     private router: Router,
@@ -136,10 +136,10 @@ export class PlanComponent implements OnInit {
       ],
     };
 
-    // 出入库计划状态图表选项（饼图）
+    // 计划状态图表选项（饼图）
     this.options2 = {
       title: {
-        text: '出入库计划状态',
+        text: '计划状态',
         left: 'center',
       },
       tooltip: {
