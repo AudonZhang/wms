@@ -30,7 +30,7 @@
 
 
 <div *ngIf="selectedOption === '入库'">
-    <nz-table nzTableLayout="fixed" style="margin: 30px" [nzPageSize]="5">
+    <nz-table nzTableLayout="fixed" style="margin: 30px" [nzPageSize]="5" [nzNoResult]="' '">
         <thead>
             <tr>
                 <th style="background-color: #ffffff;">入库记录ID</th>
@@ -75,7 +75,7 @@
 </div>
 
 <div *ngIf="selectedOption === '出库'">
-    <nz-table nzTableLayout="fixed" style="margin: 30px">
+    <nz-table nzTableLayout="fixed" style="margin: 30px" [nzNoResult]="' '">
         <thead>
             <tr>
                 <th style="background-color: #ffffff;">出库记录ID</th>
