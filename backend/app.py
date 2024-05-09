@@ -16,7 +16,7 @@ def hello_world():
     return "Hello World!"
 
 
-# 注册不同模块对应的蓝图
+# Register blueprints for different modules
 from user import user_blue
 from record import record_blue
 from goods import goods_blue

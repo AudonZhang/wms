@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-# 创建用户模块的蓝图
+# Create a blueprint for the root module
 root_blue = Blueprint('root', __name__, url_prefix='/api/root')
 
 from . import views

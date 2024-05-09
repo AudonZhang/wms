@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-# 创建货物模块的蓝图
+# Create a blueprint for the goods module
 goods_blue = Blueprint('goods', __name__, url_prefix='/api/goods')
 
 from . import views
