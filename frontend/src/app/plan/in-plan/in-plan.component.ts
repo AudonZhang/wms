@@ -60,44 +60,44 @@ export class InPlanComponent implements OnInit {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 用于判断是否有选择的商品
-    // 检查是否有选择的商品
+    let hasSelectedGoods = false; // 用于判断是否有选择的货物
+    // 检查是否有选择的货物
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
         hasSelectedGoods = true;
       }
     });
-    // 如果没有选择的商品，则显示错误消息
+    // 如果没有选择的货物，则显示错误消息
     if (!hasSelectedGoods) {
-      this.message.create('error', '请选择要入库的商品');
+      this.message.create('error', '请选择要入库的货物');
       return;
     }
-    let hasUnenteredAmount = false; // 用于判断是否有商品未输入入库数量
-    // 如果存在选择的商品，则检查是否有商品未输入入库数量
+    let hasUnenteredAmount = false; // 用于判断是否有货物未输入入库数量
+    // 如果存在选择的货物，则检查是否有货物未输入入库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.inAmount == 0) {
-        // 如果选择了商品但入库数量为零，则设置标志为true
+        // 如果选择了货物但入库数量为零，则设置标志为true
         hasUnenteredAmount = true;
       }
     });
-    // 如果有商品未输入入库数量，则显示错误消息
+    // 如果有货物未输入入库数量，则显示错误消息
     if (hasUnenteredAmount) {
-      this.message.create('warning', '请输入商品的入库数量');
+      this.message.create('warning', '请输入货物的入库数量');
       return;
     }
-    let hasUnenteredDate = false; // 用于判断是否有商品未输入计划日期
+    let hasUnenteredDate = false; // 用于判断是否有货物未输入计划日期
     let hasPastDate = false; // 用于判断是否有选择过去的日期
-    // 如果存在选择的商品，则检查是否有商品未输入入库数量
+    // 如果存在选择的货物，则检查是否有货物未输入入库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.inDate == '') {
-        // 如果选择了商品但入库数量为零，则设置标志为true
+        // 如果选择了货物但入库数量为零，则设置标志为true
         hasUnenteredDate = true;
       } else if (item.selected && new Date(item.inDate) < new Date()) {
-        // 如果选择了商品且选择的日期在过去，则设置标志为true
+        // 如果选择了货物且选择的日期在过去，则设置标志为true
         hasPastDate = true;
       }
     });
-    // 如果有商品未输入入库数量，则不显示对话框
+    // 如果有货物未输入入库数量，则不显示对话框
     if (hasUnenteredDate) {
       this.message.create('warning', '请输入预计入库时间');
       return;
@@ -107,7 +107,7 @@ export class InPlanComponent implements OnInit {
       this.message.create('error', '请选择预计入库日期!');
       return;
     }
-    // 准备要提交的商品信息
+    // 准备要提交的货物信息
     this.plansSubmit = this.goodsDisplay.filter((item) => item.selected);
 
     // 打开确认对话框

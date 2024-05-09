@@ -152,20 +152,20 @@ export class OperationrecordComponent implements OnInit {
     }
   }
 
-  // 点击商品名称后显示详细信息
+  // 点击货物名称后显示详细信息
   handleClick(GoodsID: string) {
     this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
       this.goods = data;
       this.popoverContent = `
-      商品名称: ${this.goods.goodsName}，
-      商品规格: ${this.goods.goodsSpecification}，
+      货物名称: ${this.goods.goodsName}，
+      货物规格: ${this.goods.goodsSpecification}，
       生产厂家: ${this.goods.goodsManufacturer}，
       生产许可证: ${this.goods.goodsProductionLicense}，
       库存数量: ${this.goods.goodsAmount}。
     `;
     });
   }
-  // 商品信息点击提示
+  // 货物信息点击提示
   clearPopoverContent(): void {
     this.popoverContent = '请点击';
   }

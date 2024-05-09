@@ -116,20 +116,20 @@ export class FinishPlanComponent {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 判断是否有选择的商品
-    // 检查是否有选择的商品
+    let hasSelectedGoods = false; // 判断是否有选择的货物
+    // 检查是否有选择的货物
     this.plansDisplay.forEach((item) => {
       if (item.selected) {
         hasSelectedGoods = true;
       }
     });
-    // 如果没有选择的商品，则显示错误消息
+    // 如果没有选择的货物，则显示错误消息
     if (!hasSelectedGoods) {
       this.message.create('error', '请选择计划');
       return;
     }
 
-    // 准备要提交的商品信息
+    // 准备要提交的货物信息
     this.plansSubmit = this.plansDisplay.filter((item) => item.selected);
 
     // 打开确认对话框

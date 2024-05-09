@@ -224,9 +224,9 @@ class Outbound(db.Model):
 
             with open(filepath, 'w', newline='', encoding='utf_8_sig') as csvfile:
                 fieldnames = [
-                    '商品ID',
-                    '商品名称',
-                    '商品规格',
+                    '货物ID',
+                    '货物名称',
+                    '货物规格',
                     '生产厂家',
                     '生产许可证',
                     '出库数量',
@@ -237,13 +237,13 @@ class Outbound(db.Model):
                 writer.writeheader()
 
                 for record in records:
-                    # 根据商品ID查询商品信息
+                    # 根据货物ID查询货物信息
                     goods_info = Goods.get_goods_by_id(record.outboundGoodsID)
                     writer.writerow(
                         {
-                            '商品ID': goods_info['goodsID'],
-                            '商品名称': goods_info['goodsName'],
-                            '商品规格': goods_info['goodsSpecification'],
+                            '货物ID': goods_info['goodsID'],
+                            '货物名称': goods_info['goodsName'],
+                            '货物规格': goods_info['goodsSpecification'],
                             '生产厂家': goods_info['goodsManufacturer'],
                             '生产许可证': goods_info['goodsProductionLicense'],
                             '出库数量': record.outboundAmount,

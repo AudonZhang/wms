@@ -207,7 +207,7 @@ def inboundConfirm():
         return jsonify({"error": str(e)})
 
 
-# 商品入库
+# 货物入库
 @record_blue.route('/inbound', methods=['GET', 'POST'])
 def inbound():
     try:

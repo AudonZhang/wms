@@ -45,10 +45,10 @@ export class OutboundComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
-  // 获取可以出库的商品的信息
+  // 获取可以出库的货物的信息
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
-      // 筛选出数量大于 0 的商品
+      // 筛选出数量大于 0 的货物
       this.goods = res.filter((goods) => goods.goodsAmount > 0);
       this.goodsDisplay = this.goods.map((goods) => ({
         goods,
@@ -100,45 +100,44 @@ export class OutboundComponent implements OnInit {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 用于判断是否有选择的商品
+    let hasSelectedGoods = false; // 用于判断是否有选择的货物
 
-    // 检查是否有选择的商品
+    // 检查是否有选择的货物
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
         hasSelectedGoods = true;
       }
     });
 
-    // 如果没有选择的商品，则显示错误消息
+    // 如果没有选择的货物，则显示错误消息
     if (!hasSelectedGoods) {
-      this.message.create('error', '请选择要出库的商品');
+      this.message.create('error', '请选择要出库的货物');
       return;
     }
 
-    let hasUnenteredAmount = false; // 用于判断是否有商品未输入出库数量
+    let hasUnenteredAmount = false; // 用于判断是否有被选择的货物未输入出库数量
 
-    // 如果存在选择的商品，则检查是否有商品未输入出库数量
+    // 则被选择的货物是否有输入出库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.outAmount == 0) {
-        // 如果选择了商品但出库数量为零，则设置标志为true
         hasUnenteredAmount = true;
       }
     });
 
-    // 如果有商品未输入出库数量，则不显示对话框
+    // 如果有货物未输入出库数量，则不显示对话框
     if (hasUnenteredAmount) {
-      this.message.create('warning', '请输入商品的出库数量');
+      this.message.create('warning', '请输入货物的出库数量');
       return;
     }
 
-    // 计算货物的剩余数量并准备要提交的商品信息
+    // 计算货物的剩余数量并准备要提交的货物信息
     this.submittedGoods = this.goodsDisplay
       .filter((item) => {
         if (item.selected && item.outAmount > 0) {
           item.goods.goodsAmount -= item.outAmount;
-          return true; // 保留选中且有出库数量的商品
+          return true; // 保留选中且有出库数量的货物
         }
-        return false; // 过滤掉未选中或无出库数量的商品
+        return false; // 过滤掉未选中或无出库数量的货物
       })
       .map((item) => item.goods);
 

@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, tap } from 'rxjs';
 import { Goods } from 'src/app/interfaces/goods';
-import { GoodsService } from 'src/app/services/goods.service';
 import { RecordService } from 'src/app/services/record.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -24,8 +23,7 @@ export class InboundComponent {
     private recordService: RecordService,
     private http: HttpClient,
     private userService: UserService,
-    private message: NzMessageService,
-    private goodsService: GoodsService
+    private message: NzMessageService
   ) {}
 
   // 选择文件
