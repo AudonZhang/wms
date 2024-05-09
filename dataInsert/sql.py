@@ -5,9 +5,10 @@ import pymysql
 import hashlib
 
 
-# 初始化和连接数据库
+# Connect to MySQL
 pymysql.install_as_MySQLdb()
 app = Flask(__name__)
+# mysql+pymysql://"username":"password"@localhost:3306/"database_name"
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:200110@localhost:3306/wms"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SQLALCHEMY_ECHO"] = True
@@ -15,8 +16,7 @@ app.config["SQLALCHEMY_COMMIT_ON_TEARDOWN"] = False
 db = SQLAlchemy(app)
 
 
-# 定义Python中的类并通过'db.Model'与MySql中的table建立映射关系
-# 用户表
+# "user" table
 class User(db.Model):
     __tablename__ = "user"
     userID = db.Column(db.Integer, primary_key=True)
@@ -31,7 +31,7 @@ class User(db.Model):
     userUpdatedTime = db.Column(db.DateTime)
 
 
-# 货物表
+# "goods" table
 class Goods(db.Model):
     __tablename__ = "goods"
     goodsID = db.Column(db.Integer, primary_key=True)
@@ -46,7 +46,7 @@ class Goods(db.Model):
     goodsUpdatedTime = db.Column(db.DateTime)
 
 
-# 入库记录表
+# "inbound" table
 class Inbound(db.Model):
     __tablename__ = "inbound"
     inboundID = db.Column(db.Integer, primary_key=True)
@@ -57,7 +57,7 @@ class Inbound(db.Model):
     inboundUpdatedTime = db.Column(db.DateTime)
 
 
-# 出库记录表
+# "outbound" table
 class Outbound(db.Model):
     __tablename__ = "outbound"
     outboundID = db.Column(db.Integer, primary_key=True)
@@ -68,7 +68,7 @@ class Outbound(db.Model):
     outboundUpdatedTime = db.Column(db.DateTime)
 
 
-# 出入库计划表
+# "plan" table
 class Plan(db.Model):
     __tablename__ = "plan"
     planID = db.Column(db.Integer, primary_key=True)
@@ -83,29 +83,31 @@ class Plan(db.Model):
     planFinishedTime = db.Column(db.DateTime)
 
 
-# 输入数据时将明文密码转化为MD5加密值并直接插入数据库
+#  Get the MD5 hash value of a string
 def md5_hash(text):
     md5_hash = hashlib.md5()
     md5_hash.update(text.encode("utf-8"))
     return md5_hash.hexdigest()
 
 
-# 创建数据库中各表的记录并插入数据库
+# Create tables and insert data into MySQL
 if __name__ == "__main__":
     with app.app_context():
         db.drop_all()
         db.create_all()
 
+        # ID/password:2024001/2024001,Role: Administrator
         user1 = User(
             userID="2024001",
-            userName="张浩东",
+            userName="张浩西",
             userGender="男",
-            userPhone="15235167297",
+            userPhone="15235168298",
             userPasswordMD5=md5_hash("2024001"),
-            userEmail="765707885@qq.com",
+            userEmail="765707886@qq.com",
             userStatus="在职",
             userRole="管理员",
         )
+        # ID/password:2024002/2024002,Role: Warehouse Operator
         user2 = User(
             userID="2024002",
             userName="申奇水",
@@ -116,6 +118,7 @@ if __name__ == "__main__":
             userStatus="在职",
             userRole="仓库运维",
         )
+        # ID/password:2024003/2024003,Role: Warehouse Operator
         user3 = User(
             userID="2024003",
             userName="夏鸿洁",
