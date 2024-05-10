@@ -4,11 +4,11 @@ from func.goods import Goods
 from goods import goods_blue
 import logging
 
-# 错误日志
+# logs
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# 根据货物ID获取货物信息的路由
+# Route to fetch goods information based on goods ID
 @goods_blue.route("/get_goods_by_id/<string:goodsID>")
 def get_goods_by_id(goodsID):
     try:
@@ -17,14 +17,14 @@ def get_goods_by_id(goodsID):
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting goods by goodsID from the database. Error message: {}".format(
+            "An error occurred while retrieving goods information by goods ID from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取所有货物信息的路由
+# Route to fetch all goods information
 @goods_blue.route('/get_all_goods')
 def get_all_goods():
     try:
@@ -33,27 +33,27 @@ def get_all_goods():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting all goods from the database. Error message: {}".format(
+            "An error occurred while retrieving all goods information from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 新增货物的路由
+#  Route to add new goods
 @goods_blue.route('/add_goods', methods=['GET', 'POST'])
 def add_goods():
     try:
         if request.method == 'POST':
             data = json.loads(request.get_data())
-            # 判断货物是否存在
+            # Determine if the goods exist
             judge = Goods.judgeExist(
                 data['goodsName'],
                 data['goodsSpecification'],
                 data['goodsManufacturer'],
                 data['goodsProductionLicense'],
             )
-            # 货物不存在则新建货物
+            # If the goods do not exist, create a new goods record
             if judge == '0':
                 result = Goods.add_goods(
                     data['goodsID'],
@@ -74,25 +74,25 @@ def add_goods():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while adding goods. Error message: {}'.format(str(e))
+            'An error occurred while adding goods. Error message: {}'.format(str(e))
         )
         return jsonify({"error": str(e)})
 
 
-# 修改货物信息的路由
+# Route to modify goods information
 @goods_blue.route('/update_goods', methods=['GET', 'POST'])
 def update_goods():
     try:
         if request.method == 'POST':
             data = json.loads(request.get_data())
-            # 判断修改后的货物是否存在
+            # Determine if the goods exist
             judge = Goods.judgeExist(
                 data['goodsName'],
                 data['goodsSpecification'],
                 data['goodsManufacturer'],
                 data['goodsProductionLicense'],
             )
-            # 不存在则修改货物信息
+            # If the goods do not exist, modify goods information
             if judge == '0':
                 result = Goods.update_goods(
                     data['goodsID'],
@@ -113,12 +113,14 @@ def update_goods():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while updating goods. Error message: {}'.format(str(e))
+            'An error occurred while modifying goods information. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 修改货物信息的路由
+# Route for goods to be shipped out
 @goods_blue.route('/out_goods', methods=['GET', 'POST'])
 def out_goods():
     try:
@@ -142,12 +144,14 @@ def out_goods():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while out goods. Error message: {}'.format(str(e))
+            'An error occurred while processing the goods shipment. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取最大的货物ID的路由（用于前端新建货物时生成新货物ID）
+# Route to fetch the maximum goods ID (used to generate a new goods ID when creating new goods)
 @goods_blue.route('/get_max_goodsID')
 def get_max_goodsID():
     try:
@@ -156,7 +160,7 @@ def get_max_goodsID():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting max goodsID from the database. Error message: {}".format(
+            " An error occurred while retrieving the maximum goods ID from the database. Error message: {}".format(
                 str(e)
             )
         )

@@ -8,11 +8,11 @@ import os
 from flask import send_file
 from openpyxl import load_workbook
 
-# 错误日志
+# logs
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# 获取用户ID对应的入库记录的路由
+# Route to fetch the inbound records corresponding to a user ID
 @record_blue.route('/get_inbound_record_by_user_id/<string:userID>')
 def get_inbound_record_by_user_id(userID):
     try:
@@ -21,14 +21,14 @@ def get_inbound_record_by_user_id(userID):
         return jsonify(result)
     except Exception as e:
         logging.error(
-            'Error occurred while getting inbound records by userID from the database. Error message: {}'.format(
+            'An error occurred while retrieving inbound records by user ID from the database. Error message: {}'.format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取用户ID对应的出库记录的路由
+# Route to fetch the outbound records corresponding to a user ID
 @record_blue.route('/get_outbound_record_by_user_id/<string:userID>')
 def get_outbound_record_by_user_id(userID):
     try:
@@ -37,14 +37,14 @@ def get_outbound_record_by_user_id(userID):
         return jsonify(result)
     except Exception as e:
         logging.error(
-            'Error occurred while getting outbound records by userID from the database. Error message: {}'.format(
+            'An error occurred while retrieving outbound records by user ID from the database. Error message: {}'.format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取所有入库记录的路由
+# Route to fetch all inbound records
 @record_blue.route('/get_all_inbounds')
 def get_all_inbounds():
     try:
@@ -53,14 +53,14 @@ def get_all_inbounds():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            'Error occurred while getting all inbound records from the database. Error message: {}'.format(
+            'An error occurred while retrieving all inbound records from the database. Error message: {}'.format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取所有出库记录的路由
+# Route to fetch all outbound records
 @record_blue.route('/get_all_outbounds')
 def outbounds():
     try:
@@ -69,14 +69,14 @@ def outbounds():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            'Error occurred while getting all outbound records from the database. Error message: {}'.format(
+            'An error occurred while retrieving all outbound records from the database. Error message: {}'.format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取最大出库单ID的路由（用于前端出库时生成新出库单）
+# Route to fetch the maximum outbound ID (used to generate a new outbound ID when creating a new outbound)
 @record_blue.route('/get_max_outboundOrderID')
 def get_max_outboundOrderID():
     try:
@@ -85,14 +85,14 @@ def get_max_outboundOrderID():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting max outboundOrderID from the database. Error message: {}".format(
+            "An error occurred while retrieving the maximum outbound order ID from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取最大出库记录ID的路由（用于前端出库时生成新出库记录ID）
+# Route to fetch the maximum outbound record ID (used to generate a new outbound record ID when creating a new outbound)
 @record_blue.route('/get_max_outboundID')
 def get_max_outboundID():
     try:
@@ -101,14 +101,14 @@ def get_max_outboundID():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting max outboundID from the database. Error message: {}".format(
+            "An error occurred while retrieving the maximum outbound ID from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 新增出库记录的路由
+# Route to add a new outbound record
 @record_blue.route('/add_outbound', methods=['GET', 'POST'])
 def add_outbound():
     try:
@@ -127,39 +127,44 @@ def add_outbound():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while adding outbound. Error message: {}'.format(str(e))
-        )
-        return jsonify({"error": str(e)})
-
-
-# 访问api时生成出库单ID对应的出库单，浏览器自动下载生成的出库单
-@record_blue.route('/generate_outbound_order_by_id/<string:outboundOrderID>')
-def generate_outbound_order_by_id(outboundOrderID):
-    try:
-        filename = Outbound.generate_outbound_order_by_id(outboundOrderID)
-        if filename:
-            current_dir = os.getcwd()  # 获取当前工作目录路径
-
-            parent_dir = os.path.dirname(current_dir)
-            order_dir = os.path.join(parent_dir, 'order')
-            # 如果 /order 目录不存在，则创建它
-            if not os.path.exists(order_dir):
-                os.makedirs(order_dir)
-            filepath = os.path.join(order_dir, filename)
-
-            return send_file(filepath, as_attachment=True)
-        else:
-            return jsonify({"error": "No records found for the given outboundOrderID"})
-    except Exception as e:
-        logging.error(
-            'Error occurred while generating outbound order by outboundOrderID from the database. Error message: {}'.format(
+            'An error occurred while adding the outbound record. Error message: {}'.format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 入库信息确认
+# Route to generate and automatically download the outbound corresponding to the outbound order ID
+@record_blue.route('/generate_outbound_order_by_id/<string:outboundOrderID>')
+def generate_outbound_order_by_id(outboundOrderID):
+    try:
+        filename = Outbound.generate_outbound_order_by_id(outboundOrderID)
+        if filename:
+            # Get the current working directory
+            current_dir = os.getcwd()
+
+            parent_dir = os.path.dirname(current_dir)
+            order_dir = os.path.join(parent_dir, 'order')
+            # Create the "order" directory if it doesn't exist
+            if not os.path.exists(order_dir):
+                os.makedirs(order_dir)
+            filepath = os.path.join(order_dir, filename)
+
+            return send_file(filepath, as_attachment=True)
+        else:
+            return jsonify(
+                {"error": "No records found for the given outbound order ID"}
+            )
+    except Exception as e:
+        logging.error(
+            'An error occurred while generating the outbound order by outbound order ID from the database. Error message: {}'.format(
+                str(e)
+            )
+        )
+        return jsonify({"error": str(e)})
+
+
+# Route for confirming inbound information
 @record_blue.route('/inboundConfirm', methods=['GET', 'POST'])
 def inboundConfirm():
     try:
@@ -168,21 +173,22 @@ def inboundConfirm():
             userID = request.form.get('userID')
             file = request.files['file']
 
-            current_dir = os.getcwd()  # 获取当前工作目录路径
+            # Get the current working directory
+            current_dir = os.getcwd()
             parent_dir = os.path.dirname(current_dir)
             order_dir = os.path.join(parent_dir, 'order')
-            # 如果 /order 目录不存在，则创建它
+            # Create the "order" directory if it doesn't exist
             if not os.path.exists(order_dir):
                 os.makedirs(order_dir)
             filepath = os.path.join(order_dir, file.filename)
             file.save(filepath)
 
-            # 入库单数据提取
+            # Extraction of entry order data
             wb = load_workbook(filepath)
             ws = wb.active
-            # 设置标题行
+            # Set the first row as the header row
             headers = [cell.value for cell in ws[1]]
-            # 逐行读取文件中数据并添加到字典
+            # Read data from the file line by line
             for row in ws.iter_rows(min_row=2, values_only=True):
                 inbound_data = dict(zip(headers, row))
                 goods_list.append(
@@ -202,30 +208,32 @@ def inboundConfirm():
             return jsonify(goods_list)
     except Exception as e:
         logging.error(
-            'Error occurred while inboundConfirm. Error message: {}'.format(str(e))
+            'An error occurred while confirming the inbound information. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 货物入库
+# Route to create a new inbound record for goods.
 @record_blue.route('/inbound', methods=['GET', 'POST'])
 def inbound():
     try:
         if request.method == 'POST':
             goods_list = request.json
-            # 获取本次入库的入库单号
+            # Get new inbound order ID
             inboundOrderID = int(Inbound.get_max_inboundOrderID()) + 1
-            # 新货物的ID
+            # Get new goods ID
             newGoodsID = int(Goods.get_max_goodsID()) + 1
             for data in goods_list:
-                # 判断货物是否存在
+                # Determine if the goods exist
                 goodsExist = Goods.judgeExist(
                     data['goodsName'],
                     data['goodsSpecification'],
                     data['goodsManufacturer'],
                     data['goodsProductionLicense'],
                 )
-                # 货物存在，更新货物数量
+                #  If the goods exist, update the quantity of goods and create an inbound record
                 if goodsExist != '0':
                     amount = int(
                         Goods.get_goods_by_id(goodsExist)['goodsAmount']
@@ -251,7 +259,7 @@ def inbound():
                         datetime.now(),
                     )
                 else:
-                    # 货物不存在，新增货物
+                    # If the goods do not exist, create a goods record and an entry record
                     Goods.add_goods(
                         newGoodsID,
                         data['goodsName'],
@@ -264,7 +272,6 @@ def inbound():
                         data['goodsUpdatedByID'],
                         datetime.now(),
                     )
-                    # 新增入库记录
                     Inbound.add_inbound(
                         str(int(Inbound.get_max_inboundID()) + 1),
                         str(inboundOrderID),
@@ -276,5 +283,9 @@ def inbound():
                     newGoodsID += 1
             return jsonify({'status': 'GET'})
     except Exception as e:
-        logging.error('Error occurred while inbound. Error message: {}'.format(str(e)))
+        logging.error(
+            'An error occurred while creating the inbound record. Error message: {}'.format(
+                str(e)
+            )
+        )
         return jsonify({"error": str(e)})

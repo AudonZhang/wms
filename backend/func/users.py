@@ -1,7 +1,6 @@
 from app import db
 
 
-# 实现与用户记录相关的类与函数
 class User(db.Model):
     __tablename__ = "user"
     userID = db.Column(db.Integer, primary_key=True)
@@ -15,7 +14,7 @@ class User(db.Model):
     userUpdatedByID = db.Column(db.Integer)
     userUpdatedTime = db.Column(db.DateTime)
 
-    # 获取所有用户记录
+    # Fetch all user records
     @staticmethod
     def get_all_users():
         users = User.query.all()
@@ -40,7 +39,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 根据用户ID获取对应的用户信息
+    # Get the corresponding user information based on the user ID
     @staticmethod
     def get_user_by_id(userID):
         users = User.query.filter(User.userID == userID)
@@ -62,7 +61,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 根据前端输入的用户ID与密码登录
+    #  Log in using the user ID and passwordMD5
     @staticmethod
     def login(userID, userPasswordMD5):
         user = User.query.filter(
@@ -73,7 +72,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 修改用户信息
+    # Modify user information
     @staticmethod
     def update_user(
         userID,
@@ -104,7 +103,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 解雇员工
+    # Dismiss an employee
     @staticmethod
     def unemploy_user(userID):
         user = User.query.filter(User.userID == userID).first()
@@ -115,7 +114,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 原离职员工入职
+    # Rehire a previously dismissed employee
     @staticmethod
     def employ_user(userID):
         user = User.query.filter(User.userID == userID).first()
@@ -126,7 +125,7 @@ class User(db.Model):
         else:
             return '0'
 
-    # 新增用户
+    # Add a new user
     @staticmethod
     def add_user(
         userID,
@@ -141,7 +140,6 @@ class User(db.Model):
         userUpdatedTime,
     ):
         query_user = User.query.filter(User.userID == userID)
-        # 数据库中已存在该ID的用户
         if len(query_user.all()) > 0:
             return '0'
         else:
@@ -161,7 +159,7 @@ class User(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的用户ID（用于前端创建用户时生成新ID）
+    # Fetch the maximum user ID (used to generate a new ID when creating a user)
     @staticmethod
     def get_max_userID():
         users = User.query.all()
@@ -169,4 +167,4 @@ class User(db.Model):
             max_user_id = max(user.userID for user in users)
             return str(max_user_id)
         else:
-            return '2024001'  # 若数据库中无用户，则生成第一个用户ID
+            return '2024001'  #  If there are no users in the database, generate the first user ID

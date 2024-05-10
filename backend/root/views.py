@@ -9,10 +9,10 @@ from root import root_blue
 import logging
 
 
-# 错误日志
+# logs
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
-# 备份时将英文列名转换为中文列名
+# Convert English listing to Chinese listing during backup
 user_column_name_mapping = {
     'userID': '用户ID',
     'userName': '用户姓名',
@@ -71,38 +71,42 @@ plan_column_name_mapping = {
 }
 
 
-# 生成数据库中信息备份并在浏览器中自动下载
+# Route to generate a backup of information in the database and automatically download it in the browser
 @root_blue.route('/backup')
 def backup():
     try:
+        # Get data
         users = User.get_all_users()
         goodss = Goods.get_all_goods()
         inbounds = Inbound.get_all_inbounds()
         outbounds = Outbound.get_all_outbounds()
         plans = Plan.get_all_plans()
-
+        # Creata pandas data format
         users_df = pd.DataFrame(users)
         goods_df = pd.DataFrame(goodss)
         inbounds_df = pd.DataFrame(inbounds)
         outbounds_df = pd.DataFrame(outbounds)
         plans_df = pd.DataFrame(plans)
 
-        # 将列名从英文替换为中文
+        # Convert listing names from English to Chinese
         users_df.rename(columns=user_column_name_mapping, inplace=True)
         goods_df.rename(columns=goods_column_name_mapping, inplace=True)
         inbounds_df.rename(columns=inbound_column_name_mapping, inplace=True)
         outbounds_df.rename(columns=outbound_column_name_mapping, inplace=True)
         plans_df.rename(columns=plan_column_name_mapping, inplace=True)
 
-        # 构造保存路径
-        default_save_path = os.getcwd()  # 获取当前工作目录
-        backup_dir = os.path.join(
-            os.path.dirname(default_save_path), 'backup'
-        )  # 构造"backup"文件夹的路径
-        os.makedirs(backup_dir, exist_ok=True)  # 创建"backup"文件夹（如果不存在）
-        save_path = os.path.join(backup_dir, 'backup.xlsx')  # 构造保存文件的完整路径
+        # Construct the file saving path
+        default_save_path = os.getcwd()  # Get the current working directory
+        # Construct the path to the "backup" folder in the current directory
+        backup_dir = os.path.join(os.path.dirname(default_save_path), 'backup')
+        os.makedirs(
+            backup_dir, exist_ok=True
+        )  #  Create the "backup" folder (if it doesn't exist)
+        save_path = os.path.join(
+            backup_dir, 'backup.xlsx'
+        )  # Construct the complete path to save the file
 
-        # 写入Excel文件，并指定表单名
+        # Write data from MySQL into an Excel file, specifying the Excel sheet name for each table
         with pd.ExcelWriter(save_path) as writer:
             users_df.to_excel(writer, sheet_name='用户信息', index=False)
             goods_df.to_excel(writer, sheet_name='货物信息', index=False)
@@ -115,5 +119,9 @@ def backup():
         return send_file(save_path, as_attachment=True)
 
     except Exception as e:
-        logging.error("Error occurred while backup. Error message: {}".format(str(e)))
+        logging.error(
+            "An error occurred while performing the backup. Error message: {}".format(
+                str(e)
+            )
+        )
         return jsonify({"error": str(e)})

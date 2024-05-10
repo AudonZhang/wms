@@ -5,11 +5,11 @@ import logging
 from datetime import datetime
 
 
-# 错误日志
+# logs
 logging.basicConfig(filename="api.log", level=logging.DEBUG)
 
 
-# 获取所有用户信息的路由
+# Route to fetch all user information
 @user_blue.route('/get_all_users')
 def get_all_users():
     try:
@@ -18,14 +18,14 @@ def get_all_users():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting all users from the database. Error message: {}".format(
+            "An error occurred while retrieving all users from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 登录路由
+# Route for logging in
 @user_blue.route("/login", methods=["GET", "POST"])
 def login():
     try:
@@ -38,27 +38,29 @@ def login():
         else:
             return jsonify({"status": "GET"})
     except Exception as e:
-        logging.error("Error occurred while logging. Error message: {}".format(str(e)))
+        logging.error(
+            "An error occurred while logging in. Error message: {}".format(str(e))
+        )
         return jsonify({"error": str(e)})
 
 
-# 获取指定ID的用户信息
+# Route to fetch information of a user with a user ID
 @user_blue.route("/get_user_by_id/<string:userID>")
 def get_user_by_id(userID):
     try:
         result = User.get_user_by_id(userID)
-        logging.info("获得" + userID + "用户的信息")
+        logging.info("获得" + userID + "的用户的信息")
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting users by id from the database. Error message: {}".format(
+            "An error occurred while retrieving user information by ID from the database. Error message: {}".format(
                 str(e)
             )
         )
         return jsonify({"error": str(e)})
 
 
-# 根据ID解雇对应的员工
+# Route to dismiss an employee corresponding to the given ID
 @user_blue.route('/unemploy_user/<string:userID>', methods=['GET', 'POST'])
 def unemploy_user(userID):
     try:
@@ -69,12 +71,14 @@ def unemploy_user(userID):
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while unemploying user. Error message: {}'.format(str(e))
+            'An error occurred while dismissing the employee. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 根据ID将解雇的员工恢复
+# Route to reinstate the dismissed employee based on ID
 @user_blue.route('/employ_user/<string:userID>', methods=['GET', 'POST'])
 def employ_user(userID):
     try:
@@ -85,12 +89,14 @@ def employ_user(userID):
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while employing user. Error message: {}'.format(str(e))
+            'An error occurred while reinstating the employee. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 新增用户
+# Route to add a new user
 @user_blue.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     try:
@@ -113,12 +119,14 @@ def add_user():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while adding user. Error message: {}'.format(str(e))
+            'An error occurred while adding a new user. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 修改用户信息
+# Route to modify user information
 @user_blue.route('/update_user', methods=['GET', 'POST'])
 def update_user():
     try:
@@ -141,12 +149,14 @@ def update_user():
             return jsonify({'status': 'GET'})
     except Exception as e:
         logging.error(
-            'Error occurred while updating user. Error message: {}'.format(str(e))
+            'An error occurred while modifying user information. Error message: {}'.format(
+                str(e)
+            )
         )
         return jsonify({"error": str(e)})
 
 
-# 获取最大的用户ID（用于前端新建用户时生成新ID）
+#  Route to fetch the maximum user ID (used to generate a new ID for a new user)
 @user_blue.route('/get_max_userID')
 def get_max_userID():
     try:
@@ -155,7 +165,7 @@ def get_max_userID():
         return jsonify(result)
     except Exception as e:
         logging.error(
-            "Error occurred while getting max userID from the database. Error message: {}".format(
+            "An error occurred while retrieving the maximum user ID from the database. Error message: {}".format(
                 str(e)
             )
         )

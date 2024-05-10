@@ -1,7 +1,6 @@
 from app import db
 
 
-# 实现与货物相关的类与函数
 class Goods(db.Model):
     __tablename__ = "goods"
     goodsID = db.Column(db.Integer, primary_key=True)
@@ -15,7 +14,7 @@ class Goods(db.Model):
     goodsUpdatedByID = db.Column(db.Integer)
     goodsUpdatedTime = db.Column(db.DateTime)
 
-    # 通过货物ID获取对应货物信息
+    # Get corresponding goods information by goods ID
     @staticmethod
     def get_goods_by_id(goodsID):
         goodss = Goods.query.filter(Goods.goodsID == goodsID)
@@ -37,7 +36,7 @@ class Goods(db.Model):
         else:
             return '0'
 
-    # 获取所有货物信息
+    # Get all goods information
     @staticmethod
     def get_all_goods():
         goodss = Goods.query.all()
@@ -62,7 +61,7 @@ class Goods(db.Model):
         else:
             return '0'
 
-    # 修改货物信息
+    # Modify goods information
     @staticmethod
     def update_goods(
         goodsID,
@@ -93,7 +92,7 @@ class Goods(db.Model):
         else:
             return '0'
 
-    # 新增货物
+    # Add new goods
     @staticmethod
     def add_goods(
         goodsID,
@@ -108,7 +107,7 @@ class Goods(db.Model):
         goodsUpdatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID)
-        # 货物ID已存在
+        # The goods ID already exists
         if len(goods.all()) > 0:
             return '0'
         else:
@@ -128,7 +127,7 @@ class Goods(db.Model):
             db.session.commit()
             return '1'
 
-    # 查询最大的货物ID（用于前端新增货物时生成新货物ID）
+    # Querying the maximum goods ID (used to generate a new goods ID when adding new goods)
     @staticmethod
     def get_max_goodsID():
         goodss = Goods.query.all()
@@ -136,9 +135,9 @@ class Goods(db.Model):
             max_goods_id = max(goods.goodsID for goods in goodss)
             return str(max_goods_id)
         else:
-            return '202400001'  # 若数据库中无货物，则生成第一个货物ID
+            return '202400001'  # If there are no goods in the database, generate the first goods ID
 
-    # 根据货物信息判断货物是否存在
+    # Determine if the goods exist based on goods information
     @staticmethod
     def judgeExist(
         goodsName, goodsSpecification, goodsManufacturer, goodsProductionLicense
@@ -151,6 +150,6 @@ class Goods(db.Model):
         ).first()
 
         if existing_goods:
-            return existing_goods.goodsID  # 货物存在则返回货物ID
+            return existing_goods.goodsID  # Return the goods ID if the goods exist
         else:
             return '0'

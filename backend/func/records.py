@@ -4,7 +4,6 @@ from func.goods import Goods
 import os
 
 
-# 实现与入库记录相关的类与函数
 class Inbound(db.Model):
     __tablename__ = "inbound"
     inboundID = db.Column(db.Integer, primary_key=True)
@@ -14,7 +13,7 @@ class Inbound(db.Model):
     inboundUpdatedByID = db.Column(db.Integer)
     inboundUpdatedTime = db.Column(db.DateTime)
 
-    # 根据用户ID获取对应的入库记录
+    # Fetch the inbound records corresponding to the user ID
     @staticmethod
     def get_inbound_record_by_user_id(userID):
         records = Inbound.query.filter(Inbound.inboundUpdatedByID == userID)
@@ -35,7 +34,7 @@ class Inbound(db.Model):
         else:
             return '0'
 
-    # 获取所有入库记录
+    # Fetch all inbound records
     @staticmethod
     def get_all_inbounds():
         inbounds = Inbound.query.all()
@@ -56,7 +55,7 @@ class Inbound(db.Model):
         else:
             return '0'
 
-    # 新增入库记录
+    # Add a new inbound record
     @staticmethod
     def add_inbound(
         inboundID,
@@ -82,7 +81,7 @@ class Inbound(db.Model):
             db.session.commit()
             return '1'
 
-    # 获取最大的入库记录ID（用于前端入库操作时生成新入库记录ID）
+    # Fetch the maximum inbound record ID (used to generate a new inbound record ID when creating a new outbound)
     @staticmethod
     def get_max_inboundID():
         inbounds = Inbound.query.all()
@@ -90,9 +89,9 @@ class Inbound(db.Model):
             max_inbounds_id = max(inbound.inboundID for inbound in inbounds)
             return str(max_inbounds_id)
         else:
-            return '2024000001'  # 若数据库中无入库记录，则生成第一个入库记录ID
+            return '2024000001'  # If there are no inbound records in the database, generate the first inbound record ID
 
-    # 获取最大的入库单ID（用于入库操作时生产新入库单ID）
+    # Fetch the maximum inbound order ID (used to generate a new inbound order ID during inbound operations)
     @staticmethod
     def get_max_inboundOrderID():
         inbounds = Inbound.query.all()
@@ -100,10 +99,9 @@ class Inbound(db.Model):
             max_inboundOrder_id = max(inbound.inboundOrderID for inbound in inbounds)
             return str(max_inboundOrder_id)
         else:
-            return '20240001'  # 若数据库中入库单，则生成第一个入库单ID
+            return '20240001'  # If there are no inbound orders in the database, generate the first inbound order ID
 
 
-# 实现与出库记录相关的类与函数
 class Outbound(db.Model):
     __tablename__ = "outbound"
     outboundID = db.Column(db.Integer, primary_key=True)
@@ -113,7 +111,7 @@ class Outbound(db.Model):
     outboundUpdatedByID = db.Column(db.Integer)
     outboundUpdatedTime = db.Column(db.DateTime)
 
-    # 根据用户ID获取对应的出库记录
+    # Fetch the outbound records corresponding to the user ID
     @staticmethod
     def get_outbound_record_by_user_id(userID):
         records = Outbound.query.filter(Outbound.outboundUpdatedByID == userID)
@@ -134,7 +132,7 @@ class Outbound(db.Model):
         else:
             return '0'
 
-    # 获取所有出库记录
+    # Fetch all outbound records
     @staticmethod
     def get_all_outbounds():
         outbounds = Outbound.query.all()
@@ -155,7 +153,7 @@ class Outbound(db.Model):
         else:
             return '0'
 
-    # 获取最大的出库单ID（用于前端进行出库操作时生成新出库单ID）
+    # Fetch the maximum outbound order ID (used to generate a new outbound order ID during outbound operations)
     @staticmethod
     def get_max_outboundOrderID():
         outbounds = Outbound.query.all()
@@ -165,9 +163,9 @@ class Outbound(db.Model):
             )
             return str(max_outboundOrder_id)
         else:
-            return '20240001'  # 若数据库中无出库单，则生成第一个出库单ID
+            return '20240001'  # If there are no outbound orders in the database, generate the first outbound order ID
 
-    # 获取最大的出库记录ID（用于前端进行出库操作时生成新出库记录ID）
+    # Fetch the maximum outbound record ID (used to generate a new outbound record ID during outbound operations)
     @staticmethod
     def get_max_outboundID():
         outbounds = Outbound.query.all()
@@ -175,9 +173,9 @@ class Outbound(db.Model):
             max_outbounds_id = max(outbound.outboundID for outbound in outbounds)
             return str(max_outbounds_id)
         else:
-            return '2024000001'  # 若数据库中无出库记录，则生成第一个出库记录ID
+            return '2024000001'  # If there are no outbound records in the database, generate the first outbound record ID
 
-    # 新增出库记录
+    # Add new outbound record
     @staticmethod
     def add_outbound(
         outboundID,
@@ -203,7 +201,7 @@ class Outbound(db.Model):
             db.session.commit()
             return '1'
 
-    # 根据出库单ID生成出库单文件并返回出库单文件名（供前端下载）
+    # Generate an outbound order file based on the outbound order ID and return the outbound order file name
     @staticmethod
     def generate_outbound_order_by_id(outboundOrderID):
         records = Outbound.query.filter(
@@ -213,14 +211,16 @@ class Outbound(db.Model):
             first = records[0]
             filename = f"出库单号：{first.outboundOrderID}：出库人：{first.outboundUpdatedByID}：出库时间：{first.outboundUpdatedTime.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
 
-            # 设定文件保存目录
-            current_dir = os.getcwd()  # 获取当前工作目录路径
-            parent_dir = os.path.dirname(current_dir)  # 获取上级目录
-            order_dir = os.path.join(parent_dir, 'order')  # 选择上级目录的order文件夹
-            # 如果 /order 目录不存在，则创建它
+            # Set the file saving directory
+            current_dir = os.getcwd()  # Get the current working directory
+            parent_dir = os.path.dirname(current_dir)  # get parent directory
+            order_dir = os.path.join(
+                parent_dir, 'order'
+            )  #  Select the "order" folder in the parent directory
+            # Create the "order" directory if it doesn't exist
             if not os.path.exists(order_dir):
                 os.makedirs(order_dir)
-            filepath = os.path.join(order_dir, filename)  # 选择生成的文件
+            filepath = os.path.join(order_dir, filename)  # Select the generated file
 
             with open(filepath, 'w', newline='', encoding='utf_8_sig') as csvfile:
                 fieldnames = [
@@ -237,7 +237,7 @@ class Outbound(db.Model):
                 writer.writeheader()
 
                 for record in records:
-                    # 根据货物ID查询货物信息
+                    # Query goods information based on goods ID
                     goods_info = Goods.get_goods_by_id(record.outboundGoodsID)
                     writer.writerow(
                         {
@@ -251,6 +251,6 @@ class Outbound(db.Model):
                             '存储条件': goods_info['goodsStorageCondition'],
                         }
                     )
-            return filename  # 返回生成的文件名
+            return filename  #  Return the generated file name
         else:
             return '0'

@@ -1,7 +1,6 @@
 from app import db
 
 
-# 实现与出入库计划相关的类与函数
 class Plan(db.Model):
     __tablename__ = "plan"
     planID = db.Column(db.Integer, primary_key=True)
@@ -15,7 +14,7 @@ class Plan(db.Model):
     planFinishedByID = db.Column(db.Integer)
     planFinishedTime = db.Column(db.DateTime)
 
-    # 获取所有计划
+    # Fetch all plans
     @staticmethod
     def get_all_plans():
         plans = Plan.query.all()
@@ -40,7 +39,7 @@ class Plan(db.Model):
         else:
             return '0'
 
-    # 获取所有出库计划
+    # Fetch all outbound plans
     @staticmethod
     def get_all_out_plans():
         outPlans = Plan.query.filter(Plan.inOrOutbound == 'Outbound')
@@ -65,7 +64,7 @@ class Plan(db.Model):
         else:
             return '0'
 
-    # 新增计划
+    # Add a new plan
     @staticmethod
     def add_plan(
         planID,
@@ -99,7 +98,7 @@ class Plan(db.Model):
             db.session.commit()
             return '1'
 
-    # 修改计划
+    # Modify plan
     @staticmethod
     def update_plan(
         planID,
@@ -130,7 +129,7 @@ class Plan(db.Model):
         else:
             return '0'
 
-    # 查询最大的计划ID（用于前端新增计划时生成新计划ID）
+    # Query the maximum plan ID (used to generate a new plan ID when adding a plan)
     @staticmethod
     def get_max_planID():
         plans = Plan.query.all()
@@ -138,9 +137,9 @@ class Plan(db.Model):
             max_plan_id = max(plan.planID for plan in plans)
             return str(max_plan_id)
         else:
-            return '2024000001'  # 若数据库中无计划，则生成第一个计划ID
+            return '2024000001'  # If there are no plans in the database, generate the first plan ID
 
-    # 删除计划
+    # Delete plan record
     @staticmethod
     def delete_Plan(planID):
         plan = Plan.query.filter(Plan.planID == planID).first()
