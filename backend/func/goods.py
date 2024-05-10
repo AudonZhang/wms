@@ -107,7 +107,7 @@ class Goods(db.Model):
         goodsUpdatedTime,
     ):
         goods = Goods.query.filter(Goods.goodsID == goodsID)
-        # The goods ID already exists
+        # The goods already exists
         if len(goods.all()) > 0:
             return '0'
         else:
