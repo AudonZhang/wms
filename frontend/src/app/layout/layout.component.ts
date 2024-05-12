@@ -4,7 +4,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Plan } from '../interfaces/plan';
 import { PlanService } from '../services/plan.service';
 import { GoodsService } from '../services/goods.service';
-import { Goods } from '../interfaces/goods';
 import { RootService } from '../services/root.service';
 
 @Component({
@@ -20,7 +19,7 @@ export class LayoutComponent implements OnInit {
     private message: NzMessageService,
     private goodsService: GoodsService
   ) {}
-  // 当前的登陆用户信息
+  // Current logged-in user information
   userID?: string;
   userName?: string;
   userRole?: string;
@@ -32,7 +31,7 @@ export class LayoutComponent implements OnInit {
     goodsName: string;
   }[] = [];
 
-  // 退出登录
+  // Log out
   exit(): void {
     this.userService.loginID = '';
     this.userService.loginName = '';
@@ -40,7 +39,7 @@ export class LayoutComponent implements OnInit {
     window.location.reload();
   }
 
-  // 备份功能
+  // Backup
   backup(): void {
     this.rootService.backup();
     this.message.create('success', '备份文件已在浏览器下载!');
@@ -55,7 +54,7 @@ export class LayoutComponent implements OnInit {
           goodsName: '',
         };
       });
-      // 获取计划中的货物名称
+      // Get the names of goods in the plan
       this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
@@ -64,21 +63,21 @@ export class LayoutComponent implements OnInit {
           });
       });
 
-      // 按时间排序
+      // Sort by time
       this.plansDisplay.sort((a, b) => {
         const timeA = new Date(a.plan.planExpectedTime).getTime();
         const timeB = new Date(b.plan.planExpectedTime).getTime();
         return timeA - timeB;
       });
-      // 筛选出状态为'未完成'的计划
+      //Filter unfinished plans
       this.plansDisplay = this.plansDisplay.filter(
         (planDisplay) => planDisplay.plan.planStatus === '未完成'
       );
-      this.planNum = this.plansDisplay.length; // 计数未完成记录的数量
+      this.planNum = this.plansDisplay.length; // Count the number of unfinished records
     });
   }
 
-  // 每秒获取登录用户的信息
+  // Get the login user's information every second
   ngOnInit(): void {
     this.getPlans();
     this.userID = this.userService.loginID;

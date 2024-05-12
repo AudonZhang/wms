@@ -63,13 +63,13 @@ export class AllUsersComponent implements OnInit, DoCheck {
     });
   }
 
-  // 重置搜索内容
+  // Clear the search value
   reset(): void {
     this.searchValue = '';
     this.search();
   }
 
-  // 根据姓名搜索
+  // Search by name
   search(): void {
     this.visible = false;
     this.usersDisplay = this.users.filter(
@@ -83,21 +83,21 @@ export class AllUsersComponent implements OnInit, DoCheck {
     else this.message.create('success', '已重置用户列表！');
   }
 
-  // 解雇用户时确认解雇的用户信息
+  // Confirm user information when dismissing a user
   unemployConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认解雇该用户?</i>',
       nzContent: `<b>ID:${userID}; 姓名:${userName}</b>`,
       nzOnOk: () => {
         if (userID == this.userService.loginID)
-          // 判断解雇的用户是否为当前的登录账户
+          // Determine if the dismissed user is the currently logged-in account
           this.administratorConfirm(userID);
         else this.unemployUser(userID);
       },
     });
   }
 
-  // 与确认是否解雇当前管理员账户
+  // Confirm with the user whether to dismiss the currently logged-in account.
   administratorConfirm(userID: string): void {
     this.modal.confirm({
       nzTitle: '<i>该账号为管理员账号!</i>',
@@ -106,11 +106,11 @@ export class AllUsersComponent implements OnInit, DoCheck {
     });
   }
 
-  // 解雇用户
+  // Dismiss user
   unemployUser(userID: string): void {
     this.userService.unemployUser(userID).subscribe(() => {
+      // Determine whether the current logged-in account is being dismissed.
       if (userID == this.userService.loginID) {
-        // 判断是否正在解雇当前登陆账户
         this.userService.loginID = '';
         this.notification.create('warning', '当前用户被解雇!', '请重新登录!');
         this.router.navigateByUrl('');
@@ -125,7 +125,7 @@ export class AllUsersComponent implements OnInit, DoCheck {
     });
   }
 
-  // 恢复用户时确认信息
+  // Confirm information when restoring the user.
   employConfirm(userID: string, userName: string): void {
     this.modal.confirm({
       nzTitle: '<i>确认恢复该用户?</i>',
@@ -136,7 +136,7 @@ export class AllUsersComponent implements OnInit, DoCheck {
     });
   }
 
-  // 恢复用户
+  // Restore user
   employUser(userID: string): void {
     this.userService.employUser(userID).subscribe(() => {
       this.notification.create(
@@ -148,13 +148,13 @@ export class AllUsersComponent implements OnInit, DoCheck {
     });
   }
 
-  // 更新其他组件的信息
+  // Update content on other pages.
   updateInformation(): void {
-    this.userService.updateAllUsers = true; // 更新allUsers页的信息
-    this.userService.updateRoot = true; // 更新root页的图表
+    this.userService.updateAllUsers = true; // Update information on the "allUsers" page.
+    this.userService.updateRoot = true; // Update charts on the "root" page.
   }
 
-  // 设置正在修改的用户的ID
+  // Set the ID of the user being modified.
   setModifyUserID(userID: string): void {
     this.userService.modifyID = userID;
   }
@@ -163,7 +163,7 @@ export class AllUsersComponent implements OnInit, DoCheck {
     this.getUsers();
   }
 
-  // 用户信息更新后重新获取用户数据
+  // Retrieve user data after updating user information.
   ngDoCheck(): void {
     if (this.userService.updateAllUsers) {
       this.getUsers();

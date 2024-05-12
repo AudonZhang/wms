@@ -20,17 +20,17 @@ import { Md5 } from 'ts-md5';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  passwordVisible = false; // 用户输入的密码是否可见
+  passwordVisible = false; // Password input content visible
   validateForm: FormGroup<{
     userID: FormControl<string>;
     userPassword: FormControl<string>;
   }>;
-  // 用户将用户输入的信息提交给后端
+  // Store the login information entered by the user on the frontend
   loginMessage: Login = {
     userID: '',
     userPasswordMD5: '',
   };
-  // 获得后端返回的登陆结果
+  // Store the login result returned by the backend
   loginResult?: string;
 
   constructor(
@@ -46,22 +46,22 @@ export class LoginComponent {
     });
   }
 
-  // 用户点击登录按钮
+  // Click "login"
   submitForm(): void {
-    // 若信息有效，则封装登录信息
+    // If the input content is valid, encapsulate the login information
     if (this.validateForm.valid) {
       this.loginMessage.userID = this.validateForm.controls['userID'].value;
       this.loginMessage.userPasswordMD5 = Md5.hashStr(
         this.validateForm.controls['userPassword'].value
       );
-      // 将封装好的登录信息提交后端
+      // Submit the encapsulated login information to the backend
       this.userService.login(this.loginMessage).subscribe((res) => {
         this.loginResult = res;
-        // 后端返回'1'表示可以登录
+        // The backend returns '1' to indicate that login is successful
         if (this.loginResult == '1') {
           this.userService.loginID += this.loginMessage?.userID;
           this.userService
-            .getUserById(this.userService.loginID) // 获取登陆用户的姓名、职位
+            .getUserById(this.userService.loginID) // Fetch the name and position of the logged-in user
             .subscribe((res) => {
               this.userService.loginName = res.userName;
               this.userService.loginRole = res.userRole;
@@ -72,7 +72,7 @@ export class LoginComponent {
               );
             });
           const url = '/index';
-          this.router.navigateByUrl(url); // 跳转到主页
+          this.router.navigateByUrl(url);
         } else this.message.create('error', '用户信息错误或用户不存在！');
       });
     } else {

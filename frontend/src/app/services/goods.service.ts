@@ -9,9 +9,9 @@ import { Goods } from '../interfaces/goods';
 export class GoodsService {
   private goodsUrl = 'http://127.0.0.1:5000/api/goods';
   private planUrl = 'http://127.0.0.1:5000/api/plan';
-  public modifyID = ''; // 正在修改的用户ID
-  public afterModify = false; //  货物信息界面刷新
-  public afterModifyGoods = false; // 货物图表页刷新
+  public modifyID = ''; // The user ID being modified.
+  public afterModify = false; //  Refresh all-goods page.
+  public afterModifyGoods = false; // Refresh goods page
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -27,18 +27,18 @@ export class GoodsService {
     };
   }
 
-  // 通过ID获取货物信息
+  // Retrieve goods information based on ID.
   getGoodsById(goodsID: string): Observable<Goods> {
     const url = `${this.goodsUrl}/get_goods_by_id/${goodsID}`;
     return this.http.get<Goods>(url).pipe(
-      tap((_) => console.log(`获取${goodsID}对应的货物信息！`)),
+      tap((_) => console.log(`获取ID为${goodsID}的货物信息！`)),
       catchError(
-        this.handleError<Goods>(`通过货物ID获取货物信息时出错，id=${goodsID}`)
+        this.handleError<Goods>(`获取货物信息时出错，货物ID为${goodsID}`)
       )
     );
   }
 
-  // 获取所有货物信息
+  // Retrieve all goods information.
   getAllGoods(): Observable<Goods[]> {
     const url = `${this.goodsUrl}/get_all_goods`;
     return this.http.get<Goods[]>(url).pipe(
@@ -47,34 +47,34 @@ export class GoodsService {
     );
   }
 
-  // 更新货物信息
+  // Modify goods information.
   updateGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/update_goods`;
     return this.http.post<Goods>(url, goods, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${goods.goodsID}的货物信息`)),
-      catchError(this.handleError<any>('更新货物信息时出错'))
+      catchError(this.handleError<any>('修改货物信息时出错'))
     );
   }
 
-  // 出库货物信息
+  // Ship out goods.
   outGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/out_goods`;
     return this.http.post<Goods>(url, goods, this.httpOptions).pipe(
-      tap((_) => console.log(`修改了ID为${goods.goodsID}的货物信息`)),
-      catchError(this.handleError<any>('更新货物信息时出错'))
+      tap((_) => console.log(`ID为${goods.goodsID}的货物出库`)),
+      catchError(this.handleError<any>('货物出库时出错'))
     );
   }
 
-  // 新增货物
+  // Add new goods
   addGoods(goods: Goods): Observable<string> {
     const url = `${this.goodsUrl}/add_goods`;
     return this.http.post<string>(url, goods, this.httpOptions).pipe(
-      tap((_) => console.log(`更新了ID为${goods.goodsID}的货物信息`)),
+      tap((_) => console.log(`新增了ID为${goods.goodsID}的货物`)),
       catchError(this.handleError<string>('新增货物信息时出错', '0'))
     );
   }
 
-  // 货物数据库中最大的货物ID（用于生成新增的货物ID）
+  // Retrieve the largest goods ID from the database (used for generating new goods IDs).
   getMaxGoodsID(): Observable<string> {
     const url = `${this.goodsUrl}/get_max_goodsID`;
     return this.http.get<string>(url).pipe(
@@ -83,7 +83,7 @@ export class GoodsService {
     );
   }
 
-  // 获取所有可以设置出库计划的货物信息
+  // Retrieve all goods information that can be used to set up shipping plans.
   getAllOutPlanGoods(): Observable<Goods[]> {
     const url = `${this.planUrl}/get_all_out_plan_goods`;
     return this.http.get<Goods[]>(url).pipe(

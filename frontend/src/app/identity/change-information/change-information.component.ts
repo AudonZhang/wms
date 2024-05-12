@@ -30,7 +30,7 @@ export class ChangeInformationComponent implements OnInit {
     private message: NzMessageService
   ) {}
 
-  // 前端输入信息并点击保存后，弹出对话框确认信息
+  // After clicking "Save", a dialog box pops up to confirm the information.
   saveConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认修改后的信息！</i>',
@@ -43,21 +43,22 @@ export class ChangeInformationComponent implements OnInit {
     this.user.userUpdatedByID = this.userService.loginID;
   }
 
-  // 提交修改的信息到后端并返回
+  // Modify the user information and return
   save(): void {
     this.userService.updateUser(this.user).subscribe((res) => {
       if (res == '1') {
         this.message.create('success', '修改成功!');
-        this.userService.updateRoot = true; // 更新root页的图表
+        // Refresh the content of the relevant pages
+        this.userService.updateRoot = true;
         this.userService.loginName = this.user.userName;
-        this.userService.updateName = true; // 更新屏幕右上角的姓名
+        this.userService.updateName = true;
       } else {
         this.message.create('error', '未找到用户信息!');
       }
     });
   }
 
-  // 开始时根据正在修改用户ID获取要修改的用户信息
+  // Initially, retrieve the login user information based on the login user ID.
   ngOnInit() {
     this.userService.getUserById(this.userService.loginID).subscribe((res) => {
       this.user = res;

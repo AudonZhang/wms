@@ -1,4 +1,4 @@
-// 用于映射mysql中的outbound表
+// For the corresponding MySQL "outbound" table
 export interface Outbound {
   outboundID: string;
   outboundOrderID: string;

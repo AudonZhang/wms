@@ -11,14 +11,14 @@ import { GoodsService } from '../services/goods.service';
 })
 export class GoodsComponent implements OnInit, DoCheck {
   goodss: Goods[] = [];
-  options1: any; // 货物分布饼图样式
-  options2: any; // 生产商分布柱状图样式
+  options1: any; // Goods statistics pie chart
+  options2: any; // Manufacturer statistics bar chart
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private goodService: GoodsService
   ) {
-    // 进入子页面时，不显示该页面内容
+    // When entering the subpage, the content of that page is not displayed.
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -29,7 +29,7 @@ export class GoodsComponent implements OnInit, DoCheck {
     return this.route.children.length > 0;
   }
 
-  // 统计货物生产商的供货种类
+  // Statistic the types of goods supplied by manufacturers
   countManufacturerOccurrences(): { [key: string]: number } {
     const counts: { [key: string]: number } = {}; // 、
     this.goodss.forEach((goods) => {
@@ -41,14 +41,13 @@ export class GoodsComponent implements OnInit, DoCheck {
     return counts;
   }
 
-  // 配置echarts样式
+  // ECharts style
   setupChart(): void {
-    // 记录生产商与供货种类
     const manufacturerCounts = this.countManufacturerOccurrences();
     const manufacturers = Object.keys(manufacturerCounts);
     const counts = Object.values(manufacturerCounts);
 
-    // 统计结果降序排列
+    // Descending order
     const sortedData = manufacturers
       .map((manufacturer, index) => ({
         name: manufacturer,
@@ -56,11 +55,10 @@ export class GoodsComponent implements OnInit, DoCheck {
       }))
       .sort((a, b) => b.count - a.count);
 
-    // 排序后的生产商名称和对应的数量
     const sortedManufacturers = sortedData.map((item) => item.name);
     const sortedCounts = sortedData.map((item) => item.count);
 
-    // 配置柱状图样式
+    // Configure style
     this.options2 = {
       title: [
         {
@@ -85,7 +83,7 @@ export class GoodsComponent implements OnInit, DoCheck {
           interval: 0,
           rotate: 0,
           formatter: function (value: string) {
-            // 每8个字符换行一次
+            // Wrap every 8 characters
             return value.replace(/(.{8})/g, '$1\n');
           },
         },
@@ -99,7 +97,6 @@ export class GoodsComponent implements OnInit, DoCheck {
       ],
     };
 
-    // 配置饼图样式
     this.options1 = {
       title: [
         {
@@ -150,7 +147,7 @@ export class GoodsComponent implements OnInit, DoCheck {
     });
   }
 
-  // 货物信息改变后更新图标
+  // Update the chart after the goods information changes
   ngDoCheck(): void {
     if (this.goodService.afterModifyGoods) {
       this.goodService.getAllGoods().subscribe((res) => {

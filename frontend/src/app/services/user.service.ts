@@ -20,9 +20,9 @@ export class UserService {
   public loginName = '';
   public loginRole = '';
   public modifyID = '';
-  public updateAllUsers = false; // 更新allUsers页的信息
-  public updateName = false; // 更新屏幕右上角的姓名
-  public updateRoot = false; // 更新root页的图表
+  public updateAllUsers = false; // Update the allUsers page.
+  public updateName = false; // Update the name in the top right corner of the system.
+  public updateRoot = false; // Update the charts on the root page.
 
   constructor(private http: HttpClient) {}
 
@@ -33,7 +33,7 @@ export class UserService {
     };
   }
 
-  // 登录
+  // login
   login(loginMessage: Login): Observable<string> {
     const url = `${this.userUrl}/login`;
     return this.http.post<string>(url, loginMessage, this.httpOptions).pipe(
@@ -42,7 +42,7 @@ export class UserService {
     );
   }
 
-  // 根据ID获取用户信息
+  // Retrieve user information based on ID.
   getUserById(userID: string): Observable<User> {
     const url = `${this.userUrl}/get_user_by_id/${userID}`;
     return this.http.get<User>(url).pipe(
@@ -50,16 +50,16 @@ export class UserService {
       catchError(this.handleError<User>(`根据ID:${userID}获取用户信息时出错`))
     );
   }
-  // 更新用户信息
+  // Modify user information.
   updateUser(user: User): Observable<string> {
     const url = `${this.userUrl}/update_user`;
     return this.http.post<User>(url, user, this.httpOptions).pipe(
       tap((_) => console.log(`修改了ID为${user.userID}的用户信息`)),
-      catchError(this.handleError<any>('更新用户信息时出错'))
+      catchError(this.handleError<any>('修改用户信息时出错'))
     );
   }
 
-  // 新增用户
+  // Add new user
   addUser(user: User): Observable<string> {
     const url = `${this.userUrl}/add_user`;
     return this.http.post<string>(url, user, this.httpOptions).pipe(
@@ -68,7 +68,7 @@ export class UserService {
     );
   }
 
-  // 获取所有用户信息
+  // Retrieve all user information.
   getAllUsers(): Observable<User[]> {
     const url = `${this.userUrl}/get_all_users`;
     return this.http.get<User[]>(url).pipe(
@@ -77,7 +77,7 @@ export class UserService {
     );
   }
 
-  // 将员工状态设定为"离职"
+  // Set the employee status to "离职".
   unemployUser(userID: string): Observable<string> {
     const url = `${this.userUrl}/unemploy_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
@@ -86,7 +86,7 @@ export class UserService {
     );
   }
 
-  // 将员工状态设定为"在职"
+  // Set the employee status to "在职".
   employUser(userID: string): Observable<string> {
     const url = `${this.userUrl}/employ_user/${userID}`;
     return this.http.post<User>(url, this.httpOptions).pipe(
@@ -95,7 +95,7 @@ export class UserService {
     );
   }
 
-  // 获取最大的用户ID（用户新增用户时自动生成ID）
+  // Retrieve the largest user ID (automatically generated when adding new users).
   getMaxUserID(): Observable<string> {
     const url = `${this.userUrl}/get_max_userID`;
     return this.http.get<string>(url).pipe(

@@ -4,6 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'inOrOutboundPipe',
 })
 export class InOrOutboundPipePipe implements PipeTransform {
+  // Translation between Chinese and English
   transform(value: string): string {
     if (value === 'Inbound') {
       return '入库';

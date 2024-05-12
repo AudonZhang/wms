@@ -15,7 +15,7 @@ export class RootComponent implements OnInit, DoCheck {
     private route: ActivatedRoute,
     private userService: UserService
   ) {
-    // 进入子页面时，不显示该页面内容
+    // When entering the subpage, the content of that page is not displayed.
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -27,8 +27,8 @@ export class RootComponent implements OnInit, DoCheck {
     return this.route.children.length > 0;
   }
 
-  users: User[] = []; // 所有用户
-  // 一些与echarts相关的变量
+  users: User[] = [];
+  // Some variables related to ECharts.
   userCount?: number;
   maleCount?: number;
   femaleCount?: number;
@@ -62,7 +62,7 @@ export class RootComponent implements OnInit, DoCheck {
         (user) => user.userRole === '仓库运维'
       ).length;
 
-      // 在获取用户数据后，更新图表数据
+      //  Update the chart content after fetching user data.
       this.updateChartData();
     });
   }
@@ -71,7 +71,7 @@ export class RootComponent implements OnInit, DoCheck {
     this.initCharts();
   }
 
-  // 用户信息更新后刷新图表
+  // Refresh the chart after updating user information.
   ngDoCheck(): void {
     if (this.userService.updateRoot) {
       this.initCharts();
@@ -79,7 +79,7 @@ export class RootComponent implements OnInit, DoCheck {
     }
   }
 
-  // echarts配置
+  // ECharts parameter configuration.
   updateChartData(): void {
     this.userCount = this.users.length;
     this.options1 = {

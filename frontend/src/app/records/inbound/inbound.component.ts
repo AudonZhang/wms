@@ -12,12 +12,12 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./inbound.component.css'],
 })
 export class InboundComponent {
-  currentFile?: File; // 文件选择
+  currentFile?: File; // Store uploaded files
 
-  public isUpload = false; // 是否上传文件
+  public isUpload = false; // Submit files to the backend？
   public recordUrl = 'http://127.0.0.1:5000/api/record';
 
-  goods: Goods[] = []; // 储存上传的货物信息
+  goods: Goods[] = []; // Store uploaded goods information
 
   constructor(
     private recordService: RecordService,
@@ -26,12 +26,12 @@ export class InboundComponent {
     private message: NzMessageService
   ) {}
 
-  // 选择文件
+  // Select files and upload to Angular
   selectFile(event: any): void {
     this.currentFile = event.target.files.item(0);
   }
 
-  // 实现上传货物信息确认功能
+  // Confirm upload file content
   uploadConfirm(): void {
     if (this.currentFile) {
       this.uploadFile(this.currentFile).subscribe((res) => {
@@ -40,7 +40,7 @@ export class InboundComponent {
     }
   }
 
-  // 将上传的文件与用户ID传到后端
+  // Send the file to Flask to read its content and receive the result returned by Flask
   uploadFile(file: File): Observable<any> {
     const url = `${this.recordUrl}/inboundConfirm`;
     const formData: FormData = new FormData();
@@ -52,7 +52,7 @@ export class InboundComponent {
       .pipe(tap((_) => console.log(`增加了ID为上传入库单`)));
   }
 
-  // 信息确认后，将入库货物信息发到后端
+  // After confirming the information, send the inbound information to Flask
   inboundGoods(): void {
     this.recordService.InboundGoods(this.goods).subscribe();
     this.message.create('success', '入库成功!');

@@ -1,3 +1,4 @@
+// For the corresponding MySQL "plan" table
 export interface Plan {
   planID: string;
   inOrOutbound: string;

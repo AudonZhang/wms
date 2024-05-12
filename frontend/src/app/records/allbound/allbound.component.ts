@@ -13,15 +13,17 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./allbound.component.css'],
 })
 export class AllboundComponent implements OnInit {
-  // 筛选列表选项
+  // Filter list-related variables
   selectedOption: string = '入库';
-  inboundDisplay: Inbound[] = []; // 初始出入库记录
+  // Initial inbound and outbound records
+  inboundDisplay: Inbound[] = [];
   outboundDisplay: Outbound[] = [];
-  inboundTemp: Inbound[] = []; // 储存筛选前的结果
+  // Store the results before filtering
+  inboundTemp: Inbound[] = [];
   outboundTemp: Outbound[] = [];
   visible = false;
   searchValue = '';
-  popoverContent: string = '请点击'; //货物详情提示框
+  popoverContent: string = '请点击'; //Item details tooltip
   goods: Goods = {
     goodsID: '',
     goodsName: '',
@@ -34,7 +36,7 @@ export class AllboundComponent implements OnInit {
     goodsUpdatedByID: '',
     goodsUpdatedTime: '',
   };
-  startDate = ''; // 日期筛选
+  startDate = ''; // Date filtering
   endDate = '';
   constructor(
     private userService: UserService,
@@ -43,26 +45,26 @@ export class AllboundComponent implements OnInit {
     private recordService: RecordService
   ) {}
 
-  // 获取出入库记录
+  // Retrieve inbound and outbound records
   getRecords(): void {
     this.recordService.getAllInbounds().subscribe((res) => {
       this.inboundDisplay = res.sort((a: Inbound, b: Inbound) => {
-        // 入库记录根据ID降序排列
+        // Sort in descending order by ID
         return parseInt(b.inboundID) - parseInt(a.inboundID);
       });
     });
 
     this.recordService.getAllOutbounds().subscribe((res) => {
       this.outboundDisplay = res.sort((a: Outbound, b: Outbound) => {
-        // 出库记录根据ID降序排列
+        // Sort in descending order by ID
         return parseInt(b.outboundID) - parseInt(a.outboundID);
       });
     });
   }
 
-  // 根据入库单ID搜索
+  // Search by inbound ID
   inboundSearch(): void {
-    // 储存搜索前的展示内容
+    // Store the display content before searching
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     this.visible = false;
@@ -79,7 +81,7 @@ export class AllboundComponent implements OnInit {
   }
 
   outboundSearch(): void {
-    // 储存搜索前的展示内容
+    // Store the display content before searching
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     this.visible = false;
@@ -92,10 +94,10 @@ export class AllboundComponent implements OnInit {
         'success',
         `已展示包含出库单ID： ${this.searchValue} 的出库记录!`
       );
-    else this.message.create('success', '已重置出库单列表！');
+    else this.message.create('success', '已重置出库记录！');
   }
 
-  // 出入库记录选择器
+  // Inbound and outbound record selector
   filterRecords(): any[] {
     if (this.selectedOption == '入库') {
       return this.inboundDisplay;
@@ -106,14 +108,14 @@ export class AllboundComponent implements OnInit {
     }
   }
 
-  // 根据日期范围筛选记录
+  // Filter records by date range
   filterDate(start: string, end: string): void {
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     let filteredInbound = this.inboundDisplay;
     let filteredOutbound = this.outboundDisplay;
 
-    // 如果起始日期和结束日期都不为空，则根据日期范围进行筛选
+    // If both start date and end date are not empty, filter records by date range
     if (this.startDate && this.endDate) {
       const startDate = new Date(start);
       const endDate = new Date(end);
@@ -129,18 +131,18 @@ export class AllboundComponent implements OnInit {
       });
     }
 
-    // 更新显示的记录
+    // Update display content
     this.inboundDisplay = filteredInbound;
     this.outboundDisplay = filteredOutbound;
   }
 
-  // 重置日期范围
+  // Reset display content
   reset(): void {
-    // 若筛选日期加时间，重置一次后Temp记录为空，直接获得初始记录
+    // If Temp records are empty after resetting, directly obtain initial records
     if (this.inboundTemp.length === 0 && this.outboundTemp.length === 0) {
       this.getRecords();
     } else {
-      // 否则恢复筛选前的记录
+      // Otherwise, restore records before filtering
       this.inboundDisplay = this.inboundTemp;
       this.outboundDisplay = this.outboundTemp;
       this.inboundTemp = [];
@@ -148,7 +150,7 @@ export class AllboundComponent implements OnInit {
     }
   }
 
-  // 点击货物名称后显示详细信息
+  // Display detailed information after clicking on the item name
   handleClick(GoodsID: string) {
     this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
       this.goods = data;
@@ -161,7 +163,7 @@ export class AllboundComponent implements OnInit {
     `;
     });
   }
-  // 点击ID名称后显示详细信息
+  // Display user information after clicking on the ID name
   handleClick1(userID: string) {
     this.userService.getUserById(userID).subscribe((data) => {
       this.popoverContent = `
@@ -172,7 +174,7 @@ export class AllboundComponent implements OnInit {
     `;
     });
   }
-  // 信息点击提示
+  // Information click tooltip
   clearPopoverContent(): void {
     this.popoverContent = '请点击';
   }

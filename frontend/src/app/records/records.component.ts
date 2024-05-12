@@ -12,8 +12,8 @@ export class RecordsComponent implements OnInit {
   totalRecordsCount = 0;
   inboundOrdersCount?: number;
   outboundOrdersCount?: number;
-  options1: any; // 出入库单饼图
-  options2: any; // 出入库时间与数量
+  options1: any; // Inbound and Outbound Ratio Chart
+  options2: any; // Line chart of Inbound and Outbound time and quantity
   inboundData: {
     day: string;
     amount: string;
@@ -28,7 +28,7 @@ export class RecordsComponent implements OnInit {
     private route: ActivatedRoute,
     private recordsService: RecordService
   ) {
-    // 进入子页面时，不显示该页面内容
+    // When entering the subpage, hide the content of that page
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -62,9 +62,9 @@ export class RecordsComponent implements OnInit {
         { timeZone: 'UTC' }
       );
       if (aggregateData[day]) {
-        aggregateData[day] += records.inboundAmount; // 如果这一天已经有数据，则累加数量
+        aggregateData[day] += records.inboundAmount;
       } else {
-        aggregateData[day] = records.inboundAmount; // 否则，创建新的条目
+        aggregateData[day] = records.inboundAmount;
       }
     });
     return Object.entries(aggregateData).map(([day, amount]) => ({
@@ -82,9 +82,9 @@ export class RecordsComponent implements OnInit {
       );
       console.log(day);
       if (aggregateData[day]) {
-        aggregateData[day] += records.outboundAmount; // 如果这一天已经有数据，则累加数量
+        aggregateData[day] += records.outboundAmount;
       } else {
-        aggregateData[day] = records.outboundAmount; // 否则，创建新的条目
+        aggregateData[day] = records.outboundAmount;
       }
     });
     return Object.entries(aggregateData).map(([day, amount]) => ({
@@ -103,12 +103,12 @@ export class RecordsComponent implements OnInit {
     }, 1000);
   }
   updateChartData(inboundData: any[], outboundData: any[]): void {
-    // 合并入库和出库的日期数据，并按照日期排序
+    // Merge inbound and outbound date data, and sort by date
     const allDays = [
       ...inboundData.map((data) => data.day),
       ...outboundData.map((data) => data.day),
     ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-    // 总体计划统计图表选项（饼图）
+
     this.options1 = {
       title: {
         text: '出入库记录',
@@ -141,7 +141,7 @@ export class RecordsComponent implements OnInit {
         },
       ],
     };
-    // 出入库计划数量和时间折线图选项
+
     this.options2 = {
       title: {
         text: '吞吐量',

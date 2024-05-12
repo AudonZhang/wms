@@ -8,9 +8,9 @@ import { Plan } from '../interfaces/plan';
 })
 export class PlanService {
   private planUrl = 'http://127.0.0.1:5000/api/plan';
-  public updateLayout = false; //  更新计划信息提示
-  public updateAllPlan = false; //  更新全部计划页
-  public updatePlan = false; //  更新计划页图表
+  public updateLayout = false; //  Update plan information prompt.
+  public updateAllPlan = false; //  Update all plans page.
+  public updatePlan = false; //  Update charts on the plans page.
   constructor(private http: HttpClient) {}
   private httpOptions = {
     headers: new HttpHeaders({
@@ -24,7 +24,7 @@ export class PlanService {
     };
   }
 
-  // 获取所有计划
+  // Retrieve all plans.
   getAllPlans(): Observable<Plan[]> {
     const url = `${this.planUrl}/get_all_plans`;
     return this.http.get<Plan[]>(url).pipe(
@@ -33,7 +33,7 @@ export class PlanService {
     );
   }
 
-  // 获得现有的最大计划ID（用于生成新的计划ID）
+  // Get the current maximum plan ID (used for generating new plan ID).
   getMaxPlanID(): Observable<string> {
     const url = `${this.planUrl}/get_max_planID`;
     return this.http.get<string>(url).pipe(
@@ -42,16 +42,16 @@ export class PlanService {
     );
   }
 
-  // 新增计划
+  // Add new plan
   addPlan(plan: Plan): Observable<string> {
     const url = `${this.planUrl}/add_plan`;
     return this.http.post<string>(url, plan, this.httpOptions).pipe(
-      tap((_) => console.log(`增加了ID为${plan.planID}的计划`)),
+      tap((_) => console.log(`新增了ID为${plan.planID}的计划`)),
       catchError(this.handleError<string>('新增计划时出错'))
     );
   }
 
-  // 完成计划
+  // Finish plan
   finishPlan(plan: Plan): Observable<string> {
     const url = `${this.planUrl}/finish_plan`;
     return this.http.post<string>(url, plan, this.httpOptions).pipe(
@@ -59,11 +59,12 @@ export class PlanService {
       catchError(this.handleError<string>('完成计划时出错'))
     );
   }
-  // 删除计划
+
+  // Delete plan
   deletePlan(planID: string): Observable<string> {
     const url = `${this.planUrl}/delete_plan/${planID}`;
     return this.http.post<string>(url, this.httpOptions).pipe(
-      // POST需要删除的用户id到对应api实现删除用户功能
+      // POST the user ID to the corresponding API to implement the user deletion functionality.
       tap((_) => console.log(`删除学号为${planID}的用户信息`)),
       catchError(this.handleError<string>('删除用户信息时出错'))
     );

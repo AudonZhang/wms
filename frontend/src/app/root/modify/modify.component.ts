@@ -31,7 +31,7 @@ export class ModifyComponent implements OnInit {
     userUpdatedTime: '',
   };
 
-  // 前端输入信息并点击保存后，弹出对话框确认信息
+  // After inputting information on the form and clicking save, a dialog box pops up to confirm the information.
   saveConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认用户修改后的信息！</i>',
@@ -45,7 +45,7 @@ export class ModifyComponent implements OnInit {
     this.user.userUpdatedByID = this.userService.loginID;
   }
 
-  // 提交修改的信息到后端并返回
+  // Submit the modified information to the backend and return the response.
   save(): void {
     this.userService.updateUser(this.user).subscribe(() => {
       this.updateInformation();
@@ -54,20 +54,20 @@ export class ModifyComponent implements OnInit {
     });
   }
 
-  // 更新其他组件的信息
+  // Update content on other pages.
   updateInformation(): void {
-    this.userService.updateRoot = true; // 更新root页的图表
-    this.userService.updateAllUsers = true; // 修改完成后在用户信息页刷新信息
-    this.userService.updateName = true; // 更新屏幕右上角的姓名
+    this.userService.updateRoot = true; // Update charts on the root page.
+    this.userService.updateAllUsers = true; // Refresh information on the user information page after modifications are completed.
+    this.userService.updateName = true; // Update the name displayed in the top right corner of the system.
   }
 
-  // 修改后返回到用户信息页
+  // Return to the all-users page after making modifications.
   goBack(): void {
     this.router.navigateByUrl('/index/root/allUsers');
-    this.userService.modifyID = ''; // 修改完成后清除正在修改用户ID
+    this.userService.modifyID = ''; // Clear the ID of the user being modified after the modifications are completed.
   }
 
-  // 根据正在修改用户ID获取要修改的用户信息
+  // Retrieve the information of the user to be modified based on the ID of the user currently being edited.
   ngOnInit() {
     this.userService.getUserById(this.userService.modifyID).subscribe((res) => {
       this.user = res;

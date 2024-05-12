@@ -33,7 +33,7 @@ export class ModifyGoodsComponent implements OnInit {
     goodsUpdatedTime: '',
   };
 
-  // 前端输入信息并点击保存后，弹出对话框确认信息
+  // After clicking "Save", a dialog box pops up to confirm the information.
   saveConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认货物修改后的信息！</i>',
@@ -49,7 +49,7 @@ export class ModifyGoodsComponent implements OnInit {
     this.goods.goodsUpdatedByID = this.userService.loginID;
   }
 
-  // 提交修改的信息到后端并返回
+  // Modify the goods information and return
   save(): void {
     this.goodsService.updateGoods(this.goods).subscribe((res) => {
       if (res == '0') {
@@ -62,13 +62,13 @@ export class ModifyGoodsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.goodsService.modifyID = ''; // 修改完成后清除待修改货物的ID
-    this.goodsService.afterModify = true; // 修改完成后在货物信息页刷新信息
-    this.goodsService.afterModifyGoods = true; // 修改完成后在货物图表页刷新信息
+    this.goodsService.modifyID = ''; // Clear the ID of the goods to be modified
+    // Refresh the content of the relevant pages
+    this.goodsService.afterModify = true;
+    this.goodsService.afterModifyGoods = true;
     this.router.navigateByUrl('/index/goods/all');
   }
 
-  // 开始时获取要修改的货物信息
   ngOnInit() {
     this.goodsService
       .getGoodsById(this.goodsService.modifyID)

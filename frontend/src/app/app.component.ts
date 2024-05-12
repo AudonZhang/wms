@@ -12,7 +12,7 @@ export class AppComponent {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    // 每秒同步登陆状态，用于html展示内容的选择
+    // Synchronize login status every second
     setInterval(() => {
       this.userID = this.userService.loginID;
     }, 1000);

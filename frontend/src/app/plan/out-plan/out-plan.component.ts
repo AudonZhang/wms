@@ -12,23 +12,23 @@ import { Plan } from 'src/app/interfaces/plan';
   styleUrls: ['./out-plan.component.css'],
 })
 export class OutPlanComponent implements OnInit {
-  goods: Goods[] = []; // 获取所有无出库计划的货物
+  goods: Goods[] = []; // Retrieve all goods information
   goodsDisplay: {
     goods: Goods;
     selected: boolean;
     outAmount: number;
     outDate: string;
-  }[] = []; // 记录出库计划相关信息
+  }[] = []; // Store the displayed goods information
   plansSubmit: {
     goods: Goods;
     selected: boolean;
     outAmount: number;
     outDate: string;
-  }[] = []; // 记录出库计划相关信息
-  plans: Plan[] = []; // 提交到后端的出库计划
-  newPlanID = ''; // 新出库计划ID
+  }[] = []; // Store user-created outbound plans
+  plans: Plan[] = []; // Submit outbound plans to the backend
+  newPlanID = ''; // New outbound plan ID
 
-  confirmVisible = false; // 确认出库对话框
+  confirmVisible = false; // Confirmation dialog visiable
 
   constructor(
     private goodsService: GoodsService,
@@ -37,7 +37,7 @@ export class OutPlanComponent implements OnInit {
     private message: NzMessageService
   ) {}
 
-  // 获取货物信息
+  // Retrieve all goods information
   getGoods(): void {
     this.goodsService.getAllOutPlanGoods().subscribe((res) => {
       this.goods = res;
@@ -50,7 +50,7 @@ export class OutPlanComponent implements OnInit {
     });
   }
 
-  // 获取新的计划ID
+  // Retrieve new outbound plan ID
   getPlanID(): void {
     this.planService.getMaxPlanID().subscribe((res) => {
       let numberID: number = +res;
@@ -60,70 +60,62 @@ export class OutPlanComponent implements OnInit {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 判断是否有选择的货物
-    // 检查是否有选择的货物
+    let hasSelectedGoods = false;
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
         hasSelectedGoods = true;
       }
     });
-    // 如果没有选择的货物，则显示错误消息
+    // If no goods is selected, display error message
     if (!hasSelectedGoods) {
       this.message.create('error', '请选择要出库的货物');
       return;
     }
-    let hasUnenteredAmount = false; // 判断是否有货物未输入出库数量
-    // 如果存在选择的货物，则检查是否有货物未输入出库数量
+    let hasUnenteredAmount = false;
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.outAmount == 0) {
-        // 如果选择了货物但出库数量为零，则设置标志为true
         hasUnenteredAmount = true;
       }
     });
-    // 如果有货物未输入出库数量，则显示错误消息
+    // If there are items with no input for the outbound quantity, display error message
     if (hasUnenteredAmount) {
       this.message.create('warning', '请输入货物的出库数量');
       return;
     }
-    let hasUnenteredDate = false; // 判断是否有货物未输入计划日期
-    let hasPastDate = false; // 判断是否有选择过去的日期
-    // 如果存在选择的货物，则检查是否有货物未输入出库数量
+    let hasUnenteredDate = false;
+    let hasPastDate = false;
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.outDate == '') {
-        // 如果选择了货物但出库数量为零，则设置标志为true
         hasUnenteredDate = true;
       } else if (item.selected && new Date(item.outDate) < new Date()) {
-        // 如果选择了货物且选择的日期在过去，则设置标志为true
         hasPastDate = true;
       }
     });
-    // 如果有货物未输入出库数量，则不显示对话框
+    // If the selected merchandise has no input for the planned time, display error message
     if (hasUnenteredDate) {
       this.message.create('warning', '请输入预计出库时间');
       return;
     }
-    // 如果有选择过去的日期，则显示错误消息
+    //  If a past date is selected, display error message
     if (hasPastDate) {
-      this.message.create('error', '请选择预计出库日期!');
+      this.message.create('error', '计划不能设定在过去！');
       return;
     }
-    // 准备要提交的货物信息
+    // Prepare plan information to be submitted
     this.plansSubmit = this.goodsDisplay.filter((item) => item.selected);
 
-    // 打开确认对话框
     this.confirmVisible = true;
   }
 
-  // 解析日期时间字符串
+  // Convert date format
   convertToGMTFormat(dateTimeString: string): string {
     const date = new Date(dateTimeString);
     date.setHours(date.getHours() + 8);
-    // 构建GMT格式的字符串
     const gmtDateString = date.toUTCString();
     return gmtDateString;
   }
 
-  // 用户确认提交
+  // User click "ok"
   handleOk(): void {
     this.plansSubmit.forEach((item) => {
       const plan: Plan = {

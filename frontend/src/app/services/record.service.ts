@@ -10,8 +10,8 @@ import { Goods } from '../interfaces/goods';
 })
 export class RecordService {
   public recordUrl = 'http://127.0.0.1:5000/api/record';
-  public afterModifyOut = false;
-  public afterModifyChart = false;
+  public afterModifyOut = false; // Update outbound page
+  public afterModifyChart = false; // Update record chart
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -28,7 +28,7 @@ export class RecordService {
     };
   }
 
-  // 获取用户的入库记录
+  // Retrieve the user's inbound operation records.
   getInboundRecordByUserId(userID: string): Observable<Inbound[]> {
     const url = `${this.recordUrl}/get_inbound_record_by_user_id/${userID}`;
     return this.http.get<Inbound[]>(url).pipe(
@@ -39,7 +39,7 @@ export class RecordService {
     );
   }
 
-  // 获取用户的出库记录
+  // Retrieve the user's outbound operation records.
   getOutboundRecordByUserId(userID: string): Observable<Outbound[]> {
     const url = `${this.recordUrl}/get_outbound_record_by_user_id/${userID}`;
     return this.http.get<Outbound[]>(url).pipe(
@@ -50,25 +50,25 @@ export class RecordService {
     );
   }
 
-  // 获取所有入库记录
+  // Retrieve all inbound records.
   getAllInbounds(): Observable<Inbound[]> {
     const url = `${this.recordUrl}/get_all_inbounds`;
     return this.http.get<Inbound[]>(url).pipe(
-      tap((_) => console.log(`获取所有入库操作记录！`)),
-      catchError(this.handleError<Inbound[]>(`获取所有入库操作记录时出错`))
+      tap((_) => console.log(`获取所有入库记录！`)),
+      catchError(this.handleError<Inbound[]>(`获取所有入库记录时出错`))
     );
   }
 
-  // 获取所有出库记录
+  // Retrieve all outbound records.
   getAllOutbounds(): Observable<Outbound[]> {
     const url = `${this.recordUrl}/get_all_outbounds`;
     return this.http.get<Outbound[]>(url).pipe(
-      tap((_) => console.log(`获取所有出库操作记录！`)),
-      catchError(this.handleError<Outbound[]>(`获取所有出库操作记录时出错`))
+      tap((_) => console.log(`获取所有出库记录！`)),
+      catchError(this.handleError<Outbound[]>(`获取所有出库记录时出错`))
     );
   }
 
-  // 获取最大的出库单ID（用于生成新出库单ID）
+  // Retrieve the largest outbound order ID (used for generating new outbound order ID).
   getMaxOutboundOrderID(): Observable<string> {
     const url = `${this.recordUrl}/get_max_outboundOrderID`;
     return this.http.get<string>(url).pipe(
@@ -77,7 +77,7 @@ export class RecordService {
     );
   }
 
-  // 获取最大的的出库记录ID（用于生成新出库记录ID）
+  // Retrieve the largest outbound record ID (used for generating new outbound record ID).
   getMaxOutboundID(): Observable<string> {
     const url = `${this.recordUrl}/get_max_outboundID`;
     return this.http.get<string>(url).pipe(
@@ -86,7 +86,7 @@ export class RecordService {
     );
   }
 
-  // 新增出库记录
+  // Add new outbound record.
   addOutbound(outbound: Outbound): Observable<string> {
     const url = `${this.recordUrl}/add_outbound`;
     return this.http.post<string>(url, outbound, this.httpOptions).pipe(
@@ -95,7 +95,7 @@ export class RecordService {
     );
   }
 
-  // 下载出库单
+  // Download the outbound order.
   downloadOutboundOrder(
     outboundOrderID: string,
     userID: string,
@@ -124,7 +124,7 @@ export class RecordService {
     );
   }
 
-  // 入库
+  // Stock the goods.
   InboundGoods(goodsList: Goods[]): Observable<any> {
     const url = `${this.recordUrl}/inbound`;
     return this.http.post<Goods>(url, goodsList, this.httpOptions).pipe(

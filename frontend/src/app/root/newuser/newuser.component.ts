@@ -39,7 +39,7 @@ export class NewuserComponent implements OnInit {
     });
   }
 
-  passwordVisible1 = false; // 密码输入框内容是否可见
+  passwordVisible1 = false; // Is the content of the password input box visible?
   passwordVisible2 = false;
   user: User = {
     userID: '',
@@ -66,7 +66,7 @@ export class NewuserComponent implements OnInit {
   }>;
 
   submitForm(): void {
-    // 将提交的值赋值给用户数据类型
+    // Assign the value entered by the user to the user data type.
     if (this.validateForm.valid) {
       this.user.userName = this.validateForm.controls['name'].value;
       this.user.userGender = this.validateForm.controls['gender'].value;
@@ -79,7 +79,7 @@ export class NewuserComponent implements OnInit {
       this.user.userStatus = '在职';
       this.user.userUpdatedByID = this.userService.loginID;
 
-      // 确认创建用户的信息
+      // Confirm the creation of user information.
       this.informationConfirm();
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -91,7 +91,7 @@ export class NewuserComponent implements OnInit {
     }
   }
 
-  // 新建用户信息确认
+  // Confirm the creation of new user information.
   informationConfirm(): void {
     this.modal.confirm({
       nzTitle: '<i>请确认新用户信息，并牢记ID与密码!!!</i>',
@@ -108,11 +108,11 @@ export class NewuserComponent implements OnInit {
   }
 
   save(): void {
-    // 提交新用户信息
+    // Submit the new user information.
     this.userService.addUser(this.user).subscribe(() => {
       this.message.create('success', '新增用户成功!');
       console.log('submit', this.validateForm.value);
-      this.userService.updateRoot = true; // 更新root页的图表
+      this.userService.updateRoot = true; // Update the charts on the root page.
       this.router.navigateByUrl('/index/root/allUsers');
     });
   }
@@ -134,7 +134,7 @@ export class NewuserComponent implements OnInit {
     return {};
   };
 
-  // 开始时获取新增用户的ID
+  // Retrieve the ID of the newly added user at the beginning.
   ngOnInit(): void {
     this.userService.getMaxUserID().subscribe((res) => {
       let numberID: number = +res;

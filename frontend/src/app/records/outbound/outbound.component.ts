@@ -16,14 +16,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OutboundComponent implements OnInit {
   goods: Goods[] = [];
-  goodsDisplay: { goods: Goods; selected: boolean; outAmount: number }[] = []; // 记录选中的货物与出库数量
-  searchValue = ''; // 搜索内容
-  visible = false; // 搜索框是否可见
-  confirmVisible = false; // 确认出库对话框
-  submittedGoods: Goods[] = []; // 出库后的货物信息
-  outboundOrderID = ''; // 出库对应新出库单ID
-  oldOrderID = ''; // 更新前的出库单ID
-  outboundID = ''; // 出库记录ID
+  goodsDisplay: { goods: Goods; selected: boolean; outAmount: number }[] = []; // Record selected goods and outbound quantity
+  searchValue = '';
+  visible = false; // Search box visible
+  confirmVisible = false; // Confirmation dialog visible
+  submittedGoods: Goods[] = []; // Outbound goods information
+  outboundOrderID = ''; // New outbound order ID
+  oldOrderID = ''; // Previous outbound plan ID before update
+  outboundID = ''; // Outbound record ID
 
   constructor(
     private router: Router,
@@ -34,7 +34,7 @@ export class OutboundComponent implements OnInit {
     private recordService: RecordService,
     private http: HttpClient
   ) {
-    // 进入子页面修改用户信息时，不显示该页面内容
+    // When entering the subpage, do not display the content of that page
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -45,10 +45,10 @@ export class OutboundComponent implements OnInit {
     return this.route.children.length > 0;
   }
 
-  // 获取可以出库的货物的信息
+  // Retrieve information of goods available for outbound
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
-      // 筛选出数量大于 0 的货物
+      // Filter goods with quantity greater than 0
       this.goods = res.filter((goods) => goods.goodsAmount > 0);
       this.goodsDisplay = this.goods.map((goods) => ({
         goods,
@@ -58,7 +58,7 @@ export class OutboundComponent implements OnInit {
     });
   }
 
-  // 获取新的出库记录ID
+  // Retrieve new outbound record ID
   getOutboundID(): void {
     this.recordService.getMaxOutboundID().subscribe((res) => {
       let numberID: number = +res;
@@ -67,7 +67,7 @@ export class OutboundComponent implements OnInit {
     });
   }
 
-  // 货物新的出库单ID
+  // Retrieve new outbound order ID
   getOutboundOrderID(): void {
     this.recordService.getMaxOutboundOrderID().subscribe((res) => {
       let numberID: number = +res;
@@ -76,13 +76,13 @@ export class OutboundComponent implements OnInit {
     });
   }
 
-  // 重置搜索内容
+  // Clear the search value
   reset(): void {
     this.searchValue = '';
     this.search();
   }
 
-  // 根据货物名搜索
+  // Search by goods name
   search(): void {
     this.visible = false;
     this.goodsDisplay = this.goods
@@ -100,52 +100,49 @@ export class OutboundComponent implements OnInit {
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 用于判断是否有选择的货物
+    let hasSelectedGoods = false;
 
-    // 检查是否有选择的货物
     this.goodsDisplay.forEach((item) => {
       if (item.selected) {
         hasSelectedGoods = true;
       }
     });
 
-    // 如果没有选择的货物，则显示错误消息
+    // If no goods is selected, display error message
     if (!hasSelectedGoods) {
       this.message.create('error', '请选择要出库的货物');
       return;
     }
 
-    let hasUnenteredAmount = false; // 用于判断是否有被选择的货物未输入出库数量
+    let hasUnenteredAmount = false;
 
-    // 则被选择的货物是否有输入出库数量
     this.goodsDisplay.forEach((item) => {
       if (item.selected && item.outAmount == 0) {
         hasUnenteredAmount = true;
       }
     });
 
-    // 如果有货物未输入出库数量，则不显示对话框
+    // If there are items without input for the outbound quantity, display error message
     if (hasUnenteredAmount) {
       this.message.create('warning', '请输入货物的出库数量');
       return;
     }
 
-    // 计算货物的剩余数量并准备要提交的货物信息
+    // Calculate remaining quantity of outbound goods and prepare goods information to be submitted
     this.submittedGoods = this.goodsDisplay
       .filter((item) => {
         if (item.selected && item.outAmount > 0) {
           item.goods.goodsAmount -= item.outAmount;
-          return true; // 保留选中且有出库数量的货物
+          return true; // Keep selected goods with input for outbound quantity
         }
-        return false; // 过滤掉未选中或无出库数量的货物
+        return false;
       })
       .map((item) => item.goods);
 
-    // 打开确认对话框
     this.confirmVisible = true;
   }
 
-  // 用户确认提交
+  // User click "ok"
   handleOk(): void {
     this.submittedGoods.forEach((goods) => {
       goods.goodsUpdatedByID = this.userService.loginID;
@@ -159,7 +156,7 @@ export class OutboundComponent implements OnInit {
           outboundGoodsID: item.goods.goodsID,
           outboundAmount: item.outAmount,
           outboundUpdatedByID: this.userService.loginID,
-          outboundUpdatedTime: '', // 后端负责设置时间
+          outboundUpdatedTime: '', // The backend Flask is responsible for setting the time
         };
         let numberID: number = +this.outboundID;
         let IDPlus1: number = numberID + 1;
@@ -194,7 +191,7 @@ export class OutboundComponent implements OnInit {
     this.getOutboundID();
     this.getOutboundOrderID();
 
-    // 每秒获取是否已修改货物信息，若已修改则刷新货物信息列表并下载出库单
+    // Every second, check if goods information has been modified. If modified, refresh the goods information list and download the outbound order.
     setInterval(() => {
       if (this.recordService.afterModifyOut) {
         this.getGoods();

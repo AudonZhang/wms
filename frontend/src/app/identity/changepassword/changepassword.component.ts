@@ -14,7 +14,7 @@ import { Md5 } from 'ts-md5';
 })
 export class ChangepasswordComponent implements OnInit {
   validateForm!: FormGroup;
-  passwordVisible1 = false; // 密码输入框是否可见
+  passwordVisible1 = false; // Input box content visible
   passwordVisible2 = false;
   passwordVisible3 = false;
   user: User = {
@@ -38,9 +38,9 @@ export class ChangepasswordComponent implements OnInit {
     private notification: NzNotificationService
   ) {}
 
-  // 用户提交后进行判断
+  // Click "Save"
   saveConfirm(): void {
-    // 原密码错误
+    // The original password is incorrect
     if (
       Md5.hashStr(this.validateForm.value.OldPassword) !=
       this.user.userPasswordMD5
@@ -48,7 +48,7 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '原密码错误!');
       return;
     }
-    // 新密码与原密码相同
+    // The new password is the same as the original password
     if (
       this.validateForm.value.changePassword ==
       this.validateForm.value.OldPassword
@@ -56,7 +56,7 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '新密码与原密码相同!');
       return;
     }
-    // 新密码与新密码确认不同
+    // The new password and the password confirmation do not match
     if (
       this.validateForm.value.changePassword !=
       this.validateForm.value.changePasswordConfirm
@@ -64,12 +64,12 @@ export class ChangepasswordComponent implements OnInit {
       this.message.create('warning', '两次输入的密码不同!');
       return;
     }
-    // 将新密码转化为MD5值
+    // Get the MD5 value of the new password
     this.user.userPasswordMD5 = Md5.hashStr(
       this.validateForm.value.changePassword
     );
 
-    // 弹出对话框，让用户选择确认或返回
+    // Confirmation dialog
     this.modal.confirm({
       nzTitle: '<i>确认修改密码?</i>',
       nzOnOk: () => this.save(),
@@ -77,7 +77,7 @@ export class ChangepasswordComponent implements OnInit {
     });
   }
 
-  // 用户选择确认
+  // Submit the new password and log in again
   save(): void {
     this.userService.updateUser(this.user).subscribe();
     this.notification.create('success', '修改成功!', `请重新登录 !`);
@@ -87,12 +87,12 @@ export class ChangepasswordComponent implements OnInit {
     window.location.reload();
   }
 
-  // 用户选择返回
+  // Click "back"
   goBack(): void {
     this.resetForm();
   }
 
-  // 清空表格内容
+  // Clear the input content
   resetForm(): void {
     this.validateForm.reset();
     Object.keys(this.validateForm.controls).forEach((key) => {

@@ -13,15 +13,15 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./operationrecord.component.css'],
 })
 export class OperationrecordComponent implements OnInit {
-  // 筛选列表选项
+  // Variables related to filtering lists
   selectedOption: string = '入库';
-  inboundDisplay: Inbound[] = []; // 初始出入库记录
+  inboundDisplay: Inbound[] = []; // Initial inbound and outbound records
   outboundDisplay: Outbound[] = [];
-  inboundTemp: Inbound[] = []; // 储存筛选前的结果
+  inboundTemp: Inbound[] = []; // Store the information before filtering
   outboundTemp: Outbound[] = [];
   visible = false;
   searchValue = '';
-  popoverContent: string = '请点击'; //货物详情提示框
+  popoverContent: string = '请点击'; //Goods details tooltip
   goods: Goods = {
     goodsID: '',
     goodsName: '',
@@ -34,7 +34,8 @@ export class OperationrecordComponent implements OnInit {
     goodsUpdatedByID: '',
     goodsUpdatedTime: '',
   };
-  startDate = ''; // 日期筛选
+  // Date filter
+  startDate = '';
   endDate = '';
   constructor(
     private userService: UserService,
@@ -43,13 +44,13 @@ export class OperationrecordComponent implements OnInit {
     private recordService: RecordService
   ) {}
 
-  // 获取出入库记录
+  // Get inbound and outbound records
   getRecords(): void {
     this.recordService
       .getInboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.inboundDisplay = res.sort((a: Inbound, b: Inbound) => {
-          // 入库记录根据ID降序排列
+          // Sort in descending order based on ID
           return parseInt(b.inboundID) - parseInt(a.inboundID);
         });
       });
@@ -58,15 +59,14 @@ export class OperationrecordComponent implements OnInit {
       .getOutboundRecordByUserId(this.userService.loginID)
       .subscribe((res) => {
         this.outboundDisplay = res.sort((a: Outbound, b: Outbound) => {
-          // 出库记录根据ID降序排列
+          // Sort in descending order based on ID
           return parseInt(b.outboundID) - parseInt(a.outboundID);
         });
       });
   }
 
-  // 根据入库单ID搜索
+  // Search by order ID
   inboundSearch(): void {
-    // 储存搜索前的展示内容
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     this.visible = false;
@@ -77,13 +77,12 @@ export class OperationrecordComponent implements OnInit {
     if (this.searchValue != '')
       this.message.create(
         'success',
-        `已展示包含入库单ID： ${this.searchValue} 的入库记录!`
+        `已展示包含 入库单ID： ${this.searchValue} 的入库记录!`
       );
     else this.message.create('success', '已重置入库记录！');
   }
 
   outboundSearch(): void {
-    // 储存搜索前的展示内容
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     this.visible = false;
@@ -96,10 +95,10 @@ export class OperationrecordComponent implements OnInit {
         'success',
         `已展示包含出库单ID： ${this.searchValue} 的出库记录!`
       );
-    else this.message.create('success', '已重置出库单列表！');
+    else this.message.create('success', '已重置出库记录！');
   }
 
-  // 出入库记录选择器
+  // Inbound and outbound selector
   filterRecords(): any[] {
     if (this.selectedOption == '入库') {
       return this.inboundDisplay;
@@ -110,14 +109,14 @@ export class OperationrecordComponent implements OnInit {
     }
   }
 
-  // 根据日期范围筛选记录
+  // Filter records based on date range
   filterDate(start: string, end: string): void {
     this.inboundTemp = this.inboundDisplay;
     this.outboundTemp = this.outboundDisplay;
     let filteredInbound = this.inboundDisplay;
     let filteredOutbound = this.outboundDisplay;
 
-    // 如果起始日期和结束日期都不为空，则根据日期范围进行筛选
+    // If both the start date and end date are not empty, filter based on the date range.
     if (this.startDate && this.endDate) {
       const startDate = new Date(start);
       const endDate = new Date(end);
@@ -133,18 +132,18 @@ export class OperationrecordComponent implements OnInit {
       });
     }
 
-    // 更新显示的记录
+    // Update the displayed records
     this.inboundDisplay = filteredInbound;
     this.outboundDisplay = filteredOutbound;
   }
 
-  // 重置日期范围
+  // Reset date range
   reset(): void {
-    // 若筛选日期加时间，重置一次后Temp记录为空，直接获得初始记录
+    // If the previous record is empty, obtain all record information
     if (this.inboundTemp.length === 0 && this.outboundTemp.length === 0) {
       this.getRecords();
     } else {
-      // 否则恢复筛选前的记录
+      // Otherwise, restore the records before filtering
       this.inboundDisplay = this.inboundTemp;
       this.outboundDisplay = this.outboundTemp;
       this.inboundTemp = [];
@@ -152,7 +151,7 @@ export class OperationrecordComponent implements OnInit {
     }
   }
 
-  // 点击货物名称后显示详细信息
+  // Display detailed information after clicking the goods name
   handleClick(GoodsID: string) {
     this.goodsService.getGoodsById(GoodsID).subscribe((data) => {
       this.goods = data;
@@ -165,7 +164,7 @@ export class OperationrecordComponent implements OnInit {
     `;
     });
   }
-  // 货物信息点击提示
+  // Goods information click tooltip
   clearPopoverContent(): void {
     this.popoverContent = '请点击';
   }

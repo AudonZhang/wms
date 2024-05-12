@@ -1,4 +1,4 @@
-// 用于映射mysql中的goods表
+// For the corresponding MySQL "goods" table
 export interface Goods {
   goodsID: string;
   goodsName: string;

@@ -14,11 +14,11 @@ import { NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 })
 export class AllGoodsComponent implements OnInit, DoCheck {
   goods: Goods[] = [];
-  goodsDisplay: Goods[] = []; // 搜索后展示内容列表
-  searchValue = ''; // 搜索内容
-  visible = false; // 搜索框是否可见
-  userRole = ''; // 登录用户的职务
-  // 根据货物数量排序
+  goodsDisplay: Goods[] = []; // Store the results after searching
+  searchValue = ''; // Search content
+  visible = false; // Search box visible
+  userRole = '';
+  // Sort by the quantity of goods
   sortFn: NzTableSortFn<Goods> = (a: Goods, b: Goods) =>
     a.goodsAmount - b.goodsAmount;
   sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
@@ -30,7 +30,7 @@ export class AllGoodsComponent implements OnInit, DoCheck {
     private message: NzMessageService,
     private userService: UserService
   ) {
-    // 进入子页面时，不显示该页面内容
+    // When entering the subpage, the content of that page is not displayed.
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -41,7 +41,7 @@ export class AllGoodsComponent implements OnInit, DoCheck {
     return this.route.children.length > 0;
   }
 
-  // 获取所有货物信息
+  // Fetch all goods information
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
       this.goods = res;
@@ -49,13 +49,13 @@ export class AllGoodsComponent implements OnInit, DoCheck {
     });
   }
 
-  // 重置搜索内容
+  // Clear the search value
   reset(): void {
     this.searchValue = '';
     this.search();
   }
 
-  // 根据货物名搜索
+  // Search by goods name
   search(): void {
     this.visible = false;
     this.goodsDisplay = this.goods.filter(
@@ -69,7 +69,7 @@ export class AllGoodsComponent implements OnInit, DoCheck {
     else this.message.create('success', '已重置货物列表！');
   }
 
-  // 保存需要修改的货物ID，跳转后的组件可根据此获得对应货物信息
+  // Save the ID of the goods to be modified
   setModifyGoodsID(goodsID: string): void {
     this.goodsService.modifyID = goodsID;
   }
@@ -79,7 +79,7 @@ export class AllGoodsComponent implements OnInit, DoCheck {
     this.userRole = this.userService.loginRole;
   }
 
-  // 若已修改货物信息，则刷新货物信息列表
+  // If the goods information has been modified, refresh the list of goods information.
   ngDoCheck(): void {
     if (this.goodsService.afterModify) {
       this.getGoods();

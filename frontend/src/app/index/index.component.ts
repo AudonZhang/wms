@@ -29,12 +29,12 @@ export class IndexComponent implements OnInit {
       });
   }
 
-  // 检查当前是否为子路由页面
+  // Check if the current page is a subpage
   isChildRouteActive(): boolean {
     return this.route.children.length > 0;
   }
 
-  // 一些echarts中用到的变量
+  // Some variables used in ECharts
   plansDisplay: {
     plan: Plan;
     goodsName: string;
@@ -52,13 +52,13 @@ export class IndexComponent implements OnInit {
   }[] = [];
   allGoodsAmount = 0;
 
-  // 初始化echarts中用到的配置
+  // Initialize ECharts configuration
   optionGoodsAmount: any;
   optionGoodsCategory: any;
   optionInventoryChange: any;
   optionUserStatus: any;
 
-  // 获取展示的计划信息
+  // Fetch the displayed plan information
   getPlans(): void {
     this.planService.getAllPlans().subscribe((res) => {
       const plans: Plan[] = res;
@@ -70,7 +70,7 @@ export class IndexComponent implements OnInit {
           goodsManufacturer: '',
         };
       });
-      // 获取每个计划中的货物信息
+      // Fetch the goods information in each plan
       this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
@@ -81,23 +81,23 @@ export class IndexComponent implements OnInit {
           });
       });
 
-      // 按时间排序
+      // Sort by time
       this.plansDisplay.sort((a, b) => {
         const timeA = new Date(a.plan.planExpectedTime).getTime();
         const timeB = new Date(b.plan.planExpectedTime).getTime();
         return timeA - timeB;
       });
-      // 筛选出状态为'未完成'的计划
+      // Filter unfinished plans
       this.plansDisplay = this.plansDisplay.filter(
         (planDisplay) => planDisplay.plan.planStatus === '未完成'
       );
 
-      // 保留前三条计划
+      // Keep the first three plans
       this.plansDisplay = this.plansDisplay.slice(0, 3);
     });
   }
 
-  // 统计货物的数量与种类
+  // Count the quantity and types of goods
   getGoods(): void {
     this.goodsService.getAllGoods().subscribe((res) => {
       this.goods = res;
@@ -121,7 +121,6 @@ export class IndexComponent implements OnInit {
       }))
       .sort((a, b) => b.count - a.count);
 
-    // 排序后的生产商名称和对应的数量
     const sortedCategories = sortedData.map((item) => item.name);
     const sortedCounts = sortedData.map((item) => item.count);
 
@@ -155,7 +154,7 @@ export class IndexComponent implements OnInit {
           interval: 0,
           rotate: 0,
           formatter: function (value: string) {
-            // 每3个字符换行一次
+            // Wrap every 3 characters
             return value.replace(/(.{3})/g, '$1\n');
           },
         },
@@ -239,7 +238,7 @@ export class IndexComponent implements OnInit {
     };
   }
 
-  // 统计货物的供货种类
+  // Count the quantity of goods
   countGoodsOccurrences(): { [key: string]: number } {
     const counts: { [key: string]: number } = {};
     this.goods.forEach((goods) => {
@@ -251,7 +250,7 @@ export class IndexComponent implements OnInit {
     return counts;
   }
 
-  // 获取出入库信息
+  // Get the inbound and outbound information
   getInventory(): void {
     this.recordsService.getAllInbounds().subscribe((records) => {
       this.inboundData = this.aggregateByDayIn(records);
@@ -262,18 +261,18 @@ export class IndexComponent implements OnInit {
     });
   }
 
-  // 统计每天的入库信息
+  // Count the inbound information for each day
   aggregateByDayIn(records: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     records.forEach((records) => {
       const day = new Date(records.inboundUpdatedTime).toLocaleDateString(
         'zh-CN',
         { timeZone: 'UTC' }
-      ); // 获取日期，忽略具体时间
+      );
       if (aggregateData[day]) {
-        aggregateData[day] += records.inboundAmount; // 如果这一天已经有数据，则累加数量
+        aggregateData[day] += records.inboundAmount;
       } else {
-        aggregateData[day] = records.inboundAmount; // 否则，创建新的条目
+        aggregateData[day] = records.inboundAmount;
       }
     });
     return Object.entries(aggregateData).map(([day, amount]) => ({
@@ -282,18 +281,18 @@ export class IndexComponent implements OnInit {
     }));
   }
 
-  // 统计每天的入库信息
+  // Count the outbound information for each day
   aggregateByDayOut(records: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     records.forEach((records) => {
       const day = new Date(records.outboundUpdatedTime).toLocaleDateString(
         'zh-CN',
         { timeZone: 'UTC' }
-      ); // 获取日期，忽略具体时间
+      );
       if (aggregateData[day]) {
-        aggregateData[day] += records.outboundAmount; // 如果这一天已经有数据，则累加数量
+        aggregateData[day] += records.outboundAmount;
       } else {
-        aggregateData[day] = records.outboundAmount; // 否则，创建新的条目
+        aggregateData[day] = records.outboundAmount;
       }
     });
     return Object.entries(aggregateData).map(([day, amount]) => ({
@@ -303,13 +302,12 @@ export class IndexComponent implements OnInit {
   }
 
   setupChartInventoryChange(inboundData: any[], outboundData: any[]): void {
-    // 合并入库和出库的日期数据，并按照日期排序
+    // Merge the inbound and outbound dates, and sort by date
     const allDays = [
       ...inboundData.map((data) => data.day),
       ...outboundData.map((data) => data.day),
     ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
-    // 出入库计划数量和时间折线图
     this.optionInventoryChange = {
       title: {
         text: '吞吐量',
@@ -356,7 +354,7 @@ export class IndexComponent implements OnInit {
     };
   }
 
-  // 统计用户状态
+  // Count the user status
   getUsers(): void {
     this.userService.getAllUsers().subscribe((res) => {
       const onJobCount = res.filter(

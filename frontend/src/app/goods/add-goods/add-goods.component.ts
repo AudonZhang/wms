@@ -41,7 +41,7 @@ export class AddGoodsComponent implements OnInit {
     storageCondition: FormControl<string>;
   }>;
 
-  // 获取新增货物的ID
+  // Get the ID of the new goods
   getNewGoodsID(): void {
     this.goodsService.getMaxGoodsID().subscribe((res) => {
       let numberID: number = +res;
@@ -51,7 +51,7 @@ export class AddGoodsComponent implements OnInit {
   }
 
   submitForm(): void {
-    // 将表单中的值储存
+    // Store the values ​​from the form
     if (this.validateForm.valid) {
       this.goods.goodsName = this.validateForm.controls['name'].value;
       this.goods.goodsSpecification =
@@ -65,7 +65,7 @@ export class AddGoodsComponent implements OnInit {
         this.validateForm.controls['storageCondition'].value;
       this.goods.goodsUpdatedByID = this.userService.loginID;
 
-      // 确认创建货物的信息
+      // Confirm the information of the new goods
       this.informationConfirm();
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -78,7 +78,7 @@ export class AddGoodsComponent implements OnInit {
   }
 
   informationConfirm(): void {
-    // 确认创建信息提示框
+    // Confirm the prompt box for new goods
     this.modal.confirm({
       nzTitle: '<i>请确认新货物信息!</i>',
       nzContent: `
@@ -93,7 +93,7 @@ export class AddGoodsComponent implements OnInit {
     });
   }
 
-  // 提交创建信息
+  // Submit the new goods information
   save(): void {
     this.goodsService.addGoods(this.goods).subscribe((res) => {
       if (res == '0') {
@@ -101,9 +101,10 @@ export class AddGoodsComponent implements OnInit {
         return;
       }
       this.message.create('success', '新增货物成功!');
-      this.goodsService.afterModifyGoods = true; // 修改完成后在货物图表页刷新信息
+      // Refresh the information on the "goods" page after modification is completed
+      this.goodsService.afterModifyGoods = true;
       console.log('submit', this.goods);
-      this.router.navigateByUrl('/index/goods/all'); // 跳转货物信息页
+      this.router.navigateByUrl('/index/goods/all');
     });
   }
 

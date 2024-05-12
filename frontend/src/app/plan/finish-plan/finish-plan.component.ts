@@ -12,14 +12,14 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./finish-plan.component.css'],
 })
 export class FinishPlanComponent {
-  plans: Plan[] = []; // 所有计划信息
+  plans: Plan[] = []; // Store all plan information
   plansDisplay: {
     selected: boolean;
     plan: Plan;
     goodsName: string;
     goodsSpecification: string;
     goodsManufacturer: string;
-  }[] = []; // 前端展示的计划信息
+  }[] = []; // Store the displayed plan information
   plansSubmit: {
     selected: boolean;
     plan: Plan;
@@ -27,11 +27,11 @@ export class FinishPlanComponent {
     goodsSpecification: string;
     goodsManufacturer: string;
   }[] = [];
-  searchValue = ''; // 搜索内容
-  visible = false; // 搜索框是否可见
-  confirmVisible = false; // 确认出库对话框
+  searchValue = '';
+  visible = false; // Search box visible
+  confirmVisible = false; // Confirmation dialog visiable
 
-  // 筛选函数
+  // Inbound and outbound filtering function
   filterInOut: NzTableFilterFn<{
     plan: Plan;
     goodsName: string;
@@ -57,7 +57,7 @@ export class FinishPlanComponent {
   getPlans(): void {
     this.planService.getAllPlans().subscribe((res) => {
       this.plans = res;
-      // 筛选未完成的计划
+      // Filter unfinished plans
       const unfinishedPlans = this.plans.filter(
         (plan) => plan.planStatus === '未完成'
       );
@@ -71,7 +71,7 @@ export class FinishPlanComponent {
         };
       });
 
-      // 为每个计划获取对应的货物信息
+      // Get detailed goods information in each plan
       this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
@@ -83,7 +83,7 @@ export class FinishPlanComponent {
       });
 
       this.plansDisplay.sort((a, b) => {
-        // 按照时间由近到远排序
+        // Display the ones closer to the present time first
         const timeA = new Date(a.plan.planExpectedTime).getTime();
         const timeB = new Date(b.plan.planExpectedTime).getTime();
         return timeA - timeB;
@@ -91,7 +91,7 @@ export class FinishPlanComponent {
     });
   }
 
-  // 根据货物名字搜索
+  // Search by goods name
   search(): void {
     this.visible = false;
     if (this.searchValue !== '') {
@@ -100,43 +100,40 @@ export class FinishPlanComponent {
       );
       this.message.create(
         'success',
-        `已展示所有名称包含 "${this.searchValue}" 的货物信息!`
+        `已展示所有包含 "${this.searchValue}" 的计划信息!`
       );
     } else {
-      // 如果搜索值为空，则重置货物列表
+      // If the search value is empty, reset the plan list
       this.getPlans();
-      this.message.create('success', '已重置货物列表！');
+      this.message.create('success', '已重置计划列表！');
     }
   }
 
-  // 重置搜索内容
+  // Clear the search value
   reset(): void {
     this.searchValue = '';
     this.search();
   }
 
   showModal(): void {
-    let hasSelectedGoods = false; // 判断是否有选择的货物
-    // 检查是否有选择的货物
+    let hasSelectedPlans = false; // Determine if there are selected plans
     this.plansDisplay.forEach((item) => {
       if (item.selected) {
-        hasSelectedGoods = true;
+        hasSelectedPlans = true;
       }
     });
-    // 如果没有选择的货物，则显示错误消息
-    if (!hasSelectedGoods) {
+    // Show error message
+    if (!hasSelectedPlans) {
       this.message.create('error', '请选择计划');
       return;
     }
-
-    // 准备要提交的货物信息
     this.plansSubmit = this.plansDisplay.filter((item) => item.selected);
 
-    // 打开确认对话框
+    // Open confirmation dialog box
     this.confirmVisible = true;
   }
 
-  // 用户确认提交
+  // The user clicks "OK"
   handleOk(): void {
     const date = new Date();
     this.plansSubmit.forEach((item) => {

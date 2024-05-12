@@ -14,13 +14,13 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./allplan.component.css'],
 })
 export class AllplanComponent implements OnInit {
-  plans: Plan[] = []; // 所有计划信息
+  plans: Plan[] = []; // Store all plan information
   plansDisplay: {
     plan: Plan;
     goodsName: string;
     goodsSpecification: string;
     goodsManufacturer: string;
-  }[] = []; // 前端展示的计划信息
+  }[] = []; // Store the displayed plan information
   planSelected: {
     plan: Plan;
     goodsName: string;
@@ -43,12 +43,12 @@ export class AllplanComponent implements OnInit {
     goodsSpecification: '',
     goodsManufacturer: '',
   };
-  searchValue = ''; // 搜索内容
-  visible = false; // 搜索框是否可见
+  searchValue = '';
+  visible = false; // Search box visible
   userRole = '';
-  confirmVisible = false; // 确认出库对话框
+  confirmVisible = false; // Deletion confirmation dialog
 
-  // 筛选函数
+  // Inbound and outbound filtering function
   filterInOut: NzTableFilterFn<{
     plan: Plan;
     goodsName: string;
@@ -64,6 +64,7 @@ export class AllplanComponent implements OnInit {
     }
   ) => list.some((inOut) => item.plan.inOrOutbound.indexOf(inOut) !== -1);
 
+  // Status filtering function
   filterStatus: NzTableFilterFn<{
     plan: Plan;
     goodsName: string;
@@ -87,7 +88,6 @@ export class AllplanComponent implements OnInit {
     private modal: NzModalService
   ) {}
 
-  // 获取所有计划
   getPlans(): void {
     this.planService.getAllPlans().subscribe((res) => {
       this.plans = res;
@@ -99,7 +99,7 @@ export class AllplanComponent implements OnInit {
           goodsSpecification: '',
         };
       });
-      // 为每个计划获取对应的货物信息
+      // Get the goods information in each plan
       this.plansDisplay.forEach((planDisplay) => {
         this.goodsService
           .getGoodsById(planDisplay.plan.planGoodsID)
@@ -110,7 +110,7 @@ export class AllplanComponent implements OnInit {
           });
       });
       this.plansDisplay.sort((a, b) => {
-        // 优先展示未完成计划
+        // Prioritize displaying unfinished plans
         if (a.plan.planStatus === '未完成' && b.plan.planStatus === '已完成') {
           return -1;
         } else if (
@@ -119,7 +119,7 @@ export class AllplanComponent implements OnInit {
         ) {
           return 1;
         } else {
-          // 按照时间由近到远排序
+          // Display the ones closer to the present time first
           const timeA = new Date(a.plan.planExpectedTime).getTime();
           const timeB = new Date(b.plan.planExpectedTime).getTime();
           return timeA - timeB;
@@ -128,7 +128,7 @@ export class AllplanComponent implements OnInit {
     });
   }
 
-  // 根据货物名字搜索
+  // Search by goods name
   search(): void {
     this.visible = false;
     if (this.searchValue !== '') {
@@ -137,17 +137,16 @@ export class AllplanComponent implements OnInit {
       );
       this.message.create(
         'success',
-        `已展示所有名称包含 "${this.searchValue}" 的货物信息!`
+        `已展示所有包含 "${this.searchValue}" 的计划信息!`
       );
     } else {
-      // 如果搜索值为空，则重置货物列表
+      // If the search value is empty, reset the plan list
       this.getPlans();
-      this.message.create('success', '已重置货物列表！');
+      this.message.create('success', '已重置计划列表！');
     }
   }
 
   deletePlan(id: string): void {
-    // 根据ID查找计划信息
     const selectedPlan = this.plansDisplay.find(
       (plan) => plan.plan.planID === id
     );
@@ -160,8 +159,8 @@ export class AllplanComponent implements OnInit {
     this.showModal();
   }
 
+  // Show deletion confirmation dialog
   showModal(): void {
-    // 打开确认对话框
     this.confirmVisible = true;
   }
 
@@ -177,7 +176,7 @@ export class AllplanComponent implements OnInit {
     this.confirmVisible = false;
   }
 
-  // 重置搜索内容
+  // Clear the search value
   reset(): void {
     this.searchValue = '';
     this.search();

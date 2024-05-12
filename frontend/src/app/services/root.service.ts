@@ -6,14 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class RootService {
   private rootUrl = 'http://127.0.0.1:5000/api/root';
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
   constructor(private http: HttpClient) {}
 
-  // 备份数据库
+  // Backup the system database.
   backup() {
     const url = `${this.rootUrl}/backup`;
     this.http.get(url, { responseType: 'blob' }).subscribe(

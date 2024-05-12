@@ -16,15 +16,15 @@ export class PlanComponent implements OnInit {
   outboundPlansCount?: number;
   completedPlansCount?: number;
   pendingPlansCount?: number;
-  options1: any; // 总体计划统计图表选项
-  options2: any; // 计划状态图表选项
-  options3: any; // 出入库计划数量和时间折线图选项
+  options1: any; // Inventory plan quantity statistics chart
+  options2: any; // Plan status statistics chart
+  options3: any; // Line chart of inbound and outbound plan quantity and time
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private planService: PlanService
   ) {
-    // 进入子页面时，不显示该页面内容
+    // When entering the subpage, do not display the content of that page
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -51,7 +51,7 @@ export class PlanComponent implements OnInit {
         (plan) => plan.planStatus === '未完成'
       ).length;
 
-      // 获取出入库计划的日期和数量信息
+      // Retrieve the date and quantity of inbound and outbound plans
       const inboundPlanData = this.aggregateByDay(
         plans.filter((plan) => plan.inOrOutbound === 'Inbound')
       );
@@ -59,7 +59,7 @@ export class PlanComponent implements OnInit {
         plans.filter((plan) => plan.inOrOutbound === 'Outbound')
       );
 
-      // 更新图表数据
+      // Update Chart
       this.updateChartData(inboundPlanData, outboundPlanData);
     });
   }
@@ -74,7 +74,7 @@ export class PlanComponent implements OnInit {
     }, 1000);
   }
 
-  // 将计划按天进行汇总
+  // Aggregate plans by day
   aggregateByDay(plans: any[]): any[] {
     const aggregateData: { [key: string]: number } = {};
     plans.forEach((plan) => {
@@ -82,9 +82,9 @@ export class PlanComponent implements OnInit {
         timeZone: 'UTC',
       });
       if (aggregateData[day]) {
-        aggregateData[day] += plan.planExpectedAmount; // 如果这一天已经有数据，则累加数量
+        aggregateData[day] += plan.planExpectedAmount;
       } else {
-        aggregateData[day] = plan.planExpectedAmount; // 否则，创建新的条目
+        aggregateData[day] = plan.planExpectedAmount;
       }
     });
     return Object.entries(aggregateData).map(([day, amount]) => ({
@@ -93,16 +93,15 @@ export class PlanComponent implements OnInit {
     }));
   }
 
-  // 更新图表数据
+  // Update Chart
   updateChartData(inboundPlanData: any[], outboundPlanData: any[]): void {
     this.totalPlansCount = this.plans.length;
-    // 合并入库和出库的日期数据，并按照日期排序
+    // Merge inbound and outbound dates, and sort by date
     const allDays = [
       ...inboundPlanData.map((data) => data.day),
       ...outboundPlanData.map((data) => data.day),
     ].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
-    // 总体计划统计图表选项（饼图）
     this.options1 = {
       title: {
         text: '出入库计划比例',
@@ -136,7 +135,6 @@ export class PlanComponent implements OnInit {
       ],
     };
 
-    // 计划状态图表选项（饼图）
     this.options2 = {
       title: {
         text: '计划状态',
@@ -169,7 +167,6 @@ export class PlanComponent implements OnInit {
       ],
     };
 
-    // 出入库计划数量和时间折线图选项
     this.options3 = {
       title: {
         text: '计划吞吐量',
