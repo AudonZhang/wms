@@ -8,6 +8,7 @@ A warehouse management system that use Angular for the frontend, Python Flask fo
 - node.js: 20.11.1
 - npm: 10.2.4
 - Angular: 16.1.1
+- MySQL-server:8.0.36
 
 ## Installation Steps
 
@@ -20,6 +21,9 @@ A warehouse management system that use Angular for the frontend, Python Flask fo
    <br>`npm install`
    <br>`cd ..`
 3. Initialize MySQL
+   <br> login in mysql
+   <br> `create database wms;`
+   <br> `quit`
    <br>`cd dataInsert`
    <br>`python3 sql.py`
    <br>`cd ..`
