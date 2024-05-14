@@ -1,0 +1,12 @@
+backend/__pycache__
+backend/api.log
+backend/goods/__pycache__
+backend/user/__pycache__
+backend/plan/__pycache__
+backend/record/__pycache__
+backend/func/__pycache__
+backend/root/__pycache__
+backup
+backend/test
+backend/.ipynb_checkpoints
+order
