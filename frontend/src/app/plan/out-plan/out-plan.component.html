@@ -33,7 +33,7 @@
         </tbody>
     </nz-table>
 
-    <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认出库信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-modal [(nzVisible)]="confirmVisible" nzTitle="请确认出库计划信息！" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <ng-container *nzModalContent>
             <div *ngFor="let plan of plansSubmit; let last = last">
                 <p>货物名称：{{plan.goods.goodsID}}</p>
